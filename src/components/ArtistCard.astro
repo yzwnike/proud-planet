@@ -1,0 +1,39 @@
+---
+const {
+
+        image,
+        artistName,
+        fullName,
+        artistWork,
+        slug
+
+} = Astro.props;
+---
+
+<!-- Artista: Alan Daniel -->
+<div class="group relative rounded-lg overflow-hidden shadow-lg max-w-xs mx-auto cursor-pointer" style="box-shadow: var(--shadow-main);">
+  <a href={`/tatuadores/${slug}`} class="block relative overflow-hidden rounded-t-lg">
+    <img
+      src={`/tatuadores/${image}`} 
+      alt={`${artistName} - Tatuador de Los Angeles`}      
+      class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105"
+    />
+    <!-- Overlay solo sobre imagen -->
+    <div class="absolute inset-0 bg-[var(--color-unexplored)]/80 opacity-0 group-hover:opacity-60 transition-opacity duration-500 flex items-center justify-center pointer-events-none" aria-hidden="true">
+      <span class="text-[var(--color-skin)] text-lg font-semibold select-none" style="font-family: var(--font-family-aro);">
+        Visit {artistName}'s page
+        <slot />
+      </span>
+    </div>
+  </a>
+
+  <!-- Texto siempre visible debajo de la imagen -->
+  <div class="text-center mt-5 p-4 bg-white rounded-b-lg">
+    <h3 class="text-xl font-semibold" style="font-family: var(--font-family-helvetica-neue); color: var(--color-unexplored);">
+      {fullName}
+    </h3>
+    <p class="text-sm" style="font-family: var(--font-family-nb-international); color: #5a5a5a;">
+      {artistWork}
+    </p>
+  </div>
+</div>

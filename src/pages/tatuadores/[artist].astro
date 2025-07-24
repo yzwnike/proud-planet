@@ -1,0 +1,76 @@
+---
+import '../../styles/global.css';  
+import '../../styles/custom.css'; 
+import Layout from '../../layouts/Layout.astro';
+import ContainerArtist from '../../components/ContainerArtist.astro';
+import ArtistTitle from '../../components/ArtistTitle.astro';
+import ArtistHero from '../../components/ArtistHero.astro';
+import ArtistInfojobs from '../../components/ArtistInfojobs.astro';
+import ArtistModalImage from '../../components/ArtistModalImage.astro';
+import ArtistGallery from '../../components/ArtistGallery.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { artist: 'alan-daniel' } },
+    { params: { artist: 'albert-quintero' } },
+    { params: { artist: 'alejandro-ruiz' } }
+  ];
+}
+
+const { artist } = Astro.params;
+
+const artists = {
+  'alan-daniel': {
+    name: 'Alan Daniel',
+    profession: 'Tattoo Artist',
+    image: '/tatuadores/alan-daniel.webp',
+    styles: 'Blackwork',
+    origin: 'Mexico',
+    bookings: 'Yes',
+  },
+  'albert-quintero': {
+    name: 'Albert Quintero',
+    profession: 'Tattoo Artist',
+    image: '/tatuadores/albert-quintero.webp',
+    styles: 'Traditional',
+    origin: 'USA',
+    bookings: 'No',
+  },
+  'alejandro-ruiz': {
+    name: 'Alejandro Ruiz',
+    profession: 'Tattoo Artist',
+    image: '/tatuadores/alejandro-ruiz.webp',
+    styles: 'Realism',
+    origin: 'Spain',
+    bookings: 'Yes',
+  }
+};
+
+const artistData = artists[artist];
+
+if (!artistData) {
+  throw new Error('Artist not found');
+}
+---
+
+<Layout>
+  <ContainerArtist>
+      <ArtistTitle
+        artistName={artistData.name} 
+       />
+      <ArtistHero
+        artistImage={artistData.image}
+        artistName={artistData.name}
+      />
+      <ArtistInfojobs
+        artistName={artistData.name}
+        artistProfession={artistData.profession}
+        artistStyles={artistData.styles}
+        artistOrigin={artistData.origin}
+        artistBookings={artistData.bookings}
+      />
+  </ContainerArtist>
+  <ArtistModalImage/>
+  <ArtistGallery/>
+</Layout>
+

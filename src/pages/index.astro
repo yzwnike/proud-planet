@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';  // Tailwind (con @import preflight y utilities)
+import '../styles/custom.css';  // Tu CSS con variables, fuentes y estilos personalizados
+import Layout from '../layouts/Layout.astro';
+import ArtistCard from '../components/ArtistCard.astro';
+---
+
+<Layout>
+    <main class="max-w-6xl mx-auto px-6 py-12">
+      <!-- Título principal -->
+      <h1 class="text-5xl font-bold mb-6" style="font-family: var(--font-family-aro); color: var(--color-unexplored);">
+        MEET OUR ARTIST
+      </h1>
+
+      <!-- Subtítulo -->
+      <p class="max-w-xl text-lg mb-16 leading-relaxed text-[var(--color-unexplored)]" style="font-family: var(--font-family-nb-international);">
+        International artists from all over the world reunite at Ganga Studio. Considered the best tattoo artists in Los Angeles.
+      </p>
+
+      <!-- Grid de artistas -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+        
+        <ArtistCard
+          image="alan-daniel.webp"
+          artistName="Alan"
+          fullName="Alan Daniel"
+          artistWork="Realismo y retratos"
+          slug="alan-daniel"
+        ></ArtistCard>
+
+        <ArtistCard
+          image="albert-quintero.webp"
+          artistName="Albert"
+          fullName="Albert Quintero"
+          artistWork="Fineline y minimalismo"
+          slug="albert-quintero"
+        />
+
+        <ArtistCard
+          image="alejandro-ruiz.webp"
+          artistName="Alejandro"
+          fullName="Alejandro Ruiz"
+          artistWork="Neotraditional"
+          slug="alejandro-ruiz"
+        />
+        
+      </section>
+    </main>
+</Layout>
+

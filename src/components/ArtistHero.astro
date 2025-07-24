@@ -1,0 +1,32 @@
+---
+
+const { 
+    
+        artistImage,
+        artistName,
+    
+} = Astro.props;
+
+---
+
+
+<div class="relative flex items-center justify-center w-full" style="height: 420px;">
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center gap-[5rem] z-0 select-none" style="width: 2560px;">
+        {Array.from({ length: 8 }).map((_, i) => (
+        <img
+            src="/tatuadores/tattoo.webp"
+            alt={`Tattoo ${i + 1}`}
+            class="w-60 h-60 object-cover rounded-md shadow-lg cursor-pointer hover:scale-110 transition-transform duration-300"
+            onClick="document.getElementById('modalBackdrop').style.display = 'flex'; document.getElementById('modalImage').src = this.src;"
+        />
+        ))}
+    </div>
+    <div class="p-2 rounded-lg z-10" style="background: linear-gradient(135deg, #3a3a3a 0%, #f5f1e6 100%); width: 360px; height: 360px;">
+        <img
+        src={artistImage}
+        alt={artistName}
+        class="w-full h-full object-cover rounded-lg bg-white"
+        style="box-shadow: var(--shadow-main);"
+        />
+    </div>
+</div>

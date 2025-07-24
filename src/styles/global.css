@@ -1,0 +1,671 @@
+@import "tailwindcss";
+
+@theme {
+    --color-unexplored: #3D2219;
+    --color-unexpored-hover: #2b1811;
+    --color-unexplored-cookies: #737777;
+    --color-skin: #FFDBBF;
+    --color-openBookings: #779900;
+    --color-borderOpenBookings: #A8F170;
+    --color-textOpenBookings: #216F07;
+    --font-family-helvetica-neue: 'Helvetica Neue', sans-serif;
+    --font-family-aro: 'Aro', sans-serif;
+    --font-family-nb-international: 'NB International Pro CG', sans-serif;
+    --shadow-main: 
+                -77px 257px 75px 0px rgba(0, 0, 0, 0.00), 
+                -49px 164px 69px 0px rgba(0, 0, 0, 0.01), 
+                -28px 92px 58px 0px rgba(0, 0, 0, 0.05), 
+                -12px 41px 43px 0px rgba(0, 0, 0, 0.09), 
+                -3px 10px 24px 0px rgba(0, 0, 0, 0.10);
+    --shadow-mainUp: 
+                -482px -534px 201px 0px rgba(0, 0, 0, 0.00), 
+                -309px -342px 184px 0px rgba(0, 0, 0, 0.01), 
+                -174px -192px 155px 0px rgba(0, 0, 0, 0.05), 
+                -77px -85px 115px 0px rgba(0, 0, 0, 0.09), 
+                -19px -21px 63px 0px rgba(0, 0, 0, 0.10);
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-HeavyItalic.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-HeavyItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-Black.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-BlackItalic.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-BlackItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-Medium.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-Heavy.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-Heavy.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-Bold.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-MediumItalic.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-MediumItalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-BoldItalic.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-BoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-LightItalic.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-Thin.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-Roman.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-Roman.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-Light.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-ThinItalic.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-ThinItalic.woff') format('woff');
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-Italic.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-UltraLight.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-UltraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/helvetica-neue/HelveticaNeue-UltraLightItalic.woff2') format('woff2'),
+        url('/helvetica-neue/HelveticaNeue-UltraLightItalic.woff') format('woff');
+    font-weight: 200;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aro';
+    src: url('/aro/Aro-NarrowItalic.woff2') format('woff2'),
+        url('/aro/Aro-NarrowItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aro';
+    src: url('/aro/Aro-Wide.woff2') format('woff2'),
+        url('/aro/Aro-Wide.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aro';
+    src: url('/aro/Aro-Narrow.woff2') format('woff2'),
+        url('/aro/Aro-Narrow.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aro';
+    src: url('/aro/Aro-Normal.woff2') format('woff2'),
+        url('/aro/Aro-Normal.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aro';
+    src: url('/aro/Aro-WideItalic.woff2') format('woff2'),
+        url('/aro/Aro-WideItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aro';
+    src: url('/aro/Aro-NormalItalic.woff2') format('woff2'),
+        url('/aro/Aro-NormalItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aro';
+    src: url('/aro/Aro-Condensed.woff2') format('woff2'),
+        url('/aro/Aro-Condensed.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aro';
+    src: url('/aro/Aro-Extended.woff2') format('woff2'),
+        url('/aro/Aro-Extended.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aro';
+    src: url('/aro/Aro-CondensedItalic.woff2') format('woff2'),
+        url('/aro/Aro-CondensedItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aro';
+    src: url('/aro/Aro-ExtendedItalic.woff2') format('woff2'),
+        url('/aro/Aro-ExtendedItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG';
+    src: url('/nb/NBInternationalProCG-Italic.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG';
+    src: url('/nb/NBInternationalProCG-Regular.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG';
+    src: url('/nb/NBInternationalProCG-Light.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG';
+    src: url('/nb/NBInternationalProCG-MediumItalic.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-MediumItalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG';
+    src: url('/nb/NBInternationalProCG-Medium.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG Mono';
+    src: url('/nb/NBInternationalProCG-Mono.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-Mono.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG';
+    src: url('/nb/NBInternationalProCG-LightItalic.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG Book';
+    src: url('/nb/NBInternationalProCG-BookItalic.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-BookItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG';
+    src: url('/nb/NBInternationalProCG-BoldItalic.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-BoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG Book';
+    src: url('/nb/NBInternationalProCG-Book.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-Book.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NB International Pro CG';
+    src: url('/nb/NBInternationalProCG-Bold.woff2') format('woff2'),
+        url('/nb/NBInternationalProCG-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+.rock-background {
+    background-image: url('https://lanzadera-digital.b-cdn.net/gangatattoolosangeles.com/Utils/rock-background.webp');
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -100;
+    left: 0;
+    top: 0;
+}
+
+.footer-background {
+    background-image: url('https://lanzadera-digital.b-cdn.net/gangatattoolosangeles.com/Utils/footer-background.webp');
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 0;
+    top: 0;
+}
+
+.footer-background-contact {
+    background-image: url('https://lanzadera-digital.b-cdn.net/gangatattoolosangeles.com/Utils/footer-background.webp');
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 0;
+    top: 0;
+    background-position-y: -400px;
+}
+
+@media screen and (max-width: 1024px) {
+    .footer-background-contact {
+        background-position-y: 0px;
+    }
+    
+}
+
+.gradient-bottom {
+    mask-image: linear-gradient(to bottom, black 20%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent);
+}
+
+.gradient-sides {
+    mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+}
+
+.gradient-right.active {
+    opacity: 1;
+}
+
+.gradient-right {
+    background-image: linear-gradient(to left, var(--color-skin) 5%, transparent);
+    opacity: 0;
+    transition: opacity 0.3s; 
+}
+
+.scrollbar-hidden {
+    scrollbar-width: none;
+}
+
+.header-hidden {
+    transform: translateY(-100%);
+}
+
+.header-visible {
+    transform: translateY(0);
+}
+
+.underline-animation::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    background-color: var(--color-skin);
+    width: 0%;
+    height: 1px;
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.underline-animation:hover::before {
+    width: 100%;
+}
+
+.cubic-bezier-animation {
+    transition-timing-function: cubic-bezier(1, 0, 0, 1);
+}
+
+.pswp__counter {
+    font-family: 'Aro', sans-serif;
+    color: #FFDBBF!important;
+    font-size: 25px!important;
+}
+
+.pswp__icn {
+    fill: #FFDBBF!important;
+}
+
+/* THIS SETTINGS ONLY WORK WITH DIALOG DISPLAY, NOT BAR */
+
+/* Delete non necessary structure for dialog simplicity */
+#CybotCookiebotDialogHeader {
+	display: none!important;
+}
+
+#CookiebotWidget .CookiebotWidget-body .CookiebotWidget-main-logo {
+	display: none!important;
+}
+
+/* General background color */
+#CybotCookiebotDialog {
+    background-color: #E5BE9C!important;
+}
+
+/* General text styling */
+#CookiebotWidget * {
+	color: var(--color-unexplored)!important;
+}
+
+/* 3 section header */
+#CybotCookiebotDialogNav {
+    border-bottom: none!important;
+}
+
+/* Individual header item (targets all three items - borders are applied to the nested items) */
+#CybotCookiebotDialogNavItem {
+    color: var(--color-unexplored)!important;
+}
+
+/* Individual header "consent" */
+#CybotCookiebotDialogNavDeclaration {
+    border-bottom: 1px solid var(--color-unexplored)!important;
+}
+
+/* Individual header "details" */
+#CybotCookiebotDialogNavDetails {
+    border-bottom: 1px solid var(--color-unexplored)!important;
+}
+
+/* Individual header "about" */
+#CybotCookiebotDialogNavAbout {
+    border-bottom: 1px solid var(--color-unexplored)!important;
+}
+
+/* Individual header item (targets all three items - borders are applied here and the 3 items can be edited here) */
+#CybotCookiebotDialogNav .CybotCookiebotDialogNavItemLink {
+    color: var(--color-unexplored)!important;
+}
+
+/* Individual header on active class (this targets to all three items - border width is bigger to easily recognise the section you are located) */
+#CybotCookiebotDialogNav .CybotCookiebotDialogNavItemLink.CybotCookiebotDialogActive {
+    border-width: 3px!important;
+}
+
+/* Color for the decline option slider */
+#CybotCookiebotDialog .CybotCookiebotDialogBodyLevelButtonSlider {
+    background-color: var(--color-unexplored)!important;
+}
+
+/* Color for the decline option dot inside the slider */
+#CybotCookiebotDialog .CybotCookiebotDialogBodyLevelButtonSlider:before {
+    background-color: var(--color-unexplored-cookies)!important;
+}
+
+/* Color for the decline option dot inside the slider (on pressed state) */
+#CybotCookiebotDialog input:checked+.CybotCookiebotDialogBodyLevelButtonSlider:before {
+    background-color: var(--color-skin)!important;
+}
+
+/* Color for the decline slider option text */
+#CybotCookiebotDialogBodyLevelButtonDescription {
+    color: var(--color-unexplored)!important;
+}
+
+/* Accept button styling */
+#CybotCookiebotDialogFooter #CybotCookiebotDialogBodyButtonAccept {
+    background-color: var(--color-unexplored)!important;
+    border: none!important;
+    color: var(--color-skin)!important;
+}
+
+/* Decline button styling */
+#CybotCookiebotDialogBodyButtonDecline {
+    background-color: transparent!important;
+    border-color: var(--color-unexplored)!important;
+    color: var(--color-unexplored)!important;
+}
+
+/* Styling for content container (mostly used for deleting border between content and acceptance buttons) */
+#CybotCookiebotDialog .CybotCookiebotScrollContainer {
+    border-bottom: none!important;
+}
+
+/* Styling fot content title */
+#CybotCookiebotDialogBodyContentTitle {
+    color: var(--color-unexplored)!important;
+}
+
+/* Styling for content text */
+#CybotCookiebotDialogBodyContentText {
+    color: var(--color-unexplored)!important;
+}
+
+/* Styling for decline slider text */
+#CybotCookiebotDialogBodyButtons .CybotCookiebotDialogBodyContentControlsWrapper .CybotCookiebotDialogBodyLevelButtonDescription {
+    color: var(--color-unexplored)!important;
+}
+
+/* Scrollbar dialog */
+#CybotCookiebotDialog .CybotCookiebotScrollContainer .CybotCookiebotScrollbarContainer {
+    background-color: transparent!important;
+}
+
+/* The fade appearing when the content is too long */
+#CybotCookiebotDialog .CybotCookiebotFader:not(.CybotCookiebotFaderLeft):not(.CybotCookiebotFaderRight) {
+    background-image: linear-gradient(to top, var(--color-skin), rgb(229, 191, 157, 0.8), rgb(229, 191, 157, 0))!important
+}
+
+/* Styling for bulletpoints on "details" section */
+#CybotCookiebotDialogTabContent .CybotCookiebotDialogDetailBulkConsentCount {
+    background-color: var(--color-unexplored)!important;
+    color: var(--color-skin)!important;
+}
+
+/* Styling for border between cookie types on "details" section */
+#CybotCookiebotDialog .CookieCard {
+    border-bottom: 1px solid var(--color-unexplored)!important;
+}
+
+/* Styling for all links */
+#CybotCookiebotDialog #CybotCookiebotDialogBodyContentText a, #CybotCookiebotDialog #CybotCookiebotDialogDetailFooter a, #CybotCookiebotDialog #CybotCookiebotDialogDetailBulkConsentList dt a, #CybotCookiebotDialog .CybotCookiebotDialogBodyLevelButtonIABDescription a, #CybotCookiebotDialog .CybotCookiebotDialogDetailBodyContentCookieLink, #CybotCookiebotDialog #CybotCookiebotDialogBodyLevelButtonIABHeaderViewPartnersLink, #CybotCookiebotDialogDetailBodyContentTextAbout a {
+    color: var(--color-unexplored)!important;
+    text-decoration: underline!important;
+}
+
+/* Styling for cookie settings opener circle at left bottom fixed button */
+#CookiebotWidget .CookiebotWidget-logo svg circle {
+    fill: var(--color-unexplored)!important;
+}
+
+/* Styling for cookie settings opener svg inside circle at left bottom fixed button */
+#CookiebotWidget .CookiebotWidget-logo svg path {
+    fill: var(--color-skin)!important;
+}
+
+/* Styling for "change your consent button" on cookie settings widget */
+#CookiebotWidget #CookiebotWidget-buttons #CookiebotWidget-btn-change {
+    background-color: var(--color-skin)!important;
+    color: var(--color-unexplored)!important;
+    border: none;
+}
+
+/* Styling for "withdraw your consent button" on cookie settings widget */
+#CookiebotWidget #CookiebotWidget-buttons #CookiebotWidget-btn-withdraw {
+    background-color: transparent!important;
+    border: 1px solid var(--color-skin)!important;
+    color: var(--color-skin)!important;
+}
+
+/* General background color cookie settings widget */
+#CookiebotWidget #CookiebotWidget-widgetContent {
+    background-color: var(--color-unexplored)!important;
+}
+
+/* Text styling for strong paragraphs on cookie settings widget */
+#CookiebotWidget strong {
+    color: var(--color-skin)!important;
+}
+
+/* Svg color for close cookie settings widget */
+#CookiebotWidget .CookiebotWidget-header .CookiebotWidget-close svg path {
+    fill: var(--color-skin)!important;
+}
+
+/* Text styling for "cookie settings" list on cookie settings widget */
+#CookiebotWidget li {
+    color: var(--color-skin)!important;
+}
+
+/* Scrollbar for cookie settings widget */
+#CookiebotWidget .CybotCookiebotScrollbarContainer {
+    background: transparent!important;
+}
+
+/* Details box on cookie settings widget */
+#CookiebotWidget .CookiebotWidget-consent-details button {
+    color: var(--color-skin)!important;
+}
+
+/* Svg color for details box on cookie settings widget */
+#CookiebotWidget .CookiebotWidget-consent-details button svg path {
+    fill: var(--color-skin)!important;
+}
+
+/* Details box background color on cookie settings widget */
+#CookiebotWidget .CookiebotWidget-consent-details .CookiebotWidget-consent-details-box {
+    background-color: var(--color-skin)!important;
+}
+
+/* Text style for details bix titles on cookie settings widget */
+#CookiebotWidget .CookiebotWidget-consent-details strong {
+    color: var(--color-unexplored)!important;
+}
+
+/* Color for svg on "cookie settings" list on cookie settings widget */
+#CookiebotWidget .CookiebotWidget-body .CookiebotWidget-consents-list li.CookiebotWidget-approved svg {
+    fill: var(--color-skin)!important;
+}
+
+

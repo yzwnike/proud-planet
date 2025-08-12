@@ -1,0 +1,16 @@
+---
+const { title = "Fantasy League" } = Astro.props;
+---
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>{title}</title>
+      </head>
+      <body class="bg-gray-100 text-gray-900">
+        <main class="container mx-auto p-4">
+            <slot />
+              </main>
+              </body>
+              </html>

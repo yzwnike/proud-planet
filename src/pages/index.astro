@@ -1,50 +1,65 @@
 ---
-import '../styles/global.css';  // Tailwind (con @import preflight y utilities)
-import '../styles/custom.css';  // Tu CSS con variables, fuentes y estilos personalizados
-import Layout from '../layouts/Layout.astro';
-import ArtistCard from '../components/ArtistCard.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PlayerCard from "../components/PlayerCard.astro";
+import jugadores from "../data/players.json";
+
+let equipoSeleccionado = "Todos";
+let ordenarPor = "puntos";
+
+const equipos = ["Todos", "Nike FC", "Adidas FC", "Puma FC", "Kappa FC"];
 ---
 
-<Layout>
-    <main class="max-w-6xl mx-auto px-6 py-12">
-      <!-- Título principal -->
-      <h1 class="text-5xl font-bold mb-6" style="font-family: var(--font-family-aro); color: var(--color-unexplored);">
-        MEET OUR ARTIST
-      </h1>
+<BaseLayout title="Fantasy League">
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+      <select id="filtroEquipo" class="border p-2 rounded">
+            {equipos.map(e => (
+                    <option value={e}>{e}</option>
+                          ))}
+                              </select>
 
-      <!-- Subtítulo -->
-      <p class="max-w-xl text-lg mb-16 leading-relaxed text-[var(--color-unexplored)]" style="font-family: var(--font-family-nb-international);">
-        International artists from all over the world reunite at Ganga Studio. Considered the best tattoo artists in Los Angeles.
-      </p>
+                                  <select id="ordenarPor" class="border p-2 rounded">
+                                        <option value="puntos">Puntos</option>
+                                              <option value="valor_mercado">Valor de mercado</option>
+                                                  </select>
+                                                    </div>
 
-      <!-- Grid de artistas -->
-      <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-        
-        <ArtistCard
-          image="alan-daniel.webp"
-          artistName="Alan"
-          fullName="Alan Daniel"
-          artistWork="Realismo y retratos"
-          slug="alan-daniel"
-        ></ArtistCard>
+                                                      <div id="listaJugadores" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                                          {jugadores
+                                                                .filter(j => equipoSeleccionado === "Todos" || j.equipo === equipoSeleccionado)
+                                                                      .sort((a, b) => b[ordenarPor] - a[ordenarPor])
+                                                                            .map(j => (
+                                                                                    <PlayerCard jugador={j} />
+                                                                                          ))
+                                                                                              }
+                                                                                                </div>
 
-        <ArtistCard
-          image="albert-quintero.webp"
-          artistName="Albert"
-          fullName="Albert Quintero"
-          artistWork="Fineline y minimalismo"
-          slug="albert-quintero"
-        />
+                                                                                                  <script>
+                                                                                                      const filtroEquipo = document.getElementById("filtroEquipo");
+                                                                                                          const ordenarSelect = document.getElementById("ordenarPor");
+                                                                                                              const lista = document.getElementById("listaJugadores");
 
-        <ArtistCard
-          image="alejandro-ruiz.webp"
-          artistName="Alejandro"
-          fullName="Alejandro Ruiz"
-          artistWork="Neotraditional"
-          slug="alejandro-ruiz"
-        />
-        
-      </section>
-    </main>
-</Layout>
+                                                                                                                  let jugadores = JSON.parse(`\${JSON.stringify(jugadores)}`);
 
+                                                                                                                      function renderLista() {
+                                                                                                                            let filtrados = jugadores
+                                                                                                                                    .filter(j => filtroEquipo.value === "Todos" || j.equipo === filtroEquipo.value)
+                                                                                                                                            .sort((a, b) => b[ordenarSelect.value] - a[ordenarSelect.value]);
+
+                                                                                                                                                  lista.innerHTML = filtrados.map(j => `
+                                                                                                                                                          <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
+                                                                                                                                                                    <img src="${j.foto}" alt="${j.nombre}" class="w-24 h-24 rounded-full object-cover mb-3" />
+                                                                                                                                                                              <h3 class="text-lg font-bold">${j.nombre}</h3>
+                                                                                                                                                                                        <p class="text-sm text-gray-500">${j.posicion} — ${j.edad} años</p>
+                                                                                                                                                                                                  <p class="mt-2 text-yellow-600 font-semibold">${j.puntos} pts</p>
+                                                                                                                                                                                                            <p class="mt-1">€${j.valor_mercado.toLocaleString()}</p>
+                                                                                                                                                                                                                      <p class="mt-1 ${j.variacion > 0 ? "text-green-600" : j.variacion < 0 ? "text-red-600" : "text-gray-500"}">
+                                                                                                                                                                                                                                  ${j.variacion >= 0 ? "+" : ""}${(j.variacion / 1000000).toFixed(1)}M
+                                                                                                                                                                                                                                            </p>
+                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                          `).join("");
+                                                                                                                                                                                                                                                              }
+
+                                                                                                                                                                                                                                                                  filtroEquipo.addEventListener("change", renderLista);
+                                                                                                                                                                                                                                                                      ordenarSelect.addEventListener("change", renderLista);
+                                                                                                                                                                                                                                                                        </script>
+                                                                                                                                                                                                                                                                        </BaseLayout>

@@ -256,7 +256,7 @@
     "edad": 24,
     "ovr": 79,
     "valor_transfermarkt": 12000000,
-    "dorsal": 12,
+    "dorsal": 21,
     "foto": "/jugadores/thomas.jpg"
   },
   {
@@ -276,7 +276,7 @@
     "edad": 27,
     "ovr": 85,
     "valor_transfermarkt": 45000000,
-    "dorsal": 11,
+    "dorsal": 17,
     "foto": "/jugadores/vallejo.jpg"
   },
   {
@@ -366,7 +366,7 @@
     "edad": 29,
     "ovr": 82,
     "valor_transfermarkt": 17000000,
-    "dorsal": 16,
+    "dorsal": 12,
     "foto": "/jugadores/giye.jpg"
   },
   {
@@ -376,7 +376,7 @@
     "edad": 29,
     "ovr": 84,
     "valor_transfermarkt": 38000000,
-    "dorsal": 17,
+    "dorsal": 11,
     "foto": "/jugadores/porras.jpg"
   },
   {
@@ -396,7 +396,7 @@
     "edad": 32,
     "ovr": 81,
     "valor_transfermarkt": 9000000,
-    "dorsal": 19,
+    "dorsal": 24,
     "foto": "/jugadores/chuck.jpg"
   },
   {
@@ -406,7 +406,7 @@
     "edad": 22,
     "ovr": 85,
     "valor_transfermarkt": 95000000,
-    "dorsal": 4,
+    "dorsal": 10,
     "foto": "/jugadores/kod.jpg"
   },
   {
@@ -416,7 +416,7 @@
     "edad": 28,
     "ovr": 83,
     "valor_transfermarkt": 28000000,
-    "dorsal": 5,
+    "dorsal": 12,
     "foto": "/jugadores/guerra.jpg",
     "ultima_actualizacion_transfermarkt": "2025-08-14T18:12:03.132Z"
   },
@@ -427,7 +427,7 @@
     "edad": 28,
     "ovr": 81,
     "valor_transfermarkt": 18000000,
-    "dorsal": 6,
+    "dorsal": 9,
     "foto": "/jugadores/fernando.jpg"
   },
   {
@@ -437,7 +437,7 @@
     "edad": 16,
     "ovr": 81,
     "valor_transfermarkt": 70000000,
-    "dorsal": 15,
+    "dorsal": 7,
     "foto": "/jugadores/yazy.jpg"
   },
   {
@@ -447,7 +447,7 @@
     "edad": 29,
     "ovr": 85,
     "valor_transfermarkt": 40000000,
-    "dorsal": 10,
+    "dorsal": 8,
     "foto": "/jugadores/marin.jpg"
   },
   {
@@ -457,7 +457,7 @@
     "edad": 28,
     "ovr": 81,
     "valor_transfermarkt": 15000000,
-    "dorsal": 8,
+    "dorsal": 6,
     "foto": "/jugadores/armando-m.jpg"
   },
   {
@@ -477,7 +477,7 @@
     "edad": 27,
     "ovr": 77,
     "valor_transfermarkt": 4000000,
-    "dorsal": 3,
+    "dorsal": 16,
     "foto": "/jugadores/fran.jpg"
   },
   {
@@ -487,7 +487,7 @@
     "edad": 26,
     "ovr": 82,
     "valor_transfermarkt": 25000000,
-    "dorsal": 11,
+    "dorsal": 23,
     "foto": "/jugadores/ramungut.jpg"
   },
   {
@@ -497,7 +497,7 @@
     "edad": 27,
     "ovr": 81,
     "valor_transfermarkt": 22000000,
-    "dorsal": 16,
+    "dorsal": 5,
     "foto": "/jugadores/camello.jpg"
   },
   {
@@ -507,7 +507,7 @@
     "edad": 27,
     "ovr": 84,
     "valor_transfermarkt": 30000000,
-    "dorsal": 12,
+    "dorsal": 13,
     "foto": "/jugadores/alain.jpg"
   },
   {
@@ -527,7 +527,7 @@
     "edad": 33,
     "ovr": 78,
     "valor_transfermarkt": 4000000,
-    "dorsal": 13,
+    "dorsal": 19,
     "foto": "/jugadores/potpot.jpg"
   },
   {
@@ -537,7 +537,7 @@
     "edad": 28,
     "ovr": 80,
     "valor_transfermarkt": 16000000,
-    "dorsal": 14,
+    "dorsal": 3,
     "foto": "/jugadores/marquez.jpg"
   },
   {
@@ -547,7 +547,7 @@
     "edad": 29,
     "ovr": 83,
     "valor_transfermarkt": 15000000,
-    "dorsal": 17,
+    "dorsal": 4,
     "foto": "/jugadores/mateo.jpg"
   },
   {
@@ -557,7 +557,7 @@
     "edad": 30,
     "ovr": 81,
     "valor_transfermarkt": 7500000,
-    "dorsal": 18,
+    "dorsal": 15,
     "foto": "/jugadores/walter.jpg"
   },
   {
@@ -567,7 +567,7 @@
     "edad": 36,
     "ovr": 83,
     "valor_transfermarkt": 4000000,
-    "dorsal": 19,
+    "dorsal": 14,
     "foto": "/jugadores/juanito.jpg"
   },
   {
@@ -577,7 +577,7 @@
     "edad": 32,
     "ovr": 83,
     "valor_transfermarkt": 8000000,
-    "dorsal": 20,
+    "dorsal": 18,
     "foto": "/jugadores/vega.jpg"
   },
   {
@@ -587,7 +587,7 @@
     "edad": 26,
     "ovr": 78,
     "valor_transfermarkt": 10000000,
-    "dorsal": 21,
+    "dorsal": 17,
     "foto": "/jugadores/yago.jpg"
   },
   {
@@ -597,7 +597,7 @@
     "edad": 25,
     "ovr": 71,
     "valor_transfermarkt": 1000000,
-    "dorsal": 22,
+    "dorsal": 26,
     "foto": "/jugadores/venezuela.jpg"
   },
   {
@@ -607,7 +607,7 @@
     "edad": 15,
     "ovr": 65,
     "valor_transfermarkt": 500000,
-    "dorsal": 23,
+    "dorsal": 30,
     "foto": "/jugadores/nicki.jpg"
   },
   {
@@ -627,7 +627,7 @@
     "edad": 26,
     "ovr": 73,
     "valor_transfermarkt": 1700000,
-    "dorsal": 2,
+    "dorsal": 22,
     "foto": "/jugadores/frasqui.jpg"
   },
   {
@@ -667,7 +667,7 @@
     "edad": 30,
     "ovr": 79,
     "valor_transfermarkt": 5000000,
-    "dorsal": 6,
+    "dorsal": 15,
     "foto": "/jugadores/cruanas.jpg"
   },
   {
@@ -677,7 +677,7 @@
     "edad": 26,
     "ovr": 79,
     "valor_transfermarkt": 12000000,
-    "dorsal": 7,
+    "dorsal": 2,
     "foto": "/jugadores/santi.jpg"
   },
   {
@@ -687,7 +687,7 @@
     "edad": 31,
     "ovr": 74,
     "valor_transfermarkt": 1600000,
-    "dorsal": 8,
+    "dorsal": 16,
     "foto": "/jugadores/manel.jpg"
   },
   {
@@ -697,7 +697,7 @@
     "edad": 26,
     "ovr": 79,
     "valor_transfermarkt": 12000000,
-    "dorsal": 9,
+    "dorsal": 14,
     "foto": "/jugadores/yusi.jpg"
   },
   {
@@ -707,7 +707,7 @@
     "edad": 26,
     "ovr": 76,
     "valor_transfermarkt": 3500000,
-    "dorsal": 10,
+    "dorsal": 17,
     "foto": "/jugadores/follama.jpg"
   },
   {
@@ -717,7 +717,7 @@
     "edad": 27,
     "ovr": 77,
     "valor_transfermarkt": 4000000,
-    "dorsal": 11,
+    "dorsal": 13,
     "foto": "/jugadores/erik.jpg"
   },
   {
@@ -737,7 +737,7 @@
     "edad": 31,
     "ovr": 80,
     "valor_transfermarkt": 8000000,
-    "dorsal": 13,
+    "dorsal": 8,
     "foto": "/jugadores/galisteo.jpg"
   },
   {
@@ -747,7 +747,7 @@
     "edad": 17,
     "ovr": 74,
     "valor_transfermarkt": 4600000,
-    "dorsal": 14,
+    "dorsal": 24,
     "foto": "/jugadores/pedrito.jpg"
   },
   {
@@ -757,7 +757,7 @@
     "edad": 26,
     "ovr": 81,
     "valor_transfermarkt": 22000000,
-    "dorsal": 15,
+    "dorsal": 7,
     "foto": "/jugadores/pol-cubo.jpg"
   },
   {
@@ -767,7 +767,7 @@
     "edad": 24,
     "ovr": 81,
     "valor_transfermarkt": 30000000,
-    "dorsal": 16,
+    "dorsal": 6,
     "foto": "/jugadores/martuki.jpg"
   },
   {
@@ -777,7 +777,7 @@
     "edad": 28,
     "ovr": 82,
     "valor_transfermarkt": 20000000,
-    "dorsal": 17,
+    "dorsal": 11,
     "foto": "/jugadores/raigo.jpg"
   },
   {
@@ -787,7 +787,7 @@
     "edad": 27,
     "ovr": 82,
     "valor_transfermarkt": 30000000,
-    "dorsal": 18,
+    "dorsal": 10,
     "foto": "/jugadores/ukelele.jpg"
   },
   {
@@ -797,7 +797,7 @@
     "edad": 30,
     "ovr": 73,
     "valor_transfermarkt": 1000000,
-    "dorsal": 19,
+    "dorsal": 30,
     "foto": "/jugadores/pot.jpg"
   },
   {
@@ -807,7 +807,7 @@
     "edad": 18,
     "ovr": 72,
     "valor_transfermarkt": 4000000,
-    "dorsal": 20,
+    "dorsal": 19,
     "foto": "/jugadores/colgan.jpg"
   },
   {
@@ -817,7 +817,7 @@
     "edad": 25,
     "ovr": 83,
     "valor_transfermarkt": 40000000,
-    "dorsal": 21,
+    "dorsal": 9,
     "foto": "/jugadores/swit-eme.jpg"
   },
   {
@@ -827,7 +827,7 @@
     "edad": 33,
     "ovr": 78,
     "valor_transfermarkt": 1500000,
-    "dorsal": 22,
+    "dorsal": 25,
     "foto": "/jugadores/llonch.jpg"
   }
 ]

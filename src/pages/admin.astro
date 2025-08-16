@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Panel de Administración - Fantasy League">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-purple-700 rounded-2xl shadow-xl p-8 text-white mb-8">
+      <h1 class="text-3xl font-bold mb-4">Panel de Administración</h1>
+      <p class="text-blue-100">Gestiona jugadores, actualizaciones y lineups desde aquí</p>
+    </div>
+
+    <!-- Navigation Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+      <!-- Actualización Automática -->
+      <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+        <div class="p-6">
+          <div class="bg-green-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+            <span class="text-2xl">🔄</span>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Actualización</h3>
+          <p class="text-gray-600 text-sm mb-4">Actualizar valores de mercado</p>
+          <a href="/mercado" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            Acceder
+          </a>
+        </div>
+      </div>
+
+
+      <!-- Lineups -->
+      <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+        <div class="p-6">
+          <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+            <span class="text-2xl">⚽</span>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Lineups</h3>
+          <p class="text-gray-600 text-sm mb-4">Crear y gestionar alineaciones de equipos</p>
+          <a href="/lineups" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            Acceder
+          </a>
+        </div>
+      </div>
+
+      <!-- Base de Datos -->
+      <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+        <div class="p-6">
+          <div class="bg-purple-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+            <span class="text-2xl">📋</span>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Base de Datos</h3>
+          <p class="text-gray-600 text-sm mb-4">Ver todos los jugadores registrados</p>
+          <a href="/" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            Acceder
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Herramientas Avanzadas -->
+    <div class="mb-8">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">🛠️ Herramientas Avanzadas</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Reiniciar Sistema -->
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-red-200">
+          <div class="p-6">
+            <div class="bg-red-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <span class="text-2xl">🔄</span>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">Reiniciar Sistema</h3>
+            <p class="text-gray-600 text-sm mb-4">Reiniciar todos los puntos y estadísticas a cero</p>
+            <a href="/admin/reiniciar" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+              ⚠️ Acceder
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Estadísticas Rápidas</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="text-center">
+          <div class="text-2xl font-bold text-blue-600">80</div>
+          <div class="text-sm text-gray-600">Total Jugadores</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-green-600">€458M</div>
+          <div class="text-sm text-gray-600">Valor Total</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-amber-600">0</div>
+          <div class="text-sm text-gray-600">Puntos Promedio</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-purple-600">4</div>
+          <div class="text-sm text-gray-600">Equipos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

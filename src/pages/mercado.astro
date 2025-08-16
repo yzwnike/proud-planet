@@ -1,0 +1,371 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import jugadores from "../data/players.json";
+
+// Agrupar jugadores por equipo y ordenar por puntos dentro de cada equipo
+const jugadoresPorEquipo = jugadores.reduce((acc, jugador) => {
+  const equipo = jugador.equipo || 'Sin equipo';
+  if (!acc[equipo]) {
+    acc[equipo] = [];
+  }
+  acc[equipo].push(jugador);
+  return acc;
+}, {});
+
+// Ordenar jugadores dentro de cada equipo por puntos (mayor a menor), luego por valor de mercado (mayor a menor)
+Object.keys(jugadoresPorEquipo).forEach(equipo => {
+  jugadoresPorEquipo[equipo].sort((a, b) => {
+    // Primero por puntos (mayor a menor)
+    if (b.puntos !== a.puntos) {
+      return b.puntos - a.puntos;
+    }
+    // Si tienen los mismos puntos, por valor de mercado (mayor a menor)
+    return b.valor_mercado - a.valor_mercado;
+  });
+});
+
+// Orden específico de equipos
+const ordenEquipos = ['Nike FC', 'Adidas FC', 'Puma FC', 'Kappa FC'];
+const equipos = ordenEquipos.filter(equipo => jugadoresPorEquipo[equipo] && jugadoresPorEquipo[equipo].length > 0);
+---
+
+<BaseLayout title="Actualizar Mercado">
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">💰 Actualizar Valores de Mercado</h1>
+      <p class="text-gray-600">Gestiona los valores de mercado de todos los jugadores por equipo</p>
+    </div>
+
+    <!-- Controles Globales -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <div class="flex flex-wrap gap-3 justify-center">
+        <button onclick="aplicarCambioMasivo(30000)" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">+30k Todos</button>
+        <button onclick="aplicarCambioMasivo(20000)" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-semibold">+20k Todos</button>
+        <button onclick="aplicarCambioMasivo(10000)" class="px-4 py-2 bg-green-400 text-white rounded-lg hover:bg-green-500 transition-colors font-semibold">+10k Todos</button>
+        <button onclick="aplicarCambioMasivo(-10000)" class="px-4 py-2 bg-red-400 text-white rounded-lg hover:bg-red-500 transition-colors font-semibold">-10k Todos</button>
+        <button onclick="aplicarCambioMasivo(-20000)" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-semibold">-20k Todos</button>
+        <button onclick="aplicarCambioMasivo(-30000)" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold">-30k Todos</button>
+        <button onclick="resetearTodos()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-semibold">Resetear</button>
+        <button onclick="guardarCambios()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-bold">💾 Guardar Cambios</button>
+      </div>
+    </div>
+
+    <!-- Jugadores por Equipo -->
+    <div class="grid grid-cols-1 gap-8">
+      {equipos.map(equipo => (
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4">
+            <h2 class="text-2xl font-bold">🏆 {equipo}</h2>
+            <p class="text-blue-100">{jugadoresPorEquipo[equipo].length} jugadores</p>
+          </div>
+          
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {jugadoresPorEquipo[equipo].map(jugador => (
+                <div class="jugador-card border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all" data-nombre={jugador.nombre}>
+                  <div class="flex items-center gap-3 mb-4">
+                    <img 
+                      src={jugador.foto} 
+                      alt={jugador.nombre}
+                      class="w-14 h-14 rounded-full object-cover border-2 border-gray-200"
+                      onerror="this.src='/jugadores/fan.svg'; this.onerror=null;"
+                    />
+                    <div class="flex-1">
+                      <div class="font-bold text-gray-900">{jugador.nombre}</div>
+                      <div class="text-sm text-gray-600">{jugador.posicion} • {jugador.edad} años</div>
+                      <div class="text-xs text-gray-500">OVR: {jugador.ovr}</div>
+                    </div>
+                    <div class="text-right">
+                      <div class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-bold">
+                        {jugador.puntos || 0} pts
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-4">
+                    <div class="text-center mb-2">
+                      <div class="font-bold text-lg text-green-600" id={`valor-${jugador.nombre.replace(/\s+/g, '-')}`}>€{(jugador.valor_mercado || 0).toLocaleString('es-ES')}</div>
+                      <div class="text-xs text-gray-500">Valor actual</div>
+                    </div>
+                    <div class="text-center">
+                      <div id={`cambio-${jugador.nombre.replace(/\s+/g, '-')}`} class="text-sm text-gray-500">Sin cambios</div>
+                    </div>
+                  </div>
+                  
+                  <div class="grid grid-cols-3 gap-1 mb-2">
+                    <button class="btn-cambio px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 transition-colors font-semibold" 
+                            data-jugador={jugador.nombre} data-cambio="30000">+30k</button>
+                    <button class="btn-cambio px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600 transition-colors font-semibold" 
+                            data-jugador={jugador.nombre} data-cambio="20000">+20k</button>
+                    <button class="btn-cambio px-2 py-1 bg-green-400 text-white rounded text-xs hover:bg-green-500 transition-colors font-semibold" 
+                            data-jugador={jugador.nombre} data-cambio="10000">+10k</button>
+                  </div>
+                  
+                  <div class="grid grid-cols-3 gap-1">
+                    <button class="btn-cambio px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors font-semibold" 
+                            data-jugador={jugador.nombre} data-cambio="-30000">-30k</button>
+                    <button class="btn-cambio px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600 transition-colors font-semibold" 
+                            data-jugador={jugador.nombre} data-cambio="-20000">-20k</button>
+                    <button class="btn-cambio px-2 py-1 bg-red-400 text-white rounded text-xs hover:bg-red-500 transition-colors font-semibold" 
+                            data-jugador={jugador.nombre} data-cambio="-10000">-10k</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <script define:vars={{ jugadores }}>
+    let jugadoresData = [...jugadores];
+    let cambiosPendientes = {};
+
+    function formatearValor(valor) {
+      return valor.toLocaleString('es-ES');
+    }
+
+    function formatearCambio(valor) {
+      return new Intl.NumberFormat('es-ES', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(valor);
+    }
+
+    function actualizarValorJugador(nombre, cambio) {
+      if (!cambiosPendientes[nombre]) {
+        const jugador = jugadoresData.find(j => j.nombre === nombre);
+        cambiosPendientes[nombre] = {
+          valorOriginal: jugador?.valor_mercado || 0,
+          valorActual: jugador?.valor_mercado || 0
+        };
+      }
+      
+      cambiosPendientes[nombre].valorActual += cambio;
+      if (cambiosPendientes[nombre].valorActual < 0) {
+        cambiosPendientes[nombre].valorActual = 0;
+      }
+      
+      const nombreId = nombre.replace(/\s+/g, '-');
+      const valorSpan = document.getElementById(`valor-${nombreId}`);
+      const cambioSpan = document.getElementById(`cambio-${nombreId}`);
+      
+      if (valorSpan) {
+        valorSpan.textContent = `€${formatearValor(cambiosPendientes[nombre].valorActual)}`;
+      }
+      
+      if (cambioSpan) {
+        const diferencia = cambiosPendientes[nombre].valorActual - cambiosPendientes[nombre].valorOriginal;
+        if (diferencia === 0) {
+          cambioSpan.textContent = 'Sin cambios';
+          cambioSpan.className = 'text-sm text-gray-500';
+        } else if (diferencia > 0) {
+          cambioSpan.textContent = `+${formatearCambio(diferencia)}`;
+          cambioSpan.className = 'text-sm text-green-600 font-semibold';
+        } else {
+          cambioSpan.textContent = `${formatearCambio(diferencia)}`;
+          cambioSpan.className = 'text-sm text-red-600 font-semibold';
+        }
+      }
+      
+      // Actualizar visual de la tarjeta
+      const card = document.querySelector(`[data-nombre="${nombre}"]`);
+      if (card) {
+        const diferencia = cambiosPendientes[nombre].valorActual - cambiosPendientes[nombre].valorOriginal;
+        if (diferencia > 0) {
+          card.classList.add('border-green-300', 'bg-green-50');
+          card.classList.remove('border-red-300', 'bg-red-50', 'border-gray-200');
+        } else if (diferencia < 0) {
+          card.classList.add('border-red-300', 'bg-red-50');
+          card.classList.remove('border-green-300', 'bg-green-50', 'border-gray-200');
+        } else {
+          card.classList.remove('border-green-300', 'bg-green-50', 'border-red-300', 'bg-red-50');
+          card.classList.add('border-gray-200');
+        }
+      }
+    }
+
+    // Hacer las funciones globales para que funcionen los onclick
+    window.aplicarCambioMasivo = function(cambio) {
+      if (confirm(`¿Aplicar ${cambio > 0 ? '+' : ''}${formatearCambio(cambio)} a todos los jugadores?`)) {
+        jugadoresData.forEach(jugador => {
+          actualizarValorJugador(jugador.nombre, cambio);
+        });
+      }
+    }
+
+    window.resetearTodos = function() {
+      if (confirm('¿Estás seguro de que quieres resetear todos los valores?')) {
+        cambiosPendientes = {};
+        
+        // Resetear visualmente todas las tarjetas
+        jugadoresData.forEach(jugador => {
+          const nombreId = jugador.nombre.replace(/\s+/g, '-');
+          const valorSpan = document.getElementById(`valor-${nombreId}`);
+          const cambioSpan = document.getElementById(`cambio-${nombreId}`);
+          const card = document.querySelector(`[data-nombre="${jugador.nombre}"]`);
+          
+          if (valorSpan) {
+            valorSpan.textContent = `€${formatearValor(jugador.valor_mercado)}`;
+          }
+          
+          if (cambioSpan) {
+            cambioSpan.textContent = 'Sin cambios';
+            cambioSpan.className = 'text-sm text-gray-500';
+          }
+          
+          if (card) {
+            card.classList.remove('border-green-300', 'bg-green-50', 'border-red-300', 'bg-red-50');
+            card.classList.add('border-gray-200');
+          }
+        });
+      }
+    }
+
+    window.guardarCambios = async function() {
+      console.log('🚀 INICIANDO GUARDADO DE CAMBIOS');
+      console.log('📋 cambiosPendientes:', cambiosPendientes);
+      
+      const numCambios = Object.keys(cambiosPendientes).length;
+      console.log('🔢 Número de cambios:', numCambios);
+      
+      if (numCambios === 0) {
+        alert('No hay cambios pendientes para guardar.');
+        return;
+      }
+      
+      if (!confirm(`¿Guardar ${numCambios} cambio${numCambios > 1 ? 's' : ''} en el mercado?`)) {
+        console.log('❌ Usuario canceló la operación');
+        return;
+      }
+      
+      console.log('✅ Usuario confirmó. Procediendo...');
+      
+      try {
+        // Convertir cambios a formato que espera la API
+        const jugadoresParaActualizar = {};
+        
+        Object.entries(cambiosPendientes).forEach(([nombre, datos]) => {
+          // Buscar el jugador en jugadoresData para obtener sus datos actuales
+          const jugadorActual = jugadoresData.find(j => j.nombre === nombre);
+          if (jugadorActual) {
+            jugadoresParaActualizar[nombre] = {
+              ...jugadorActual,
+              valor_mercado: datos.valorActual
+            };
+          }
+        });
+        
+        console.log('📦 Datos a enviar:', jugadoresParaActualizar);
+        console.log('🌐 Haciendo petición a /api/actualizar-jugadores...');
+        
+        const response = await fetch('/api/actualizar-jugadores', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            jugadoresActualizados: jugadoresParaActualizar,
+            accion: 'actualizar_mercado'
+          })
+        });
+        
+        console.log('📡 Respuesta recibida:', response.status, response.statusText);
+        
+        if (response.ok) {
+          const resultado = await response.json();
+          console.log('✅ Respuesta exitosa:', resultado);
+          
+          // Guardar historial de valores en el servidor
+          try {
+            console.log('💾 Guardando historial de valores en servidor...');
+            
+            // Enviar cada cambio al historial del servidor
+            const promesasHistorial = Object.entries(cambiosPendientes).map(async ([nombre, datos]) => {
+              try {
+                const responseHistorial = await fetch('/api/historial-valores', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ 
+                    nombre: nombre, 
+                    valor: datos.valorActual 
+                  })
+                });
+                
+                if (responseHistorial.ok) {
+                  console.log(`✅ Historial actualizado para ${nombre}`);
+                } else {
+                  console.warn(`⚠️ Error al actualizar historial de ${nombre}`);
+                }
+              } catch (error) {
+                console.error(`❌ Error al guardar historial de ${nombre}:`, error);
+              }
+            });
+            
+            await Promise.all(promesasHistorial);
+            console.log('✅ Historial de valores guardado en servidor');
+            
+          } catch (error) {
+            console.error('❌ Error al guardar historial en servidor:', error);
+            // Fallback a localStorage si falla el servidor
+            console.log('📱 Usando localStorage como fallback...');
+            const historialValores = JSON.parse(localStorage.getItem('historialValores') || '{}');
+            
+            Object.entries(cambiosPendientes).forEach(([nombre, datos]) => {
+              if (!historialValores[nombre]) {
+                historialValores[nombre] = [];
+              }
+              historialValores[nombre].push({
+                fecha: new Date().toISOString(),
+                valor: datos.valorActual
+              });
+            });
+            
+            localStorage.setItem('historialValores', JSON.stringify(historialValores));
+          }
+          
+          alert(`✅ ${numCambios} valor${numCambios > 1 ? 'es' : ''} actualizado${numCambios > 1 ? 's' : ''} correctamente`);
+          cambiosPendientes = {};
+          location.reload();
+        } else {
+          const errorData = await response.text();
+          console.error('❌ Error del servidor:', response.status, errorData);
+          alert(`❌ Error al guardar: ${response.status} - ${errorData}`);
+        }
+      } catch (error) {
+        console.error('💥 EXCEPCIÓN CAPTURADA:', error);
+        console.error('💥 Stack trace:', error.stack);
+        alert(`❌ Error crítico: ${error.message}`);
+      }
+      
+      console.log('🏁 FIN DE FUNCIÓN guardarCambios');
+    }
+
+    // Event listeners para botones individuales
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('btn-cambio')) {
+        const jugador = e.target.dataset.jugador;
+        const cambio = parseInt(e.target.dataset.cambio);
+        if (jugador && !isNaN(cambio)) {
+          actualizarValorJugador(jugador, cambio);
+        }
+      }
+    });
+
+    // Mostrar resumen de cambios al cargar
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('💰 Página de mercado cargada');
+      console.log(`📊 Total jugadores: ${jugadoresData.length}`);
+      
+      // Mostrar mensaje de bienvenida
+      setTimeout(() => {
+        const totalJugadores = jugadoresData.length;
+        const totalEquipos = new Set(jugadoresData.map(j => j.equipo)).size;
+        console.log(`🎯 Listos para gestionar ${totalJugadores} jugadores de ${totalEquipos} equipos`);
+      }, 1000);
+    });
+  </script>
+</BaseLayout>

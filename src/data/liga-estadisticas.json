@@ -1,0 +1,278 @@
+{
+  "goleadores": [
+    {
+      "jugador": "Vinicius Jr.",
+      "equipo": "Real Madrid",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Rodrygo",
+      "equipo": "Real Madrid", 
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Mbappé",
+      "equipo": "Real Madrid",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Lewandowski",
+      "equipo": "FC Barcelona",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Raphinha",
+      "equipo": "FC Barcelona",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Griezmann",
+      "equipo": "Atlético Madrid",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Morata",
+      "equipo": "Atlético Madrid",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Gerard Moreno",
+      "equipo": "Villarreal",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Sørloth",
+      "equipo": "Villarreal",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Williams",
+      "equipo": "Athletic Club",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Oyarzabal",
+      "equipo": "Real Sociedad",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Isi Palazón",
+      "equipo": "Rayo Vallecano",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Sergio Camello",
+      "equipo": "Rayo Vallecano",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Muriqi",
+      "equipo": "Mallorca",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    },
+    {
+      "jugador": "Hugo Duro",
+      "equipo": "Valencia",
+      "goles": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "goles_por_partido": 1.00
+    }
+  ],
+  "asistentes": [
+    {
+      "jugador": "Bellingham",
+      "equipo": "Real Madrid",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Modric",
+      "equipo": "Real Madrid",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Vinicius Jr.",
+      "equipo": "Real Madrid",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Pedri",
+      "equipo": "FC Barcelona",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Gavi",
+      "equipo": "FC Barcelona",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Koke",
+      "equipo": "Atlético Madrid",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Llorente",
+      "equipo": "Atlético Madrid",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Parejo",
+      "equipo": "Villarreal",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Álex Baena",
+      "equipo": "Villarreal",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Muniain",
+      "equipo": "Athletic Club",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Kubo",
+      "equipo": "Real Sociedad",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Álvaro García",
+      "equipo": "Rayo Vallecano",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Óscar Trejo",
+      "equipo": "Rayo Vallecano",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "Dani Rodríguez",
+      "equipo": "Mallorca",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    },
+    {
+      "jugador": "José Gayà",
+      "equipo": "Valencia",
+      "asistencias": 1,
+      "partidos": 1,
+      "minutos": 90,
+      "asistencias_por_partido": 1.00
+    }
+  ],
+  "equipos_mas_goles": [
+    {
+      "equipo": "Real Madrid",
+      "goles": 3,
+      "partidos": 1,
+      "goles_por_partido": 3.00
+    },
+    {
+      "equipo": "FC Barcelona",
+      "goles": 2,
+      "partidos": 1,
+      "goles_por_partido": 2.00
+    },
+    {
+      "equipo": "Atlético Madrid",
+      "goles": 2,
+      "partidos": 1,
+      "goles_por_partido": 2.00
+    },
+    {
+      "equipo": "Villarreal",
+      "goles": 2,
+      "partidos": 1,
+      "goles_por_partido": 2.00
+    },
+    {
+      "equipo": "Rayo Vallecano",
+      "goles": 2,
+      "partidos": 1,
+      "goles_por_partido": 2.00
+    }
+  ]
+}

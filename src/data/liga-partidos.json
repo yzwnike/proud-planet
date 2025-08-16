@@ -1,0 +1,244 @@
+{
+  "temporada": "2024-25",
+  "jornada_actual": 1,
+  "partidos": [
+    {
+      "id": "partido_1",
+      "jornada": 1,
+      "fecha": "2024-08-17",
+      "hora": "20:00",
+      "estado": "finalizado",
+      "equipo_local": "Real Madrid",
+      "equipo_visitante": "Mallorca",
+      "goles_local": 3,
+      "goles_visitante": 1,
+      "estadio": "Santiago Bernabéu",
+      "arbitro": "Carlos del Cerro Grande",
+      "goles": [
+        {
+          "minuto": 23,
+          "jugador": "Vinicius Jr.",
+          "equipo": "Real Madrid",
+          "tipo": "gol",
+          "asistencia": "Bellingham"
+        },
+        {
+          "minuto": 45,
+          "jugador": "Muriqi",
+          "equipo": "Mallorca", 
+          "tipo": "gol",
+          "asistencia": "Dani Rodríguez"
+        },
+        {
+          "minuto": 67,
+          "jugador": "Rodrygo",
+          "equipo": "Real Madrid",
+          "tipo": "gol",
+          "asistencia": "Modric"
+        },
+        {
+          "minuto": 89,
+          "jugador": "Mbappé",
+          "equipo": "Real Madrid",
+          "tipo": "gol",
+          "asistencia": "Vinicius Jr."
+        }
+      ],
+      "tarjetas": [
+        {
+          "minuto": 34,
+          "jugador": "Tchouaméni",
+          "equipo": "Real Madrid",
+          "tipo": "amarilla"
+        },
+        {
+          "minuto": 56,
+          "jugador": "Copete",
+          "equipo": "Mallorca",
+          "tipo": "amarilla"
+        }
+      ]
+    },
+    {
+      "id": "partido_2",
+      "jornada": 1,
+      "fecha": "2024-08-17",
+      "hora": "22:00",
+      "estado": "finalizado",
+      "equipo_local": "FC Barcelona",
+      "equipo_visitante": "Valencia",
+      "goles_local": 2,
+      "goles_visitante": 1,
+      "estadio": "Spotify Camp Nou",
+      "arbitro": "Antonio Mateu Lahoz",
+      "goles": [
+        {
+          "minuto": 15,
+          "jugador": "Lewandowski",
+          "equipo": "FC Barcelona",
+          "tipo": "gol",
+          "asistencia": "Pedri"
+        },
+        {
+          "minuto": 38,
+          "jugador": "Hugo Duro",
+          "equipo": "Valencia",
+          "tipo": "gol",
+          "asistencia": "José Gayà"
+        },
+        {
+          "minuto": 82,
+          "jugador": "Raphinha",
+          "equipo": "FC Barcelona",
+          "tipo": "gol",
+          "asistencia": "Gavi"
+        }
+      ],
+      "tarjetas": [
+        {
+          "minuto": 41,
+          "jugador": "Frenkie de Jong",
+          "equipo": "FC Barcelona",
+          "tipo": "amarilla"
+        },
+        {
+          "minuto": 73,
+          "jugador": "Guillamón",
+          "equipo": "Valencia",
+          "tipo": "amarilla"
+        }
+      ]
+    },
+    {
+      "id": "partido_3",
+      "jornada": 1,
+      "fecha": "2024-08-18",
+      "hora": "18:30",
+      "estado": "finalizado",
+      "equipo_local": "Atlético Madrid",
+      "equipo_visitante": "Villarreal",
+      "goles_local": 2,
+      "goles_visitante": 2,
+      "estadio": "Cívitas Metropolitano",
+      "arbitro": "Gil Manzano",
+      "goles": [
+        {
+          "minuto": 12,
+          "jugador": "Griezmann",
+          "equipo": "Atlético Madrid",
+          "tipo": "gol",
+          "asistencia": "Koke"
+        },
+        {
+          "minuto": 31,
+          "jugador": "Gerard Moreno",
+          "equipo": "Villarreal",
+          "tipo": "gol",
+          "asistencia": "Parejo"
+        },
+        {
+          "minuto": 55,
+          "jugador": "Morata",
+          "equipo": "Atlético Madrid",
+          "tipo": "gol",
+          "asistencia": "Llorente"
+        },
+        {
+          "minuto": 78,
+          "jugador": "Sørloth",
+          "equipo": "Villarreal",
+          "tipo": "gol",
+          "asistencia": "Álex Baena"
+        }
+      ],
+      "tarjetas": [
+        {
+          "minuto": 29,
+          "jugador": "Witsel",
+          "equipo": "Atlético Madrid",
+          "tipo": "amarilla"
+        }
+      ]
+    },
+    {
+      "id": "partido_4",
+      "jornada": 1,
+      "fecha": "2024-08-18",
+      "hora": "21:00",
+      "estado": "finalizado",
+      "equipo_local": "Athletic Club",
+      "equipo_visitante": "Getafe",
+      "goles_local": 1,
+      "goles_visitante": 0,
+      "estadio": "San Mamés",
+      "arbitro": "Díaz de Mera",
+      "goles": [
+        {
+          "minuto": 62,
+          "jugador": "Williams",
+          "equipo": "Athletic Club",
+          "tipo": "gol",
+          "asistencia": "Muniain"
+        }
+      ],
+      "tarjetas": [
+        {
+          "minuto": 45,
+          "jugador": "Djené",
+          "equipo": "Getafe",
+          "tipo": "amarilla"
+        },
+        {
+          "minuto": 87,
+          "jugador": "Berenguer",
+          "equipo": "Athletic Club",
+          "tipo": "amarilla"
+        }
+      ]
+    },
+    {
+      "id": "partido_5",
+      "jornada": 1,
+      "fecha": "2024-08-19",
+      "hora": "19:00",
+      "estado": "finalizado",
+      "equipo_local": "Real Sociedad",
+      "equipo_visitante": "Rayo Vallecano",
+      "goles_local": 1,
+      "goles_visitante": 2,
+      "estadio": "Reale Arena",
+      "arbitro": "Sánchez Martínez",
+      "goles": [
+        {
+          "minuto": 25,
+          "jugador": "Oyarzabal",
+          "equipo": "Real Sociedad",
+          "tipo": "gol",
+          "asistencia": "Kubo"
+        },
+        {
+          "minuto": 54,
+          "jugador": "Isi Palazón",
+          "equipo": "Rayo Vallecano",
+          "tipo": "gol",
+          "asistencia": "Álvaro García"
+        },
+        {
+          "minuto": 89,
+          "jugador": "Sergio Camello",
+          "equipo": "Rayo Vallecano",
+          "tipo": "gol",
+          "asistencia": "Óscar Trejo"
+        }
+      ],
+      "tarjetas": [
+        {
+          "minuto": 67,
+          "jugador": "Zubimendi",
+          "equipo": "Real Sociedad",
+          "tipo": "amarilla"
+        }
+      ]
+    }
+  ]
+}

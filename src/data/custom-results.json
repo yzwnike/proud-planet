@@ -1,0 +1,46 @@
+[
+  {
+    "id": "1755214274001",
+    "jornada": 1,
+    "equipo": "Nike FC",
+    "puntos_obtenidos": 3,
+    "goles_favor": 3,
+    "goles_contra": 1,
+    "tipo": "victoria",
+    "fecha": "2025-08-14T23:31:14.001Z",
+    "procesado": true
+  },
+  {
+    "id": "1755214338636",
+    "jornada": 1,
+    "equipo": "Adidas FC",
+    "puntos_obtenidos": 3,
+    "goles_favor": 3,
+    "goles_contra": 2,
+    "tipo": "victoria",
+    "fecha": "2025-08-14T23:32:18.636Z",
+    "procesado": true
+  },
+  {
+    "id": "1755214393890",
+    "jornada": 2,
+    "equipo": "Puma FC",
+    "puntos_obtenidos": 3,
+    "goles_favor": 2,
+    "goles_contra": 0,
+    "tipo": "victoria",
+    "fecha": "2025-08-14T23:33:13.890Z",
+    "procesado": true
+  },
+  {
+    "id": "1755214427037",
+    "jornada": 1,
+    "equipo": "Kappa FC",
+    "puntos_obtenidos": 3,
+    "goles_favor": 2,
+    "goles_contra": 1,
+    "tipo": "victoria",
+    "fecha": "2025-08-14T23:33:47.037Z",
+    "procesado": true
+  }
+]

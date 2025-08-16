@@ -1,0 +1,360 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import jugadores from "../data/players.json";
+
+// Función para formatear números con puntos como separadores de miles
+function formatearNumero(numero) {
+  return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+---
+
+<BaseLayout title="Actualización Automática - Fantasy League">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl shadow-xl p-8 text-white mb-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-bold mb-2">Actualización Automática</h1>
+          <p class="text-green-100">Calcula y aplica cambios de valor de mercado basados en rendimiento</p>
+        </div>
+        <a href="/admin" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">
+          ← Volver al Panel
+        </a>
+      </div>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-200">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">Motor de Actualización</h2>
+          <p class="text-gray-600">Los cambios se basan en: puntos actuales, posición, edad y rendimiento</p>
+        </div>
+        <button id="calcularCambios" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+          🔍 Calcular Cambios
+        </button>
+      </div>
+
+      <!-- Configuración del algoritmo -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-gray-50 rounded-lg p-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Factor Puntos</label>
+          <input type="range" id="factorPuntos" min="0.1" max="3" step="0.1" value="1.5" class="w-full">
+          <div class="text-xs text-gray-500 mt-1">Multiplica impacto de los puntos: <span id="factorPuntosValue">1.5</span>x</div>
+        </div>
+        
+        <div class="bg-gray-50 rounded-lg p-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Límite Máximo</label>
+          <input type="number" id="limiteMaximo" min="50000" max="500000" step="10000" value="300000" class="w-full px-3 py-2 border border-gray-300 rounded">
+          <div class="text-xs text-gray-500 mt-1">Máxima variación diaria en €</div>
+        </div>
+        
+        <div class="bg-gray-50 rounded-lg p-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Volatilidad</label>
+          <select id="volatilidad" class="w-full px-3 py-2 border border-gray-300 rounded">
+            <option value="conservadora">Conservadora</option>
+            <option value="moderada" selected>Moderada</option>
+            <option value="agresiva">Agresiva</option>
+          </select>
+          <div class="text-xs text-gray-500 mt-1">Agresividad de los cambios</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview Panel (Initially Hidden) -->
+    <div id="previewPanel" class="bg-white rounded-2xl shadow-lg border border-gray-200 mb-8 hidden">
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Previsualización de Cambios</h3>
+            <p class="text-gray-600">Revisa los cambios antes de aplicarlos</p>
+          </div>
+          <div class="flex gap-3">
+            <button id="cancelarCambios" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+              ❌ Cancelar
+            </button>
+            <button id="aplicarCambios" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+              ✅ Aplicar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="p-6">
+        <!-- Resumen de cambios -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div class="bg-green-50 rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-green-600" id="totalSubidas">0</div>
+            <div class="text-sm text-green-700">Jugadores que suben</div>
+          </div>
+          <div class="bg-red-50 rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-red-600" id="totalBajadas">0</div>
+            <div class="text-sm text-red-700">Jugadores que bajan</div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-gray-600" id="totalSinCambios">0</div>
+            <div class="text-sm text-gray-700">Sin cambios</div>
+          </div>
+          <div class="bg-blue-50 rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-blue-600" id="impactoTotal">€0</div>
+            <div class="text-sm text-blue-700">Impacto total</div>
+          </div>
+        </div>
+
+        <!-- Lista de cambios -->
+        <div class="overflow-hidden border border-gray-200 rounded-lg">
+          <div class="max-h-96 overflow-y-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50 sticky top-0">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jugador</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Puntos</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor Actual</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nuevo Valor</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cambio</th>
+                </tr>
+              </thead>
+              <tbody id="tablaCambios" class="bg-white divide-y divide-gray-200">
+                <!-- Los cambios se cargarán aquí dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="bg-blue-50 rounded-2xl p-6 border border-blue-200">
+      <h3 class="text-lg font-bold text-blue-900 mb-3">ℹ️ Cómo funciona el algoritmo</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-blue-800">
+        <div>
+          <h4 class="font-semibold mb-2">Factores de cálculo:</h4>
+          <ul class="space-y-1">
+            <li>• <strong>Puntos:</strong> Rendimiento actual del jugador</li>
+            <li>• <strong>Posición:</strong> Multiplicadores por posición (POR: 1.1x, DC: 1.2x, etc.)</li>
+            <li>• <strong>Edad:</strong> Jugadores jóvenes tienen más volatilidad</li>
+            <li>• <strong>OVR:</strong> Jugadores con mayor OVR fluctúan más</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-2">Límites de seguridad:</h4>
+          <ul class="space-y-1">
+            <li>• <strong>Máximo diario:</strong> €300.000 por defecto</li>
+            <li>• <strong>Mínimo valor:</strong> €50.000 (ningún jugador baja de esto)</li>
+            <li>• <strong>Sin puntos:</strong> No hay cambios si puntos = 0</li>
+            <li>• <strong>Aleatoridad:</strong> ±15% de variación natural</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script define:vars={{ jugadores, formatearNumero }}>
+    let cambiosCalculados = [];
+    
+    // Referencias a elementos
+    const calcularBtn = document.getElementById('calcularCambios');
+    const previewPanel = document.getElementById('previewPanel');
+    const cancelarBtn = document.getElementById('cancelarCambios');
+    const aplicarBtn = document.getElementById('aplicarCambios');
+    const factorPuntos = document.getElementById('factorPuntos');
+    const factorPuntosValue = document.getElementById('factorPuntosValue');
+    const limiteMaximo = document.getElementById('limiteMaximo');
+    const volatilidad = document.getElementById('volatilidad');
+    
+    // Update factor display
+    factorPuntos.addEventListener('input', () => {
+      factorPuntosValue.textContent = factorPuntos.value;
+    });
+
+    // Algoritmo de cálculo de precio
+    function calcularNuevoPrecio(jugador) {
+      // Si no tiene puntos, no hay cambios
+      if (jugador.puntos === 0) {
+        return {
+          nuevoValor: jugador.valor_mercado,
+          cambio: 0,
+          razon: "Sin puntos"
+        };
+      }
+
+      const config = {
+        factorPuntos: parseFloat(factorPuntos.value),
+        limite: parseInt(limiteMaximo.value),
+        volatilidad: volatilidad.value
+      };
+
+      // Multiplicadores por posición
+      const multiplicadoresPosicion = {
+        'POR': 1.1,
+        'DFC': 1.0,
+        'DC': 1.2,
+        'MC': 1.3
+      };
+
+      // Multiplicador por edad (jugadores jóvenes más volátiles)
+      const factorEdad = jugador.edad < 23 ? 1.2 : jugador.edad > 32 ? 0.8 : 1.0;
+      
+      // Factor OVR (jugadores con mayor OVR fluctúan más)
+      const factorOVR = jugador.ovr > 85 ? 1.3 : jugador.ovr < 75 ? 0.7 : 1.0;
+
+      // Cálculo base del cambio
+      let cambioBase = jugador.puntos * config.factorPuntos * 10000; // €10k por punto base
+      
+      // Aplicar multiplicadores
+      cambioBase *= multiplicadoresPosicion[jugador.posicion] || 1.0;
+      cambioBase *= factorEdad;
+      cambioBase *= factorOVR;
+
+      // Agregar volatilidad según configuración
+      const volatilidades = {
+        'conservadora': 0.1,
+        'moderada': 0.15,
+        'agresiva': 0.25
+      };
+      const rangoVolatilidad = volatilidades[config.volatilidad];
+      const factorAleatorio = 1 + (Math.random() - 0.5) * 2 * rangoVolatilidad;
+      cambioBase *= factorAleatorio;
+
+      // Aplicar límites
+      const cambio = Math.max(-config.limite, Math.min(config.limite, Math.round(cambioBase)));
+      
+      // Calcular nuevo valor
+      let nuevoValor = jugador.valor_mercado + cambio;
+      nuevoValor = Math.max(50000, nuevoValor); // Mínimo €50k
+      
+      return {
+        nuevoValor: nuevoValor,
+        cambio: nuevoValor - jugador.valor_mercado,
+        razon: `Puntos: ${jugador.puntos}, Pos: ${jugador.posicion}, OVR: ${jugador.ovr}`
+      };
+    }
+
+    // Calcular todos los cambios
+    calcularBtn.addEventListener('click', () => {
+      calcularBtn.disabled = true;
+      calcularBtn.innerHTML = '⏳ Calculando...';
+      
+      setTimeout(() => {
+        cambiosCalculados = jugadores.map(jugador => {
+          const resultado = calcularNuevoPrecio(jugador);
+          return {
+            ...jugador,
+            nuevoValor: resultado.nuevoValor,
+            cambio: resultado.cambio,
+            razon: resultado.razon
+          };
+        });
+
+        mostrarPreview();
+        calcularBtn.disabled = false;
+        calcularBtn.innerHTML = '🔍 Recalcular Cambios';
+      }, 1000);
+    });
+
+    // Mostrar preview
+    function mostrarPreview() {
+      const conSubida = cambiosCalculados.filter(j => j.cambio > 0);
+      const conBajada = cambiosCalculados.filter(j => j.cambio < 0);
+      const sinCambios = cambiosCalculados.filter(j => j.cambio === 0);
+      const impactoTotal = cambiosCalculados.reduce((sum, j) => sum + j.cambio, 0);
+
+      // Actualizar estadísticas
+      document.getElementById('totalSubidas').textContent = conSubida.length;
+      document.getElementById('totalBajadas').textContent = conBajada.length;
+      document.getElementById('totalSinCambios').textContent = sinCambios.length;
+      document.getElementById('impactoTotal').textContent = 
+        (impactoTotal >= 0 ? '+' : '') + '€' + formatearNumero(Math.abs(impactoTotal));
+
+      // Generar tabla
+      const tabla = document.getElementById('tablaCambios');
+      tabla.innerHTML = cambiosCalculados
+        .filter(j => j.cambio !== 0) // Solo mostrar los que tienen cambios
+        .sort((a, b) => Math.abs(b.cambio) - Math.abs(a.cambio)) // Ordenar por cambio más grande
+        .map(jugador => {
+          const cambioColor = jugador.cambio > 0 ? 'text-green-600' : 'text-red-600';
+          const cambioIcon = jugador.cambio > 0 ? '📈' : '📉';
+          
+          return `
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <img class="h-8 w-8 rounded-full object-cover" src="${jugador.foto}" alt="${jugador.nombre}" 
+                       onerror="this.src='https://via.placeholder.com/32/cccccc/666666?text=?'">
+                  <div class="ml-3">
+                    <div class="text-sm font-medium text-gray-900">${jugador.nombre}</div>
+                    <div class="text-sm text-gray-500">${jugador.equipo} - ${jugador.posicion}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <span class="bg-amber-100 text-amber-800 px-2 py-1 rounded-full font-semibold">
+                  ${jugador.puntos}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                €${formatearNumero(jugador.valor_mercado)}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">
+                €${formatearNumero(jugador.nuevoValor)}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold ${cambioColor}">
+                ${cambioIcon} ${jugador.cambio >= 0 ? '+' : ''}€${formatearNumero(Math.abs(jugador.cambio))}
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+      previewPanel.classList.remove('hidden');
+    }
+
+    // Cancelar cambios
+    cancelarBtn.addEventListener('click', () => {
+      previewPanel.classList.add('hidden');
+      cambiosCalculados = [];
+    });
+
+    // Aplicar cambios
+    aplicarBtn.addEventListener('click', async () => {
+      if (cambiosCalculados.length === 0) return;
+
+      aplicarBtn.disabled = true;
+      aplicarBtn.innerHTML = '⏳ Aplicando...';
+
+      try {
+        // Preparar datos actualizados
+        const jugadoresActualizados = jugadores.map(jugadorOriginal => {
+          const cambio = cambiosCalculados.find(c => c.nombre === jugadorOriginal.nombre);
+          if (cambio && cambio.cambio !== 0) {
+            return {
+              ...jugadorOriginal,
+              valor_mercado: cambio.nuevoValor,
+              variacion: cambio.cambio
+            };
+          }
+          return jugadorOriginal;
+        });
+
+        // Llamada a API para guardar (simulada por ahora)
+        const response = await fetch('/api/actualizar-jugadores', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ jugadores: jugadoresActualizados })
+        });
+
+        if (response.ok) {
+          alert(`✅ Cambios aplicados exitosamente!\n\n${cambiosCalculados.filter(j => j.cambio !== 0).length} jugadores actualizados.`);
+          window.location.reload();
+        } else {
+          throw new Error('Error al guardar');
+        }
+      } catch (error) {
+        alert('❌ Error al aplicar los cambios. Inténtalo de nuevo.');
+        console.error(error);
+      }
+
+      aplicarBtn.disabled = false;
+      aplicarBtn.innerHTML = '✅ Aplicar Cambios';
+    });
+  </script>
+</BaseLayout>

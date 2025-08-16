@@ -1,0 +1,299 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import jugadores from "../data/players.json";
+import equiposData from "../data/equipos.json";
+
+const equipos = ["Nike FC", "Adidas FC", "Puma FC", "Kappa FC"];
+
+// Función para formatear números con puntos como separadores de miles
+function formatearNumero(numero) {
+  return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+// Organizar jugadores por equipo
+const jugadoresPorEquipo = {};
+equipos.forEach(equipo => {
+  jugadoresPorEquipo[equipo] = jugadores.filter(j => j.equipo === equipo);
+});
+
+// Colores por equipo
+const coloresEquipo = {
+  "Nike FC": { 
+    bg: "from-orange-500 to-orange-600", 
+    border: "border-orange-500",
+    hover: "hover:from-orange-600 hover:to-orange-700"
+  },
+  "Adidas FC": { 
+    bg: "from-gray-700 to-gray-800", 
+    border: "border-gray-700",
+    hover: "hover:from-gray-800 hover:to-gray-900"
+  },
+  "Puma FC": { 
+    bg: "from-blue-500 to-blue-600", 
+    border: "border-blue-500",
+    hover: "hover:from-blue-600 hover:to-blue-700"
+  },
+  "Kappa FC": { 
+    bg: "from-purple-500 to-purple-600", 
+    border: "border-purple-500",
+    hover: "hover:from-purple-600 hover:to-purple-700"
+  }
+};
+---
+
+<BaseLayout title="Gestión de Lineups - Fantasy League">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Header con Selector de Jornada -->
+    <div class="bg-gradient-to-r from-blue-600 to-green-600 rounded-2xl shadow-xl p-8 text-white mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h1 class="text-3xl font-bold mb-2">⚽ Gestión de Lineups</h1>
+          <p class="text-blue-100">Selecciona un equipo para gestionar su alineación y historial de partidos</p>
+        </div>
+        <a href="/admin" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">
+          ← Volver al Panel
+        </a>
+      </div>
+      <!-- Selector de Jornada Global -->
+      <div class="flex items-center justify-center space-x-4">
+        <div class="flex items-center space-x-2">
+          <label class="text-lg font-bold">📅 Vista de Jornada:</label>
+          <select id="selectorJornadaGlobal" class="bg-white/20 text-white border-2 border-white/30 rounded-lg px-4 py-2 text-lg font-bold focus:outline-none focus:border-white">
+            <!-- Se llenarán las 38 jornadas -->
+          </select>
+        </div>
+        <div class="text-lg font-bold" id="infoJornadaGlobal">
+          Jornadas Completadas: <span class="text-green-300" id="jornadasCompletadas">0/38</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menú de Selección de Equipos Dinámico -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8" id="equiposContainer">
+      <!-- Los equipos se llenarán dinámicamente con JavaScript -->
+    </div>
+
+  </div>
+
+  <script define:vars={{ equipos, coloresEquipo, equiposData, jugadoresPorEquipo }}>
+    console.log('=== INICIALIZACIÓN VISTA LINEUPS ===');
+    
+    let jornadaActualVista = 1; // Jornada que estamos visualizando
+    
+    // Función para navegar al equipo seleccionado
+    window.navegarAEquipo = function(nombreEquipo) {
+      // Redirigir a la página específica del equipo
+      window.location.href = `/equipo/${encodeURIComponent(nombreEquipo)}`;
+    };
+    
+    // Inicializar selector de jornada global
+    function inicializarSelectorJornadaGlobal() {
+      const selector = document.getElementById('selectorJornadaGlobal');
+      
+      // Llenar con las 38 jornadas
+      for (let i = 1; i <= 38; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `Jornada ${i}`;
+        if (i === jornadaActualVista) option.selected = true;
+        selector.appendChild(option);
+      }
+      
+      // Evento para cambiar jornada vista
+      selector.addEventListener('change', (e) => {
+        jornadaActualVista = parseInt(e.target.value);
+        console.log(`📅 Cambiando vista a jornada ${jornadaActualVista}`);
+        actualizarVistaEquipos();
+        actualizarContadorJornadasCompletadas();
+      });
+    }
+    
+    // Obtener datos de jornada para un equipo específico
+    function obtenerDatosJornadaEquipo(nombreEquipo, jornada) {
+      const datosGuardados = localStorage.getItem(`jornadas_${nombreEquipo}`);
+      if (!datosGuardados) return null;
+      
+      const datosJornadas = JSON.parse(datosGuardados);
+      return datosJornadas[jornada] || null;
+    }
+    
+    // Actualizar vista de equipos según la jornada seleccionada
+    function actualizarVistaEquipos() {
+      const container = document.getElementById('equiposContainer');
+      container.innerHTML = '';
+      
+      equipos.forEach(equipo => {
+        const colors = coloresEquipo[equipo];
+        const jugadoresEquipo = jugadoresPorEquipo[equipo];
+        const datosJornada = obtenerDatosJornadaEquipo(equipo, jornadaActualVista);
+        
+        const tieneAlineacion = datosJornada && datosJornada.jugadoresCampo && datosJornada.jugadoresCampo.length > 0;
+        const jornadaCompletada = datosJornada && datosJornada.estadisticasGuardadas;
+        
+        // Calcular totales de la jornada
+        let puntosJornada = 0;
+        let golesJornada = 0;
+        let asistenciasJornada = 0;
+        let jugadoresTotales = 0;
+        
+        if (jornadaCompletada && datosJornada.estadisticasPartido) {
+          const stats = datosJornada.estadisticasPartido.totales;
+          puntosJornada = stats.puntos || 0;
+          golesJornada = stats.goles || 0;
+          asistenciasJornada = stats.asistencias || 0;
+          jugadoresTotales = stats.jugadoresTotales || 0;
+        }
+        
+        // Crear tarjeta de equipo
+        const equipoDiv = document.createElement('div');
+        equipoDiv.className = `bg-gradient-to-br ${colors.bg} ${colors.hover} text-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105`;
+        equipoDiv.onclick = () => navegarAEquipo(equipo);
+        
+        equipoDiv.innerHTML = `
+          <div class="p-6">
+            <!-- Header del equipo -->
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-xl font-bold">${equipo}</h3>
+              <div class="flex space-x-1">
+                ${tieneAlineacion ? 
+                  '<div class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-bold">✓ Alineación</div>' : 
+                  '<div class="bg-gray-500 text-white px-2 py-1 rounded-full text-xs font-bold">Sin Alineación</div>'
+                }
+                ${jornadaCompletada ? 
+                  '<div class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold">✓ Completada</div>' : 
+                  '<div class="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">Pendiente</div>'
+                }
+              </div>
+            </div>
+            
+            <!-- Info de la jornada actual -->
+            <div class="bg-white/20 rounded-lg p-3 mb-4">
+              <div class="text-sm font-bold mb-2">Jornada ${jornadaActualVista}:</div>
+              ${jornadaCompletada ? `
+                <div class="space-y-1">
+                  <div class="flex justify-between text-xs">
+                    <span>🏆 Puntos:</span>
+                    <span class="font-bold text-yellow-300">${puntosJornada} pts</span>
+                  </div>
+                  <div class="flex justify-between text-xs">
+                    <span>⚽ Goles:</span>
+                    <span class="font-bold">${golesJornada}</span>
+                  </div>
+                  <div class="flex justify-between text-xs">
+                    <span>🎯 Asistencias:</span>
+                    <span class="font-bold">${asistenciasJornada}</span>
+                  </div>
+                  <div class="flex justify-between text-xs">
+                    <span>👥 Jugadores:</span>
+                    <span class="font-bold">${jugadoresTotales}</span>
+                  </div>
+                  ${datosJornada.formacion ? `
+                    <div class="flex justify-between text-xs">
+                      <span>📐 Formación:</span>
+                      <span class="font-bold">${datosJornada.formacion}</span>
+                    </div>
+                  ` : ''}
+                </div>
+              ` : `
+                <div class="text-xs opacity-90">
+                  ${tieneAlineacion ? 'Alineación lista - Faltan estadísticas' : 'Sin alineación configurada'}
+                </div>
+              `}
+            </div>
+            
+            <!-- Estadísticas generales del equipo -->
+            <div class="space-y-2 mb-4">
+              <div class="flex justify-between items-center text-xs">
+                <span class="opacity-90">Total Jugadores:</span>
+                <span class="font-semibold">${jugadoresEquipo.length}</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="opacity-90">Partidos Liga:</span>
+                <span class="font-semibold">${equiposData[equipo].partidos_jugados}</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="opacity-90">Puntos Liga:</span>
+                <span class="font-semibold">${equiposData[equipo].puntos_liga}</span>
+              </div>
+            </div>
+            
+            <!-- Botón de acción -->
+            <div class="text-center">
+              <div class="bg-white/30 hover:bg-white/40 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                ${jornadaCompletada ? 'Ver/Editar Equipo' : (tieneAlineacion ? 'Completar Jornada' : 'Configurar Alineación')}
+              </div>
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(equipoDiv);
+      });
+    }
+    
+    // Actualizar contador de jornadas completadas
+    function actualizarContadorJornadasCompletadas() {
+      let jornadasCompletadas = 0;
+      
+      equipos.forEach(equipo => {
+        const datosJornada = obtenerDatosJornadaEquipo(equipo, jornadaActualVista);
+        if (datosJornada && datosJornada.estadisticasGuardadas) {
+          jornadasCompletadas++;
+        }
+      });
+      
+      const elemento = document.getElementById('jornadasCompletadas');
+      elemento.textContent = `${jornadasCompletadas}/${equipos.length}`;
+      
+      // Cambiar color según el progreso
+      if (jornadasCompletadas === equipos.length) {
+        elemento.className = 'text-green-300';
+      } else if (jornadasCompletadas > 0) {
+        elemento.className = 'text-yellow-300';
+      } else {
+        elemento.className = 'text-red-300';
+      }
+    }
+    
+    // Inicialización cuando carga el DOM
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM cargado, inicializando vista de lineups...');
+      
+      inicializarSelectorJornadaGlobal();
+      actualizarVistaEquipos();
+      actualizarContadorJornadasCompletadas();
+      
+      console.log('✅ Vista de lineups inicializada correctamente');
+    });
+  </script>
+
+  <style>
+    .player-slot {
+      width: 40px;
+      height: 40px;
+      border: 2px dashed rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .player-slot:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .drop-zone {
+      min-height: 60px;
+    }
+    
+    .bg-green-field-pattern {
+      background-image: 
+        linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+  </style>
+</BaseLayout>

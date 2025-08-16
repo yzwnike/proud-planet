@@ -1,0 +1,772 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="La Liga EA Sports - Clasificación 2025/26" 
+  description="Clasificación actual de La Liga EA Sports 2025/26 con estadísticas de equipos, goleadores y asistencias"
+>
+  <div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div class="container mx-auto px-4 py-8">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">
+          <span class="bg-gradient-to-r from-orange-400 to-red-600 bg-clip-text text-transparent">
+            La Liga EA Sports
+          </span>
+        </h1>
+        <p class="text-xl text-gray-300 mb-2">Temporada 2025/26</p>
+        <div class="flex justify-center items-center gap-4 text-gray-400">
+          <span class="px-3 py-1 bg-blue-600/20 rounded-full text-sm">Jornada 0</span>
+          <span class="px-3 py-1 bg-green-600/20 rounded-full text-sm">20 Equipos + 4 Personalizados</span>
+        </div>
+      </div>
+
+      <!-- Navegación de secciones -->
+      <div class="flex flex-wrap justify-center gap-4 mb-8">
+        <a href="/laliga/" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          📊 Clasificación
+        </a>
+        <a href="/laliga/pichichi" class="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          ⚽ Pichichi
+        </a>
+        <a href="/laliga/asistencias" class="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          🅰️ Asistencias
+        </a>
+        <a href="/laliga/proximos" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          📅 Próximos Partidos
+        </a>
+        <button id="add-custom-result-btn" class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          🏆 Añadir Resultado
+        </button>
+      </div>
+
+      <!-- Modal para añadir resultados -->
+      <div id="add-result-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gray-900 rounded-xl shadow-2xl p-6 w-full max-w-md border border-purple-500/30">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-white">🏆 Añadir Resultado</h3>
+            <button id="close-modal-btn" class="text-gray-400 hover:text-white text-2xl font-bold">&times;</button>
+          </div>
+          
+          <form id="add-result-form" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Jornada</label>
+              <input type="number" id="jornada-input" min="1" max="38" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>
+              <button type="button" id="get-next-jornada-btn" class="mt-1 text-xs text-purple-400 hover:text-purple-300">Obtener próxima jornada</button>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Equipo</label>
+              <select id="home-team-select" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>
+                <option value="">Seleccionar equipo...</option>
+                <option value="Nike FC">Nike FC</option>
+                <option value="Adidas FC">Adidas FC</option>
+                <option value="Puma FC">Puma FC</option>
+                <option value="Kappa FC">Kappa FC</option>
+              </select>
+            </div>
+            
+            <div class="text-center py-4">
+              <label class="block text-sm font-medium text-gray-300 mb-2">Resultado del partido</label>
+              <div class="flex items-center justify-center gap-3">
+                <span id="home-team-name" class="text-purple-400 text-xl font-semibold">Equipo</span>
+                <div class="flex items-center gap-2">
+                  <input type="number" id="home-goals-input" min="0" max="10" class="w-16 px-2 py-2 bg-gray-800 border border-gray-600 rounded text-center text-xl text-white font-bold" placeholder="0" required>
+                  <span class="text-gray-400 text-xl font-bold">-</span>
+                  <input type="number" id="away-goals-input" min="0" max="10" class="w-16 px-2 py-2 bg-gray-800 border border-gray-600 rounded text-center text-xl text-white font-bold" placeholder="0" required>
+                </div>
+                <span class="text-gray-400 text-lg">Rival</span>
+              </div>
+              <div class="text-xs text-gray-400 mt-3">
+                Los puntos se calcularán automáticamente del resultado
+              </div>
+              <div class="flex justify-center mt-3">
+                <button type="button" id="randomize-result-btn" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-sm rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-colors font-semibold">
+                  🎲 Randomizar Resultado
+                </button>
+              </div>
+            </div>
+            
+            <div class="flex gap-3 pt-4">
+              <button type="button" id="cancel-btn" class="flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                Cancelar
+              </button>
+              <button type="button" id="reset-season-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold">
+                🔄 Reiniciar
+              </button>
+              <button type="submit" class="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors font-semibold">
+                Guardar Resultado
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Tabla de clasificación -->
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-white">📊 Clasificación</h2>
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 text-gray-300">
+              <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              <span class="text-sm">Actualizado en tiempo real</span>
+            </div>
+            <div id="custom-teams-info" class="text-xs text-purple-400 hidden">
+              <span class="bg-purple-500/20 px-2 py-1 rounded-full">Equipos personalizados: 4</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading placeholder -->
+        <div id="loading-standings" class="flex justify-center items-center py-12">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+          <span class="ml-4 text-white">Cargando clasificación...</span>
+        </div>
+
+        <!-- Tabla de clasificación -->
+        <div id="standings-container" class="hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-gray-600">
+                  <th class="text-left py-3 px-4 text-gray-300 font-semibold">Pos</th>
+                  <th class="text-left py-3 px-4 text-gray-300 font-semibold">Equipo</th>
+                  <th class="text-center py-3 px-4 text-gray-300 font-semibold">PJ</th>
+                  <th class="text-center py-3 px-4 text-gray-300 font-semibold">G</th>
+                  <th class="text-center py-3 px-4 text-gray-300 font-semibold">E</th>
+                  <th class="text-center py-3 px-4 text-gray-300 font-semibold">P</th>
+                  <th class="text-center py-3 px-4 text-gray-300 font-semibold">GF</th>
+                  <th class="text-center py-3 px-4 text-gray-300 font-semibold">GC</th>
+                  <th class="text-center py-3 px-4 text-gray-300 font-semibold">DG</th>
+                  <th class="text-center py-3 px-4 text-gray-300 font-semibold">Pts</th>
+                  <th class="text-center py-3 px-4 text-gray-300 font-semibold">Forma</th>
+                </tr>
+              </thead>
+              <tbody id="standings-body">
+                <!-- Los datos se cargarán dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Próximos partidos -->
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-bold text-white mb-4">📅 Próximos Partidos</h3>
+          <div id="upcoming-matches" class="space-y-3">
+            <div class="flex justify-center py-4">
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Goleadores -->
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-bold text-white mb-4">⚽ Top Goleadores</h3>
+          <div id="top-scorers" class="space-y-3">
+            <div class="flex justify-center py-4">
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Asistencias -->
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-bold text-white mb-4">🅰️ Top Asistencias</h3>
+          <div id="top-assists" class="space-y-3">
+            <div class="flex justify-center py-4">
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .position-champions {
+    @apply bg-gradient-to-r from-blue-600/20 to-blue-400/20 border-l-4 border-blue-500;
+  }
+  
+  .position-europa {
+    @apply bg-gradient-to-r from-orange-600/20 to-orange-400/20 border-l-4 border-orange-500;
+  }
+  
+  .position-relegation {
+    @apply bg-gradient-to-r from-red-600/20 to-red-400/20 border-l-4 border-red-500;
+  }
+
+  .custom-team {
+    @apply bg-gradient-to-r from-purple-600/20 to-purple-400/20 border-l-4 border-purple-500;
+  }
+</style>
+
+<script>
+  // Función para cargar la clasificación
+  async function loadStandings() {
+    try {
+      const response = await fetch('/api/laliga/clasificacion?includeCustom=true');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      
+      if (result.success && result.data && result.data.clasificacion) {
+        displayStandings(result.data.clasificacion);
+      } else {
+        throw new Error(result.error || 'No se pudo obtener la clasificación');
+      }
+    } catch (error) {
+      console.error('Error loading standings:', error);
+      
+      // Mostrar clasificación por defecto con todos los equipos a 0 puntos
+      const defaultStandings = [
+        'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Athletic Club',
+        'Real Sociedad', 'Villarreal', 'Real Betis', 'Sevilla',
+        'Valencia', 'Espanyol', 'Osasuna', 'Celta de Vigo',
+        'Rayo Vallecano', 'Mallorca', 'Levante', 'Alavés',
+        'Getafe', 'Girona', 'Elche', 'Real Oviedo'
+      ].map((team, index) => ({
+        posicion: index + 1,
+        equipo: team,
+        partidos_jugados: 0,
+        ganados: 0,
+        empatados: 0,
+        perdidos: 0,
+        goles_favor: 0,
+        goles_contra: 0,
+        diferencia_goles: 0,
+        puntos: 0,
+        ultimos_5: [],
+        racha_actual: '',
+        forma: 'neutral',
+        custom: false
+      }));
+      
+      displayStandings(defaultStandings);
+    } finally {
+      document.getElementById('loading-standings').classList.add('hidden');
+      document.getElementById('standings-container').classList.remove('hidden');
+    }
+  }
+
+  // Función para mostrar la clasificación
+  function displayStandings(standings) {
+    const tbody = document.getElementById('standings-body');
+    tbody.innerHTML = standings.map(team => {
+      let rowClass = '';
+      if (team.posicion <= 4) rowClass = 'position-champions';
+      else if (team.posicion <= 7) rowClass = 'position-europa';
+      else if (team.posicion >= standings.length - 2) rowClass = 'position-relegation';
+      
+      if (team.custom) rowClass = 'custom-team';
+
+      return `
+        <tr class="${rowClass} hover:bg-white/10 transition-colors">
+          <td class="py-3 px-4 font-bold text-white">${team.posicion}</td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-3">
+              ${team.escudo ? 
+                `<img src="${team.escudo}" alt="${team.equipo}" class="w-8 h-8 rounded-full object-cover border-2 border-white/20">` : 
+                (team.custom ? '🏆' : '⚽')
+              }
+              <div class="flex flex-col">
+                <span class="text-white font-semibold">${team.equipo}</span>
+                ${team.custom ? '<span class="text-xs bg-purple-500/80 px-2 py-1 rounded-full text-white">Personalizado</span>' : ''}
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-center text-gray-300">${team.partidos_jugados}</td>
+          <td class="py-3 px-4 text-center text-green-400">${team.ganados}</td>
+          <td class="py-3 px-4 text-center text-yellow-400">${team.empatados}</td>
+          <td class="py-3 px-4 text-center text-red-400">${team.perdidos}</td>
+          <td class="py-3 px-4 text-center text-blue-400">${team.goles_favor}</td>
+          <td class="py-3 px-4 text-center text-red-400">${team.goles_contra}</td>
+          <td class="py-3 px-4 text-center ${team.diferencia_goles >= 0 ? 'text-green-400' : 'text-red-400'}">${team.diferencia_goles >= 0 ? '+' : ''}${team.diferencia_goles}</td>
+          <td class="py-3 px-4 text-center font-bold text-white text-lg">${team.puntos}</td>
+          <td class="py-3 px-4 text-center">
+            <div class="flex gap-1 justify-center">
+              ${team.ultimos_5.map(result => 
+                `<span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                  result === 'V' ? 'bg-green-500 text-white' : 
+                  result === 'E' ? 'bg-yellow-500 text-black' : 
+                  'bg-red-500 text-white'
+                }">${result}</span>`
+              ).join('')}
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // Función para cargar próximos partidos
+  async function loadUpcomingMatches() {
+    try {
+      const response = await fetch('/api/laliga/proximos-partidos?limit=5');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      console.log('Próximos partidos:', result);
+      
+      const container = document.getElementById('upcoming-matches');
+      
+      if (result.success && result.data && result.data.proximos_partidos) {
+        const matches = result.data.proximos_partidos;
+        
+        if (matches.length === 0) {
+          container.innerHTML = `
+            <div class="text-center text-gray-400 py-4">
+              📅 La temporada comenzará mañana<br>
+              <span class="text-sm">15 de Agosto de 2025</span>
+              <div class="text-xs text-gray-500 mt-2">Girona FC vs Rayo Vallecano</div>
+            </div>
+          `;
+        } else {
+          container.innerHTML = matches.slice(0, 5).map(match => {
+            const dateObj = new Date(match.date);
+            const formattedDate = dateObj.toLocaleDateString('es-ES', { 
+              weekday: 'short', 
+              day: 'numeric', 
+              month: 'short' 
+            });
+            
+            const borderColor = match.custom_match ? 'border-purple-400' : 'border-blue-400';
+            const customBadge = match.custom_match ? '<span class="text-xs bg-purple-500/80 px-2 py-1 rounded-full text-white ml-2">Personal</span>' : '';
+            
+            return `
+              <div class="bg-white/5 rounded-lg p-3 border-l-2 ${borderColor} hover:bg-white/10 transition-colors">
+                <div class="flex justify-between items-center mb-2">
+                  <div class="flex items-center">
+                    <span class="text-xs text-blue-400 font-semibold">${match.round}</span>
+                    ${customBadge}
+                  </div>
+                  <span class="text-xs text-gray-400">${formattedDate}</span>
+                </div>
+                <div class="text-white font-semibold text-center mb-1">
+                  ${match.team1} <span class="text-gray-400 mx-2">vs</span> ${match.team2}
+                </div>
+                ${match.time ? `<div class="text-xs text-center text-green-400">⏰ ${match.time}</div>` : ''}
+                ${match.venue ? `<div class="text-xs text-center text-gray-500 mt-1">🏠 ${match.venue}</div>` : ''}
+              </div>
+            `;
+          }).join('');
+        }
+      } else {
+        container.innerHTML = `
+          <div class="text-center text-gray-400 py-4">
+            📅 Cargando partidos...<br>
+            <span class="text-sm">La Liga 2025/26</span>
+          </div>
+        `;
+      }
+    } catch (error) {
+      console.error('Error loading upcoming matches:', error);
+      const container = document.getElementById('upcoming-matches');
+      container.innerHTML = `
+        <div class="text-center text-gray-400 py-4">
+          📅 Próximos partidos<br>
+          <span class="text-sm">15 de Agosto - Girona FC vs Rayo Vallecano</span>
+          <div class="text-xs text-gray-500 mt-1">19:00</div>
+        </div>
+      `;
+    }
+  }
+
+  // Función para cargar top goleadores
+  async function loadTopScorers() {
+    try {
+      const response = await fetch('/api/laliga/pichichi');
+      const result = await response.json();
+      
+      if (result.success) {
+        const container = document.getElementById('top-scorers');
+        if (result.data.goleadores.length === 0) {
+          container.innerHTML = `
+            <div class="text-center text-gray-400 py-4">
+              ⚽ Sin goles aún<br>
+              <span class="text-sm">La temporada no ha comenzado</span>
+            </div>
+          `;
+        } else {
+          container.innerHTML = result.data.goleadores.slice(0, 5).map((scorer, index) => `
+            <div class="flex justify-between items-center bg-white/5 rounded-lg p-3">
+              <div class="flex items-center gap-3">
+                ${scorer.foto ? 
+                  `<img src="${scorer.foto}" alt="${scorer.jugador}" class="w-10 h-10 rounded-full object-cover border-2 border-white/20" onerror="this.onerror=null; this.src='/jugadores/fan.png'; this.style.display='none'; this.nextElementSibling.style.display='flex';" onload="this.style.display='block'; this.nextElementSibling.style.display='none';"><div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs" style="display:none;">⚽</div>` : 
+                  '<div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs">⚽</div>'
+                }
+                <div>
+                  <div class="text-white font-semibold">${scorer.jugador}</div>
+                  <div class="text-xs text-gray-400">${scorer.equipo}</div>
+                </div>
+              </div>
+              <div class="text-yellow-400 font-bold">${scorer.goles}</div>
+            </div>
+          `).join('');
+        }
+      }
+    } catch (error) {
+      console.error('Error loading top scorers:', error);
+    }
+  }
+
+  // Función para cargar top asistencias
+  async function loadTopAssists() {
+    try {
+      const response = await fetch('/api/laliga/asistencias');
+      const result = await response.json();
+      
+      if (result.success) {
+        const container = document.getElementById('top-assists');
+        if (result.data.asistentes.length === 0) {
+          container.innerHTML = `
+            <div class="text-center text-gray-400 py-4">
+              🅰️ Sin asistencias aún<br>
+              <span class="text-sm">La temporada no ha comenzado</span>
+            </div>
+          `;
+        } else {
+          container.innerHTML = result.data.asistentes.slice(0, 5).map((assister, index) => `
+            <div class="flex justify-between items-center bg-white/5 rounded-lg p-3">
+              <div class="flex items-center gap-3">
+                ${assister.foto ? 
+                  `<img src="${assister.foto}" alt="${assister.jugador}" class="w-10 h-10 rounded-full object-cover border-2 border-white/20" onerror="this.onerror=null; this.src='/jugadores/fan.png'; this.style.display='none'; this.nextElementSibling.style.display='flex';" onload="this.style.display='block'; this.nextElementSibling.style.display='none';"><div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs" style="display:none;">🅰️</div>` : 
+                  '<div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs">🅰️</div>'
+                }
+                <div>
+                  <div class="text-white font-semibold">${assister.jugador}</div>
+                  <div class="text-xs text-gray-400">${assister.equipo}</div>
+                </div>
+              </div>
+              <div class="text-green-400 font-bold">${assister.asistencias}</div>
+            </div>
+          `).join('');
+        }
+      }
+    } catch (error) {
+      console.error('Error loading top assists:', error);
+    }
+  }
+
+  // Funcionalidad del modal para añadir resultados
+  function initializeModal() {
+    const modal = document.getElementById('add-result-modal');
+    const addBtn = document.getElementById('add-custom-result-btn');
+    const closeBtn = document.getElementById('close-modal-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const resetBtn = document.getElementById('reset-season-btn');
+    const form = document.getElementById('add-result-form');
+    const getNextJornadaBtn = document.getElementById('get-next-jornada-btn');
+    
+    const homeTeamSelect = document.getElementById('home-team-select');
+    const homeTeamName = document.getElementById('home-team-name');
+    
+    // Abrir modal
+    addBtn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+      // Auto-obtener próxima jornada al abrir
+      getNextJornada();
+    });
+    
+    // Cerrar modal
+    function closeModal() {
+      modal.classList.add('hidden');
+      form.reset();
+      homeTeamName.textContent = 'Equipo';
+    }
+    
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+    
+    // Cerrar modal al hacer clic fuera
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+    
+    // Actualizar nombre del equipo
+    homeTeamSelect.addEventListener('change', (e) => {
+      homeTeamName.textContent = e.target.value || 'Equipo';
+    });
+    
+    // Funcionalidad del botón reiniciar
+    resetBtn.addEventListener('click', async () => {
+      if (!confirm('¿Estás seguro de que quieres reiniciar todos los resultados de los 4 equipos personalizados? Esta acción no se puede deshacer.')) {
+        return;
+      }
+      
+      try {
+        resetBtn.textContent = 'Reiniciando...';
+        resetBtn.disabled = true;
+        
+        const response = await fetch('/api/custom-points', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'reset-season'
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showNotification('✅ Temporada reiniciada correctamente', 'success');
+          closeModal();
+          loadStandings();
+        } else {
+          showNotification(`❌ Error: ${result.error}`, 'error');
+        }
+      } catch (error) {
+        console.error('Error al reiniciar temporada:', error);
+        showNotification('❌ Error al reiniciar la temporada', 'error');
+      } finally {
+        resetBtn.textContent = '🔄 Reiniciar';
+        resetBtn.disabled = false;
+      }
+    });
+    
+    // Obtener próxima jornada
+    getNextJornadaBtn.addEventListener('click', getNextJornada);
+    
+    // Funcionalidad del botón randomizado
+    const randomizeBtn = document.getElementById('randomize-result-btn');
+    randomizeBtn.addEventListener('click', () => {
+      const selectedTeam = homeTeamSelect.value;
+      if (!selectedTeam) {
+        alert('Primero selecciona un equipo');
+        return;
+      }
+      
+      const result = generateRandomResult(selectedTeam);
+      document.getElementById('home-goals-input').value = result.homeGoals;
+      document.getElementById('away-goals-input').value = result.awayGoals;
+      
+      // Mostrar notificación con el resultado generado
+      const resultType = result.homeGoals > result.awayGoals ? 'Victoria' : 
+                        result.homeGoals === result.awayGoals ? 'Empate' : 'Derrota';
+      const performanceText = getPerformanceText(result.performance);
+      showNotification(`🎲 ${resultType} generada: ${selectedTeam} ${result.homeGoals}-${result.awayGoals} (${performanceText})`, 'info');
+    });
+    
+    async function getNextJornada() {
+      try {
+        const response = await fetch('/api/custom-results?action=next-jornada');
+        const result = await response.json();
+        
+        if (result.success) {
+          document.getElementById('jornada-input').value = result.data.proxima_jornada;
+        }
+      } catch (error) {
+        console.error('Error al obtener próxima jornada:', error);
+      }
+    }
+    
+    // Manejar envío del formulario
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const homeTeam = homeTeamSelect.value;
+      const homeGoals = parseInt(document.getElementById('home-goals-input').value);
+      const awayGoals = parseInt(document.getElementById('away-goals-input').value);
+      const jornada = parseInt(document.getElementById('jornada-input').value);
+      
+      // Calcular puntos automáticamente del resultado
+      let points;
+      if (homeGoals > awayGoals) {
+        points = 3; // Victoria
+      } else if (homeGoals === awayGoals) {
+        points = 1; // Empate
+      } else {
+        points = 0; // Derrota
+      }
+      
+      if (!homeTeam) {
+        alert('Selecciona un equipo');
+        return;
+      }
+      
+      if (homeGoals < 0 || awayGoals < 0) {
+        alert('Los goles no pueden ser negativos');
+        return;
+      }
+      
+      if (isNaN(homeGoals) || isNaN(awayGoals)) {
+        alert('Por favor, introduce números válidos para los goles');
+        return;
+      }
+      
+      try {
+        // Mostrar loading
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Guardando...';
+        submitBtn.disabled = true;
+        
+        const response = await fetch('/api/custom-points', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'add-points',
+            team: homeTeam,
+            points: points,
+            homeGoals: homeGoals,
+            awayGoals: awayGoals,
+            jornada: jornada
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Mostrar mensaje de éxito
+          const resultType = points === 3 ? 'Victoria' : points === 1 ? 'Empate' : 'Derrota';
+          showNotification(`✅ ${resultType}: ${homeTeam} ${homeGoals}-${awayGoals} (${points} pts) - Jornada ${jornada}`, 'success');
+          
+          // Cerrar modal
+          closeModal();
+          
+          // Recargar clasificación
+          loadStandings();
+        } else {
+          showNotification(`❌ Error: ${result.error}`, 'error');
+        }
+      } catch (error) {
+        console.error('Error al añadir resultado:', error);
+        showNotification('❌ Error al añadir el resultado', 'error');
+      } finally {
+        // Restaurar botón
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+  
+  // Sistema de generación de resultados randomizados por niveles
+  function getTeamLevel(teamName) {
+    const teamLevels = {
+      'Nike FC': 'elite',     // Nivel Barça/Madrid - 85% win chance
+      'Adidas FC': 'elite',   // Nivel Barça/Madrid - 85% win chance  
+      'Puma FC': 'good',      // Nivel Atlético/Athletic - 65% win chance
+      'Kappa FC': 'medium'    // Nivel Villarreal/Betis - 45% win chance
+    };
+    return teamLevels[teamName] || 'medium';
+  }
+  
+  function generateRandomResult(teamName) {
+    const teamLevel = getTeamLevel(teamName);
+    
+    // Generar número de rendimiento (0-100)
+    const performance = Math.floor(Math.random() * 100) + 1;
+    
+    // Probabilidades de victoria según nivel
+    const winChances = {
+      'elite': 85,   // Nike FC & Adidas FC
+      'good': 65,    // Puma FC
+      'medium': 45   // Kappa FC
+    };
+    
+    const drawChance = 20; // 20% empate para todos
+    const winChance = winChances[teamLevel];
+    
+    let homeGoals, awayGoals;
+    
+    // Determinar tipo de resultado basado en probabilidades
+    if (performance <= winChance) {
+      // VICTORIA - Generar goles según rendimiento
+      if (performance >= 95) {
+        // Rendimiento excepcional (95-100) - Goleada
+        homeGoals = teamLevel === 'elite' ? (4 + Math.floor(Math.random() * 3)) : (3 + Math.floor(Math.random() * 2));
+        awayGoals = Math.floor(Math.random() * 2); // 0-1 goles rival
+      } else if (performance >= 80) {
+        // Buen rendimiento (80-94) - Victoria clara
+        homeGoals = teamLevel === 'elite' ? (2 + Math.floor(Math.random() * 3)) : (2 + Math.floor(Math.random() * 2));
+        awayGoals = Math.floor(Math.random() * 2); // 0-1 goles rival
+      } else {
+        // Rendimiento normal (win chance - 79) - Victoria ajustada
+        homeGoals = 1 + Math.floor(Math.random() * 2); // 1-2 goles
+        awayGoals = Math.floor(Math.random() * homeGoals); // Menos goles que nosotros
+      }
+    } else if (performance <= winChance + drawChance) {
+      // EMPATE
+      const goals = Math.floor(Math.random() * 3) + 1; // 1-3 goles
+      homeGoals = goals;
+      awayGoals = goals;
+    } else {
+      // DERROTA - El equipo juega mal
+      if (performance <= 10) {
+        // Rendimiento pésimo (1-10) - Derrota humillante  
+        homeGoals = Math.floor(Math.random() * 2); // 0-1 goles
+        awayGoals = teamLevel === 'elite' ? (2 + Math.floor(Math.random() * 2)) : (3 + Math.floor(Math.random() * 3));
+      } else {
+        // Derrota normal
+        homeGoals = Math.floor(Math.random() * 2); // 0-1 goles
+        awayGoals = 1 + Math.floor(Math.random() * 2); // 1-2 goles rival
+      }
+    }
+    
+    return {
+      homeGoals: homeGoals,
+      awayGoals: awayGoals,
+      performance: performance,
+      teamLevel: teamLevel
+    };
+  }
+  
+  function getPerformanceText(performance) {
+    if (performance >= 95) return 'Rendimiento Excepcional 🔥';
+    if (performance >= 80) return 'Buen Rendimiento ⭐';
+    if (performance >= 60) return 'Rendimiento Normal ✅';
+    if (performance >= 30) return 'Rendimiento Bajo ⚠️';
+    return 'Rendimiento Pésimo 💀';
+  }
+  
+  // Función para mostrar notificaciones
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-[60] px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full ${
+      type === 'success' ? 'bg-green-600 text-white' : 
+      type === 'error' ? 'bg-red-600 text-white' : 
+      'bg-blue-600 text-white'
+    }`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Mostrar animación
+    setTimeout(() => {
+      notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Ocultar después de 4 segundos
+    setTimeout(() => {
+      notification.classList.add('translate-x-full');
+      setTimeout(() => {
+        document.body.removeChild(notification);
+      }, 300);
+    }, 4000);
+  }
+
+  // Cargar datos cuando se carga la página
+  document.addEventListener('DOMContentLoaded', () => {
+    loadStandings();
+    loadUpcomingMatches();
+    loadTopScorers();
+    loadTopAssists();
+    initializeModal();
+  });
+</script>

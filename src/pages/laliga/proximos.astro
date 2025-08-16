@@ -1,0 +1,267 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Próximos Partidos - La Liga 2025/26" 
+  description="Calendario de próximos partidos de La Liga EA Sports 2025/26"
+>
+  <div class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+    <div class="container mx-auto px-4 py-8">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">
+          <span class="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+            📅 Próximos Partidos
+          </span>
+        </h1>
+        <p class="text-xl text-gray-300 mb-2">Calendario La Liga - Temporada 2025/26</p>
+        <div class="flex justify-center items-center gap-4 text-gray-400">
+          <span class="px-3 py-1 bg-blue-600/20 rounded-full text-sm">La temporada comenzará mañana</span>
+          <span class="px-3 py-1 bg-orange-600/20 rounded-full text-sm">15 de Agosto de 2025</span>
+        </div>
+      </div>
+
+      <!-- Navegación de secciones -->
+      <div class="flex flex-wrap justify-center gap-4 mb-8">
+        <a href="/laliga/" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          📊 Clasificación
+        </a>
+        <a href="/laliga/pichichi" class="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          ⚽ Pichichi
+        </a>
+        <a href="/laliga/asistencias" class="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          🅰️ Asistencias
+        </a>
+        <a href="/laliga/proximos" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ring-2 ring-blue-400">
+          📅 Próximos Partidos
+        </a>
+      </div>
+
+      <!-- Próximos partidos -->
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-white">🗓️ Calendario de Partidos</h2>
+          <div class="flex items-center gap-2 text-gray-300">
+            <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+            <span class="text-sm">Actualizado automáticamente</span>
+          </div>
+        </div>
+
+        <!-- Loading placeholder -->
+        <div id="loading-matches" class="flex justify-center items-center py-12">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          <span class="ml-4 text-white">Cargando partidos...</span>
+        </div>
+
+        <!-- Lista de partidos -->
+        <div id="matches-container" class="hidden">
+          <div id="matches-list" class="space-y-4"></div>
+        </div>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-bold text-white mb-4">📊 Información de la Liga</h3>
+          <div class="space-y-3">
+            <div class="flex justify-between text-gray-300">
+              <span>Temporada:</span>
+              <span class="text-blue-400 font-semibold">2025/26</span>
+            </div>
+            <div class="flex justify-between text-gray-300">
+              <span>Equipos:</span>
+              <span class="text-green-400 font-semibold">20</span>
+            </div>
+            <div class="flex justify-between text-gray-300">
+              <span>Jornadas:</span>
+              <span class="text-orange-400 font-semibold">38</span>
+            </div>
+            <div class="flex justify-between text-gray-300">
+              <span>Total partidos:</span>
+              <span class="text-purple-400 font-semibold">380</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-bold text-white mb-4">🕒 Próxima Jornada</h3>
+          <div class="text-center">
+            <div class="text-4xl mb-2">1️⃣</div>
+            <h4 class="text-lg font-semibold text-white mb-1">Jornada 1</h4>
+            <p class="text-blue-400 font-semibold">15 de Agosto de 2025</p>
+            <p class="text-sm text-gray-400 mt-2">10 partidos programados</p>
+          </div>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-bold text-white mb-4">🎯 Estado Actual</h3>
+          <div class="text-center">
+            <div class="text-4xl mb-2">🚀</div>
+            <h4 class="text-lg font-semibold text-white mb-1">Pretemporada</h4>
+            <p class="text-yellow-400 font-semibold">Lista para empezar</p>
+            <p class="text-sm text-gray-400 mt-2">¡Mañana comienza la acción!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Función para cargar próximos partidos
+  async function loadUpcomingMatches() {
+    try {
+      const response = await fetch('/api/laliga/proximos-partidos?limit=20&includeCustom=true');
+      const result = await response.json();
+      
+      if (result.success) {
+        displayMatches(result.data.proximos_partidos);
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      console.error('Error loading upcoming matches:', error);
+      // Mostrar información del primer partido conocido
+      document.getElementById('matches-list').innerHTML = `
+        <div class="text-center py-12">
+          <div class="text-6xl mb-4">📅</div>
+          <h3 class="text-2xl font-bold text-white mb-2">Próximos partidos de La Liga 2025/26</h3>
+          <p class="text-gray-400 mb-4">La temporada comenzará mañana</p>
+          
+          <div class="space-y-4 max-w-2xl mx-auto">
+            <div class="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg p-4 border border-blue-400/30">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs text-blue-400 font-semibold">Jornada 1</span>
+                <span class="text-xs text-gray-400">Jue, 15 Ago</span>
+              </div>
+              <div class="text-white font-bold text-lg text-center mb-2">
+                Girona FC <span class="text-gray-400 mx-2">vs</span> Rayo Vallecano
+              </div>
+              <div class="text-center text-green-400 text-sm">⏰ 19:00</div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-orange-500/20 to-yellow-500/20 rounded-lg p-4 border border-orange-400/30">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs text-orange-400 font-semibold">Jornada 1</span>
+                <span class="text-xs text-gray-400">Jue, 15 Ago</span>
+              </div>
+              <div class="text-white font-bold text-lg text-center mb-2">
+                Villarreal CF <span class="text-gray-400 mx-2">vs</span> Real Oviedo
+              </div>
+              <div class="text-center text-green-400 text-sm">⏰ 21:30</div>
+            </div>
+            
+            <div class="text-sm text-gray-400 mt-4">
+              <p>📅 <strong>La temporada 2025/26 comienza mañana</strong></p>
+              <p class="text-xs mt-1">Se mostrarán todos los partidos una vez que comience la jornada</p>
+            </div>
+          </div>
+        </div>
+      `;
+    } finally {
+      document.getElementById('loading-matches').classList.add('hidden');
+      document.getElementById('matches-container').classList.remove('hidden');
+    }
+  }
+
+  // Función para mostrar partidos
+  function displayMatches(matches) {
+    const container = document.getElementById('matches-list');
+    
+    if (matches.length === 0) {
+      container.innerHTML = `
+        <div class="text-center py-12">
+          <div class="text-6xl mb-4">📅</div>
+          <h3 class="text-2xl font-bold text-white mb-2">Próximos partidos disponibles</h3>
+          <p class="text-gray-400 mb-4">La temporada 2025/26 comenzará mañana</p>
+          <div class="bg-blue-500/20 rounded-lg p-4 max-w-md mx-auto">
+            <p class="text-blue-300 font-semibold">🗓️ 15 de Agosto de 2025</p>
+            <p class="text-sm text-gray-300 mt-1">Primera jornada de La Liga EA Sports</p>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // Agrupar partidos por jornada
+    const matchesByRound = matches.reduce((groups, match) => {
+      if (!groups[match.round]) {
+        groups[match.round] = [];
+      }
+      groups[match.round].push(match);
+      return groups;
+    }, {});
+
+    container.innerHTML = Object.keys(matchesByRound).map(round => {
+      const roundMatches = matchesByRound[round];
+      return `
+        <div class="mb-8">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+              ${round.replace('Matchday ', '')}
+            </div>
+            <h3 class="text-xl font-bold text-white">${round}</h3>
+            <div class="flex-1 h-px bg-gray-600"></div>
+            <span class="text-sm text-gray-400">${roundMatches.length} partidos</span>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${roundMatches.map(match => `
+              <div class="bg-white/5 rounded-lg p-4 border border-white/10 hover:bg-white/10 transition-all">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-3">
+                    <div class="w-6 h-6 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center">
+                      ⚽
+                    </div>
+                    <span class="text-sm text-gray-400">${formatDate(match.date)}</span>
+                  </div>
+                  ${match.time ? `<span class="text-sm text-blue-400 font-semibold">${match.time}</span>` : ''}
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div class="flex-1 text-right pr-4">
+                    <span class="text-white font-semibold">${match.team1}</span>
+                  </div>
+                  
+                  <div class="flex items-center gap-2 px-3 py-1 bg-gray-800 rounded-full">
+                    <span class="text-gray-400 text-sm font-mono">VS</span>
+                  </div>
+                  
+                  <div class="flex-1 text-left pl-4">
+                    <span class="text-white font-semibold">${match.team2}</span>
+                  </div>
+                </div>
+                
+                ${match.venue ? `
+                  <div class="mt-2 pt-2 border-t border-white/10">
+                    <span class="text-xs text-gray-500">🏟️ ${match.venue}</span>
+                  </div>
+                ` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Función para formatear fecha
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { 
+      weekday: 'short', 
+      day: 'numeric', 
+      month: 'short' 
+    };
+    return date.toLocaleDateString('es-ES', options);
+  }
+
+  // Cargar datos cuando se carga la página
+  document.addEventListener('DOMContentLoaded', () => {
+    loadUpcomingMatches();
+    
+    // Actualizar cada minuto
+    setInterval(loadUpcomingMatches, 60000);
+  });
+</script>
+</BaseLayout>

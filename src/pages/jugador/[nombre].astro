@@ -1,0 +1,569 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import jugadores from "../../data/players.json";
+
+export async function getStaticPaths() {
+  console.log('Generando rutas para jugadores:', jugadores.length);
+  
+  const paths = jugadores
+    .filter(jugador => jugador && jugador.nombre) // Filtrar jugadores válidos
+    .map((jugador) => {
+      const nombreSlug = jugador.nombre.replace(/\s+/g, '-').toLowerCase();
+      console.log(`Ruta generada: ${nombreSlug} para jugador:`, jugador.nombre);
+      
+      return {
+        params: { nombre: nombreSlug },
+        props: { jugador }
+      };
+    });
+    
+  console.log('Total de rutas generadas:', paths.length);
+  return paths;
+}
+
+// Obtener el jugador de las props o buscar por parámetro
+let { jugador } = Astro.props;
+const { nombre } = Astro.params;
+
+// Fallback para modo desarrollo
+if (!jugador && nombre) {
+  console.log('Modo desarrollo: buscando jugador por parámetro:', nombre);
+  
+  // Buscar el jugador en el JSON usando el slug del parámetro
+  jugador = jugadores.find(j => {
+    if (!j || !j.nombre) return false;
+    const slugGenerado = j.nombre.replace(/\s+/g, '-').toLowerCase();
+    return slugGenerado === nombre;
+  });
+  
+  console.log('Jugador encontrado:', jugador?.nombre || 'No encontrado');
+}
+
+// Verificar que el jugador existe después del fallback
+if (!jugador) {
+  throw new Error(`Jugador no encontrado para el slug: ${nombre}`);
+}
+
+console.log('Renderizando página para jugador:', jugador.nombre);
+---
+
+<BaseLayout title={`${jugador.nombre || 'Jugador'} - Perfil del Jugador`}>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Header del Jugador -->
+    <div class="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 rounded-2xl shadow-2xl p-8 text-white mb-8">
+      <div class="flex flex-col lg:flex-row items-center lg:items-start gap-8">
+        <!-- Foto del Jugador -->
+        <div class="flex-shrink-0">
+          <img 
+            src={jugador.foto} 
+            alt={jugador.nombre}
+            class="w-48 h-48 rounded-full object-cover border-8 border-white/30 shadow-2xl"
+            onerror="this.src='/jugadores/fan.svg'; this.onerror=null;"
+          >
+        </div>
+        
+        <!-- Info Principal -->
+        <div class="flex-1 text-center lg:text-left">
+          <h1 class="text-5xl font-bold mb-4">{jugador.nombre}</h1>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+              <div class="text-2xl font-bold">{jugador.posicion || 'N/A'}</div>
+              <div class="text-sm opacity-80">Posición</div>
+            </div>
+            <div class="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+              <div class="text-2xl font-bold">{jugador.ovr || 0}</div>
+              <div class="text-sm opacity-80">OVR</div>
+            </div>
+            <div class="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+              <div class="text-2xl font-bold">{jugador.edad || 0}</div>
+              <div class="text-sm opacity-80">Años</div>
+            </div>
+            <div class="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+              <div class="text-2xl font-bold" data-valor-mercado>€{(jugador.valor_mercado || 0).toLocaleString('es-ES')}</div>
+              <div class="text-sm opacity-80">Valor</div>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <span class="bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-sm">
+              🏆 {jugador.equipo || 'Sin equipo'}
+            </span>
+            <span class="bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-sm" id="puntos-actuales">
+              ⚽ {jugador.puntos || 0} pts
+            </span>
+          </div>
+        </div>
+        
+        <!-- Botón Volver -->
+        <div class="flex-shrink-0">
+          <a href="/" class="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-lg transition-colors font-semibold backdrop-blur-sm">
+            ← Volver al Inicio
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid Principal -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Columna Izquierda: Stats y Gráfico -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- Estadísticas Generales -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">📊 Estadísticas Generales</h2>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-blue-50 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-blue-600" id="partidos-jugados">0</div>
+              <div class="text-sm text-gray-600">Partidos Jugados</div>
+            </div>
+            <div class="bg-green-50 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-green-600" id="goles-total">0</div>
+              <div class="text-sm text-gray-600">Goles Totales</div>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-purple-600" id="asistencias-total">0</div>
+              <div class="text-sm text-gray-600">Asistencias</div>
+            </div>
+            <div class="bg-yellow-50 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-yellow-600" id="puntos-promedio">0.0</div>
+              <div class="text-sm text-gray-600">Pts/Partido</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfico de Rendimiento -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">📈 Evolución de Puntos</h2>
+          <canvas id="rendimientoChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Gráfico de Valor de Mercado -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">💰 Evolución del Valor</h2>
+          <canvas id="valorChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Historial de Partidos -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">🗓️ Historial de Partidos</h2>
+          <div id="historial-partidos" class="space-y-3">
+            <!-- Se llenará dinámicamente -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Stats Detalladas -->
+      <div class="space-y-8">
+        
+        <!-- Rendimiento Detallado -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">🎯 Rendimiento</h2>
+          
+          <div class="space-y-4">
+            <!-- Puntos Totales -->
+            <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+              <span class="font-semibold text-gray-700">🏆 Puntos Totales</span>
+              <span class="font-bold text-blue-600" id="puntos-total">0</span>
+            </div>
+            
+            <!-- Mejor Partido -->
+            <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+              <span class="font-semibold text-gray-700">⭐ Mejor Partido</span>
+              <span class="font-bold text-green-600" id="mejor-partido">0 pts</span>
+            </div>
+            
+            <!-- Goles por Partido -->
+            <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+              <span class="font-semibold text-gray-700">⚽ Goles/Partido</span>
+              <span class="font-bold text-purple-600" id="goles-promedio">0.0</span>
+            </div>
+            
+            <!-- Asistencias por Partido -->
+            <div class="flex justify-between items-center p-3 bg-yellow-50 rounded-lg">
+              <span class="font-semibold text-gray-700">🎯 Asist./Partido</span>
+              <span class="font-bold text-yellow-600" id="asistencias-promedio">0.0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Disciplina -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">⚖️ Disciplina</h2>
+          
+          <div class="space-y-4">
+            <div class="flex justify-between items-center p-3 bg-yellow-50 rounded-lg">
+              <span class="font-semibold text-gray-700">🟨 Tarjetas Amarillas</span>
+              <span class="font-bold text-yellow-600" id="amarillas-total">0</span>
+            </div>
+            
+            <div class="flex justify-between items-center p-3 bg-red-50 rounded-lg">
+              <span class="font-semibold text-gray-700">🟥 Tarjetas Rojas</span>
+              <span class="font-bold text-red-600" id="rojas-total">0</span>
+            </div>
+            
+            <div class="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+              <span class="font-semibold text-gray-700">🩹 Lesiones</span>
+              <span class="font-bold text-orange-600" id="lesiones-total">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evolución de Valor -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">💰 Valor de Mercado</h2>
+          
+          <div class="text-center">
+            <div class="text-3xl font-bold text-green-600 mb-2" id="valor-actual" data-valor-mercado>
+              €{(jugador.valor_mercado || 0).toLocaleString('es-ES')}
+            </div>
+            <div class="text-sm text-gray-600 mb-4">Valor Actual</div>
+            
+            <div class="bg-gray-50 rounded-lg p-3">
+              <div class="text-sm text-gray-600 mb-1">Variación</div>
+              <div class="font-bold" id="variacion-valor">
+                <span class="text-gray-500">Sin cambios</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estado Físico -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">💪 Estado</h2>
+          
+          <div class="text-center">
+            <div class="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center text-4xl" id="estado-fisico">
+              ✅
+            </div>
+            <div class="font-semibold text-gray-700" id="estado-texto">
+              Disponible
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script define:vars={{ jugador }}>
+    document.addEventListener('DOMContentLoaded', async function() {
+      try {
+        console.log('=== PERFIL DE JUGADOR ===');
+        console.log('Jugador:', jugador?.nombre || 'No disponible');
+        
+        // Cargar datos actualizados del jugador dinámicamente
+        let jugadorActualizado = jugador;
+        try {
+          console.log('🔄 Cargando datos actualizados del jugador...');
+          const response = await fetch('/api/jugadores');
+          if (response.ok) {
+            const jugadoresActualizados = await response.json();
+            const jugadorEncontrado = jugadoresActualizados.find(j => j.nombre === jugador.nombre);
+            
+            if (jugadorEncontrado) {
+              jugadorActualizado = jugadorEncontrado;
+              console.log('✅ Datos del jugador actualizados:', {
+                valorAnterior: jugador.valor_mercado,
+                valorNuevo: jugadorActualizado.valor_mercado
+              });
+              
+              // Actualizar valor de mercado en la página
+              const valorElementos = document.querySelectorAll('[data-valor-mercado]');
+              valorElementos.forEach(elem => {
+                elem.textContent = `€${(jugadorActualizado.valor_mercado || 0).toLocaleString('es-ES')}`;
+              });
+              
+              // También actualizar el elemento con ID específico
+              const valorActualElem = document.getElementById('valor-actual');
+              if (valorActualElem) {
+                valorActualElem.textContent = `€${(jugadorActualizado.valor_mercado || 0).toLocaleString('es-ES')}`;
+              }
+              
+              // Actualizar en header también
+              const valorHeaderElem = document.querySelector('.text-2xl.font-bold');
+              if (valorHeaderElem && valorHeaderElem.textContent.includes('€')) {
+                valorHeaderElem.textContent = `€${(jugadorActualizado.valor_mercado || 0).toLocaleString('es-ES')}`;
+              }
+            }
+          } else {
+            console.warn('⚠️ No se pudo cargar datos actualizados del jugador');
+          }
+        } catch (error) {
+          console.error('❌ Error al cargar datos actualizados:', error);
+        }
+
+        if (!jugador || !jugador.nombre) {
+          console.error('Error: Datos del jugador no disponibles');
+          return;
+        }
+
+        // Cargar estadísticas del servidor (con fallback a localStorage)
+        let estadisticasJugadores = {};
+        try {
+          console.log('📈 Cargando estadísticas del servidor...');
+          const responseEstadisticas = await fetch('/api/estadisticas-jugadores');
+          if (responseEstadisticas.ok) {
+            estadisticasJugadores = await responseEstadisticas.json();
+            console.log('✅ Estadísticas cargadas del servidor');
+          } else {
+            throw new Error('Error al cargar del servidor');
+          }
+        } catch (error) {
+          console.warn('⚠️ Error al cargar estadísticas del servidor, usando localStorage:', error);
+          try {
+            estadisticasJugadores = JSON.parse(localStorage.getItem('estadisticasJugadores') || '{}');
+          } catch (e) {
+            console.warn('Error al cargar estadísticas del localStorage:', e);
+            estadisticasJugadores = {};
+          }
+        }
+
+        const estadisticasJugador = estadisticasJugadores[jugador.nombre] || {
+          partidosJugados: 0,
+          puntosTotal: 0,
+          golesTotal: 0,
+          asistenciasTotal: 0,
+          tarjetasAmarillasTotal: 0,
+          tarjetasRojasTotal: 0,
+          lesionesTotal: 0,
+          historial: []
+        };
+
+        console.log('Estadísticas cargadas:', estadisticasJugador);
+
+        // Actualizar estadísticas generales de forma segura
+        const elementos = {
+          'partidos-jugados': estadisticasJugador.partidosJugados || 0,
+          'goles-total': estadisticasJugador.golesTotal || 0,
+          'asistencias-total': estadisticasJugador.asistenciasTotal || 0,
+          'puntos-total': estadisticasJugador.puntosTotal || 0,
+          'amarillas-total': estadisticasJugador.tarjetasAmarillasTotal || 0,
+          'rojas-total': estadisticasJugador.tarjetasRojasTotal || 0,
+          'lesiones-total': estadisticasJugador.lesionesTotal || 0
+        };
+
+        Object.entries(elementos).forEach(([id, valor]) => {
+          const elemento = document.getElementById(id);
+          if (elemento) {
+            elemento.textContent = valor;
+          }
+        });
+
+        // Calcular promedios
+        const partidosJugados = estadisticasJugador.partidosJugados || 0;
+        if (partidosJugados > 0) {
+          const puntosPromedio = (estadisticasJugador.puntosTotal / partidosJugados).toFixed(1);
+          const golesPromedio = (estadisticasJugador.golesTotal / partidosJugados).toFixed(1);
+          const asistenciasPromedio = (estadisticasJugador.asistenciasTotal / partidosJugados).toFixed(1);
+
+          const elem1 = document.getElementById('puntos-promedio');
+          const elem2 = document.getElementById('goles-promedio');
+          const elem3 = document.getElementById('asistencias-promedio');
+          
+          if (elem1) elem1.textContent = puntosPromedio;
+          if (elem2) elem2.textContent = golesPromedio;
+          if (elem3) elem3.textContent = asistenciasPromedio;
+        }
+
+        // Mejor partido
+        const mejorPartido = estadisticasJugador.historial && estadisticasJugador.historial.length > 0 
+          ? Math.max(...estadisticasJugador.historial.map(p => (p && p.puntos) || 0))
+          : 0;
+        const mejorElem = document.getElementById('mejor-partido');
+        if (mejorElem) mejorElem.textContent = `${mejorPartido} pts`;
+
+        // Crear gráfico de rendimiento simple
+        const ctx = document.getElementById('rendimientoChart');
+        if (ctx && window.Chart) {
+          try {
+            const historial = estadisticasJugador.historial || [];
+            const historialOrdenado = historial
+              .slice()
+              .sort((a, b) => {
+                if (!a || !b) return 0;
+                return new Date(a.fecha || 0) - new Date(b.fecha || 0);
+              })
+              .slice(-10);
+
+            const labels = historialOrdenado.map((_, index) => `Partido ${index + 1}`);
+            const puntosData = historialOrdenado.map(p => (p && p.puntos) || 0);
+
+            new Chart(ctx.getContext('2d'), {
+              type: 'line',
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: 'Puntos',
+                  data: puntosData,
+                  borderColor: 'rgb(59, 130, 246)',
+                  backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                  tension: 0.3
+                }]
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: { position: 'top' },
+                  title: {
+                    display: true,
+                    text: 'Rendimiento en los Últimos Partidos'
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    title: {
+                      display: true,
+                      text: 'Puntos'
+                    }
+                  }
+                }
+              }
+            });
+          } catch (error) {
+            console.error('Error al crear el gráfico:', error);
+          }
+        }
+
+        // Crear gráfico de evolución de valor de mercado
+        const ctxValor = document.getElementById('valorChart');
+        if (ctxValor && window.Chart) {
+          try {
+            // Obtener historial de valores del servidor (con fallback a localStorage)
+            let historialValores = {};
+            let valoresJugador = [];
+            
+            try {
+              console.log('💰 Cargando historial de valores del servidor...');
+              const responseHistorial = await fetch('/api/historial-valores');
+              if (responseHistorial.ok) {
+                historialValores = await responseHistorial.json();
+                valoresJugador = historialValores[jugador.nombre] || [];
+                console.log('✅ Historial de valores cargado del servidor');
+              } else {
+                throw new Error('Error al cargar historial del servidor');
+              }
+            } catch (error) {
+              console.warn('⚠️ Error al cargar historial del servidor, usando localStorage:', error);
+              try {
+                historialValores = JSON.parse(localStorage.getItem('historialValores') || '{}');
+                valoresJugador = historialValores[jugador.nombre] || [];
+              } catch (e) {
+                console.warn('Error al cargar historial del localStorage:', e);
+                valoresJugador = [];
+              }
+            }
+            
+            if (valoresJugador.length === 0) {
+              // Si no hay historial, agregar valor actual
+              valoresJugador.push({
+                fecha: new Date().toISOString(),
+                valor: jugador.valor_mercado || 0
+              });
+            }
+
+            const labelsValor = valoresJugador.map((v, index) => 
+              index === 0 ? 'Inicial' : `Cambio ${index}`
+            );
+            const valoresData = valoresJugador.map(v => (v.valor || 0) / 1000000); // Convertir a millones
+
+            new Chart(ctxValor.getContext('2d'), {
+              type: 'line',
+              data: {
+                labels: labelsValor,
+                datasets: [{
+                  label: 'Valor (M€)',
+                  data: valoresData,
+                  borderColor: 'rgb(34, 197, 94)',
+                  backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                  tension: 0.3,
+                  fill: true
+                }]
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: { position: 'top' },
+                  title: {
+                    display: true,
+                    text: 'Evolución del Valor de Mercado'
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: false,
+                    title: {
+                      display: true,
+                      text: 'Valor (Millones €)'
+                    },
+                    ticks: {
+                      callback: function(value) {
+                        return '€' + value.toFixed(1) + 'M';
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          } catch (error) {
+            console.error('Error al crear el gráfico de valor:', error);
+          }
+        }
+
+        // Mostrar historial de partidos
+        const historialContainer = document.getElementById('historial-partidos');
+        if (historialContainer) {
+          const historial = estadisticasJugador.historial || [];
+          
+          if (historial.length === 0) {
+            historialContainer.innerHTML = `
+              <div class="text-center text-gray-500 py-8">
+                <div class="text-4xl mb-4">📊</div>
+                <p>No hay partidos registrados aún.</p>
+              </div>
+            `;
+          } else {
+            const historialReciente = historial
+              .slice()
+              .sort((a, b) => {
+                if (!a || !b) return 0;
+                return new Date(b.fecha || 0) - new Date(a.fecha || 0);
+              })
+              .slice(0, 5);
+
+            historialContainer.innerHTML = historialReciente.map(partido => {
+              if (!partido) return '';
+              
+              const fecha = new Date(partido.fecha || Date.now()).toLocaleDateString('es-ES');
+              const lesionIcon = partido.lesion ? '🩹' : '';
+              const tarjetaIcon = (partido.tarjetasRojas || 0) > 0 ? '🟥' : 
+                                (partido.tarjetasAmarillas || 0) > 0 ? '🟨' : '';
+              
+              return `
+                <div class="bg-gray-50 rounded-lg p-4 flex justify-between items-center">
+                  <div class="flex-1">
+                    <div class="font-semibold">${fecha}</div>
+                    <div class="text-sm text-gray-600">
+                      ⚽ ${partido.goles || 0} goles • 🎯 ${partido.asistencias || 0} asistencias
+                      ${lesionIcon} ${tarjetaIcon}
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-lg font-bold text-blue-600">${partido.puntos || 0}</div>
+                    <div class="text-xs text-gray-500">pts</div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          }
+        }
+
+      } catch (error) {
+        console.error('Error en el script del perfil:', error);
+      }
+    });
+  </script>
+</BaseLayout>

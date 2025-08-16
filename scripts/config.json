@@ -1,0 +1,14 @@
+{
+  "email": "karutacard1@gmail.com",
+  "password": "Biwenger123",
+  "modoDemo": false,
+  "intervalos": {
+    "cada15min": false,
+    "cada30min": false,
+    "cadaHora": true,
+    "cada6horas": false,
+    "diario": true
+  },
+  "ultimaActualizacion": null,
+  "totalActualizaciones": 0
+}

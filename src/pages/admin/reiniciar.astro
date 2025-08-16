@@ -1,0 +1,298 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Reiniciar Sistema - Administración">
+  <div class="max-w-4xl mx-auto px-6 py-8">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-red-600 to-orange-600 rounded-2xl shadow-xl p-8 text-white mb-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-bold mb-2">🔄 Reiniciar Sistema</h1>
+          <p class="text-red-100">Reinicia completamente todos los puntos, goles y estadísticas de jugadores</p>
+        </div>
+        <a href="/admin" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">
+          ← Volver al Panel
+        </a>
+      </div>
+    </div>
+
+    <!-- Advertencias -->
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 mb-8">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-yellow-700">
+            <strong>⚠️ ADVERTENCIA:</strong> Esta acción reiniciará TODOS los puntos y estadísticas de jugadores a cero. 
+            Esta operación NO se puede deshacer (excepto restaurando desde backup).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información de lo que se reiniciará -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">📋 Que se reiniciará:</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">📊 Archivo JSON (players.json)</h3>
+          <ul class="text-sm text-gray-600 space-y-1">
+            <li>✅ Todos los puntos → 0</li>
+            <li>✅ Todos los goles → 0</li>
+            <li>✅ Todas las asistencias → 0</li>
+            <li>✅ Todas las tarjetas → 0</li>
+            <li>✅ Partidos jugados → 0</li>
+            <li>✅ Se crea backup automático</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">💾 LocalStorage (Automático)</h3>
+          <ul class="text-sm text-gray-600 space-y-1">
+            <li>✅ Estadísticas por jornada</li>
+            <li>✅ Historial de partidos</li>
+            <li>✅ Alineaciones guardadas</li>
+            <li>✅ Estado de lesiones/sanciones</li>
+            <li>✅ Lineups y puntos de equipos</li>
+            <li class="text-green-600 font-semibold">✅ Se limpia automáticamente</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón de reinicio -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <div class="text-center">
+        <button id="btnReiniciar" class="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg shadow-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          🔄 Reiniciar Sistema Completo
+        </button>
+        <p class="text-sm text-gray-500 mt-2">Haz clic para iniciar el proceso de reinicio</p>
+      </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="modalConfirmacion" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+      <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">¿Estás completamente seguro?</h3>
+          <div class="mt-2 px-7 py-3">
+            <p class="text-sm text-gray-500">
+              Esto reiniciará TODOS los puntos y estadísticas de TODOS los jugadores a cero. 
+              Esta acción no se puede deshacer.
+            </p>
+          </div>
+          <div class="items-center px-4 py-3">
+            <button id="confirmarReinicio" class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
+              Sí, Reiniciar Todo
+            </button>
+            <button id="cancelarReinicio" class="mt-3 px-4 py-2 bg-gray-300 text-gray-800 text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div id="resultados" class="mt-8 hidden">
+      <!-- Se llenará dinámicamente -->
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const btnReiniciar = document.getElementById('btnReiniciar');
+      const modal = document.getElementById('modalConfirmacion');
+      const confirmarBtn = document.getElementById('confirmarReinicio');
+      const cancelarBtn = document.getElementById('cancelarReinicio');
+      const resultadosDiv = document.getElementById('resultados');
+
+      // Mostrar modal de confirmación
+      btnReiniciar.addEventListener('click', function() {
+        modal.classList.remove('hidden');
+      });
+
+      // Cancelar reinicio
+      cancelarBtn.addEventListener('click', function() {
+        modal.classList.add('hidden');
+      });
+
+      // Confirmar y ejecutar reinicio
+      confirmarBtn.addEventListener('click', async function() {
+        modal.classList.add('hidden');
+        btnReiniciar.disabled = true;
+        btnReiniciar.textContent = '🔄 Reiniciando...';
+        
+        try {
+          console.log('🔄 Iniciando reinicio del sistema...');
+          
+          const response = await fetch('/api/reiniciar-sistema', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          const resultado = await response.json();
+          
+          if (resultado.success) {
+            console.log('✅ Sistema reiniciado exitosamente');
+            
+            // LIMPIAR LOCALSTORAGE AUTOMÁTICAMENTE
+            console.log('🧹 Limpiando localStorage automáticamente...');
+            limpiarLocalStorageCompleto();
+            
+            mostrarResultadoExito(resultado);
+          } else {
+            console.error('❌ Error al reiniciar sistema:', resultado);
+            mostrarResultadoError(resultado);
+          }
+        } catch (error) {
+          console.error('❌ Error de conexión:', error);
+          mostrarResultadoError({ error: 'Error de conexión', detalles: error.message });
+        } finally {
+          btnReiniciar.disabled = false;
+          btnReiniciar.textContent = '🔄 Reiniciar Sistema Completo';
+        }
+      });
+
+      function mostrarResultadoExito(resultado) {
+        resultadosDiv.innerHTML = `
+          <div class="bg-green-50 border-l-4 border-green-400 p-6">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-lg font-medium text-green-800">✅ Sistema reiniciado exitosamente</h3>
+                <div class="mt-2 text-sm text-green-700">
+                  <p><strong>Jugadores reiniciados:</strong> ${resultado.detalles.jugadoresReiniciados}</p>
+                  <p><strong>Backup creado:</strong> ${resultado.detalles.backupCreado}</p>
+                  <p><strong>Fecha:</strong> ${new Date(resultado.detalles.fechaReinicio).toLocaleString('es-ES')}</p>
+                </div>
+                <div class="mt-4 p-4 bg-green-50 border border-green-200 rounded">
+                  <h4 class="font-semibold text-green-800 mb-2">✅ LocalStorage limpiado automáticamente</h4>
+                  <div class="text-sm text-green-700 space-y-1">
+                    <p>• Alineaciones guardadas eliminadas</p>
+                    <p>• Estadísticas por jornada eliminadas</p>
+                    <p>• Estado de lesiones/sanciones eliminado</p>
+                    <p>• Historial de partidos eliminado</p>
+                    <p>• Sistema completamente reiniciado</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        resultadosDiv.classList.remove('hidden');
+      }
+
+      function mostrarResultadoError(resultado) {
+        resultadosDiv.innerHTML = `
+          <div class="bg-red-50 border-l-4 border-red-400 p-6">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-lg font-medium text-red-800">❌ Error al reiniciar sistema</h3>
+                <div class="mt-2 text-sm text-red-700">
+                  <p><strong>Error:</strong> ${resultado.error}</p>
+                  ${resultado.detalles ? `<p><strong>Detalles:</strong> ${resultado.detalles}</p>` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        resultadosDiv.classList.remove('hidden');
+      }
+      
+      // Función para limpiar completamente el localStorage
+      function limpiarLocalStorageCompleto() {
+        console.log('🧹 Iniciando limpieza completa del localStorage...');
+        
+        // Lista de keys que hay que limpiar
+        const keysALimpiar = [
+          // Estadísticas de jugadores
+          'estadisticasJugadores',
+          'estadisticasPartidos',
+          
+          // Jornadas por equipo
+          'jornadas_Nike FC',
+          'jornadas_Adidas FC', 
+          'jornadas_Puma FC',
+          'jornadas_Kappa FC',
+          
+          // Estado de jugadores por equipo
+          'estado_jugadores_Nike FC',
+          'estado_jugadores_Adidas FC',
+          'estado_jugadores_Puma FC',
+          'estado_jugadores_Kappa FC'
+        ];
+        
+        let itemsEliminados = 0;
+        
+        // Eliminar keys específicas
+        keysALimpiar.forEach(key => {
+          if (localStorage.getItem(key)) {
+            localStorage.removeItem(key);
+            console.log(`🗑️ Eliminado: ${key}`);
+            itemsEliminados++;
+          }
+        });
+        
+        // También buscar y eliminar cualquier key que contenga patrones relacionados
+        const patronesBuscar = ['jornadas_', 'estado_jugadores_', 'estadisticas'];
+        const todasLasKeys = Object.keys(localStorage);
+        
+        todasLasKeys.forEach(key => {
+          const debeEliminar = patronesBuscar.some(patron => key.includes(patron));
+          if (debeEliminar && !keysALimpiar.includes(key)) {
+            localStorage.removeItem(key);
+            console.log(`🗑️ Eliminado (patrón): ${key}`);
+            itemsEliminados++;
+          }
+        });
+        
+        console.log(`✅ LocalStorage limpiado completamente. Items eliminados: ${itemsEliminados}`);
+        
+        // Mostrar notificación visual
+        mostrarNotificacionLimpieza(itemsEliminados);
+      }
+      
+      // Función para mostrar notificación de limpieza
+      function mostrarNotificacionLimpieza(itemsEliminados) {
+        // Crear un elemento de notificación temporal
+        const notificacion = document.createElement('div');
+        notificacion.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-all';
+        notificacion.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>localStorage limpiado (${itemsEliminados} items)</span>
+          </div>
+        `;
+        
+        document.body.appendChild(notificacion);
+        
+        // Eliminar la notificación después de 3 segundos
+        setTimeout(() => {
+          notificacion.remove();
+        }, 3000);
+      }
+    });
+  </script>
+</BaseLayout>

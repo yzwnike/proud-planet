@@ -1,0 +1,358 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import jugadores from "../../data/players.json";
+
+export async function getStaticPaths() {
+  const equipos = ["Nike FC", "Adidas FC", "Puma FC", "Kappa FC"];
+  return equipos.map((equipo) => ({
+    params: { nombre: equipo },
+    props: { equipo }
+  }));
+}
+
+const { nombre } = Astro.params;
+const jugadoresEquipo = jugadores.filter(j => j.equipo === nombre);
+---
+
+<BaseLayout title={`${nombre} - Lineup`}>
+  <div class="max-w-full mx-auto px-4">
+    <!-- Header -->
+    <div class="bg-blue-600 rounded-xl shadow-lg p-6 text-white mb-6">
+      <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold">⚽ {nombre}</h1>
+        <a href="/lineups" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">
+          ← Volver
+        </a>
+      </div>
+    </div>
+
+    <!-- Selector de Alineación ARRIBA -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-200">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">🎯 Seleccionar Formación</h2>
+      <div class="flex justify-center space-x-4 flex-wrap gap-2">
+        <button id="btn-442" class="formation-btn bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors font-bold">
+          4-4-2
+        </button>
+        <button id="btn-433" class="formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold">
+          4-3-3
+        </button>
+        <button id="btn-343" class="formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold">
+          3-4-3
+        </button>
+        <button id="btn-451" class="formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold">
+          4-5-1
+        </button>
+        <button id="btn-352" class="formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold">
+          3-5-2
+        </button>
+      </div>
+      <p class="text-center text-gray-600 mt-4">Formación actual: <span id="current-formation" class="font-bold text-blue-600">4-4-2</span></p>
+    </div>
+
+    <!-- Layout Principal -->
+    <div class="flex flex-row gap-6 min-h-screen">
+      
+      <!-- CAMPO GRANDE -->
+      <div class="flex-1 w-3/4">
+        <div class="bg-green-500 rounded-3xl shadow-2xl p-6 min-h-screen relative" style="height: calc(100vh - 280px);">
+          <!-- Header del Campo -->
+          <div class="text-center mb-4">
+            <h2 class="text-white text-4xl font-bold">⚽ CAMPO DE JUEGO ⚽</h2>
+            <p class="text-green-100 text-lg mt-2">Arrastra jugadores aquí</p>
+          </div>
+          
+          <!-- Líneas del campo -->
+          <div class="absolute inset-8 border-6 border-white rounded-2xl bg-green-600/40">
+            <!-- Línea central -->
+            <div class="absolute top-1/2 left-0 right-0 h-2 bg-white/90"></div>
+            <!-- Círculo central -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 border-4 border-white rounded-full"></div>
+            <!-- Porterías -->
+            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 w-40 h-8 border-4 border-white rounded-t-2xl bg-white/30"></div>
+            <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-40 h-8 border-4 border-white rounded-b-2xl bg-white/30"></div>
+          </div>
+
+          <!-- CONTENEDOR DE SLOTS -->
+          <div id="fieldContainer" class="absolute inset-8">
+            <!-- DELANTEROS -->
+            <div id="forwards-line" class="absolute left-0 right-0 flex items-center justify-center" style="top: 15%; transform: translateY(-50%);">
+              <div id="forwards-grid" class="grid place-items-center w-full gap-32" style="grid-template-columns: repeat(2, 1fr);">
+                <!-- Los slots se crearán dinámicamente -->
+              </div>
+            </div>
+            
+            <!-- CENTROCAMPOS -->
+            <div id="midfield-line" class="absolute left-0 right-0 flex items-center justify-center" style="top: 40%; transform: translateY(-50%);">
+              <div id="midfield-grid" class="grid place-items-center w-full gap-24" style="grid-template-columns: repeat(4, 1fr);">
+                <!-- Los slots se crearán dinámicamente -->
+              </div>
+            </div>
+            
+            <!-- DEFENSAS -->
+            <div id="defense-line" class="absolute left-0 right-0 flex items-center justify-center" style="top: 65%; transform: translateY(-50%);">
+              <div id="defense-grid" class="grid place-items-center w-full gap-24" style="grid-template-columns: repeat(4, 1fr);">
+                <!-- Los slots se crearán dinámicamente -->
+              </div>
+            </div>
+            
+            <!-- PORTERO -->
+            <div id="goalkeeper-line" class="absolute left-0 right-0 flex items-center justify-center" style="top: 85%; transform: translateY(-50%);">
+              <div id="goalkeeper-grid" class="grid place-items-center w-full" style="grid-template-columns: 1fr;">
+                <!-- El slot del portero se creará dinámicamente -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LISTA DE JUGADORES -->
+      <div class="w-1/4 min-w-[320px]">
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 sticky top-4">
+          <div class="p-4 bg-gray-50 rounded-t-2xl border-b">
+            <h3 class="text-xl font-bold text-gray-900">🏃‍♂️ {nombre}</h3>
+            <p class="text-sm text-gray-500">{jugadoresEquipo.length} jugadores disponibles</p>
+          </div>
+          
+          <div class="p-4 space-y-3 max-h-[calc(100vh-200px)] overflow-y-auto" id="playersList">
+            {jugadoresEquipo.map(jugador => (
+              <div class="player-card bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg p-3 cursor-grab active:cursor-grabbing transition-all transform hover:-translate-y-1 hover:shadow-lg"
+                   draggable="true"
+                   data-player={JSON.stringify(jugador)}>
+                <div class="flex items-center space-x-3">
+                  <img src={jugador.foto} alt={jugador.nombre} 
+                       class="w-12 h-12 rounded-full object-cover border-2 border-gray-300 shadow-md"
+                       onerror="this.src='https://via.placeholder.com/48/cccccc/666666?text=?'">
+                  <div class="flex-1 min-w-0">
+                    <div class="text-sm font-bold text-gray-900 truncate">{jugador.nombre}</div>
+                    <div class="text-xs text-gray-600 font-medium">{jugador.posicion} • OVR: {jugador.ovr}</div>
+                    <div class="text-xs text-green-600 font-bold">€{jugador.valor_mercado.toLocaleString('es-ES')}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script define:vars={{ jugadoresEquipo, nombre }}>
+    console.log(`=== INICIANDO ${nombre} ===`);
+    
+    // Variables globales
+    let currentFormation = '4-4-2';
+    let playersOnField = new Map();
+    
+    // Configuraciones de formaciones
+    const formations = {
+      '4-4-2': { forwards: 2, midfield: 4, defense: 4, goalkeeper: 1 },
+      '4-3-3': { forwards: 3, midfield: 3, defense: 4, goalkeeper: 1 },
+      '3-4-3': { forwards: 3, midfield: 4, defense: 3, goalkeeper: 1 },
+      '4-5-1': { forwards: 1, midfield: 5, defense: 4, goalkeeper: 1 },
+      '3-5-2': { forwards: 2, midfield: 5, defense: 3, goalkeeper: 1 }
+    };
+
+    // Crear slots para una línea
+    function createSlots(lineId, gridId, count, position) {
+      const grid = document.getElementById(gridId);
+      grid.innerHTML = '';
+      
+      // Configurar grid
+      grid.style.gridTemplateColumns = `repeat(${count}, 1fr)`;
+      
+      // Configurar gap según número de jugadores - MÁS PEQUEÑOS para que quepan
+      const gaps = { 1: '0px', 2: '40px', 3: '30px', 4: '20px', 5: '15px' };
+      grid.style.gap = gaps[count] || '10px';
+      
+      // Crear slots
+      for (let i = 1; i <= count; i++) {
+        const slot = document.createElement('div');
+        slot.id = `slot-${position}-${i}`;
+        
+        // Tamaños MÁS PEQUEÑOS que quepan en el campo
+        const sizes = {
+          1: 'w-24 h-24 text-xl', // GRANDE para 1 jugador
+          2: 'w-20 h-20 text-lg', // MEDIANO para 2
+          3: 'w-18 h-18 text-base', // NORMAL para 3
+          4: 'w-16 h-16 text-sm',  // PEQUEÑO para 4 
+          5: 'w-14 h-14 text-xs'   // MUY PEQUEÑO para 5
+        };
+        
+        const size = sizes[count] || 'w-40 h-40 text-xl';
+        
+        // Colores por posición
+        const colors = {
+          'DC': 'border-red-400 bg-red-500/50 hover:bg-red-400/70 text-red-100',
+          'MC': 'border-green-400 bg-green-500/50 hover:bg-green-400/70 text-green-100',
+          'DFC': 'border-blue-400 bg-blue-500/50 hover:bg-blue-400/70 text-blue-100',
+          'POR': 'border-yellow-400 bg-yellow-500/50 hover:bg-yellow-400/70 text-yellow-900'
+        };
+        
+        slot.className = `${size} ${colors[position]} border-4 border-dashed rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-110 font-bold drop-shadow-2xl`;
+        slot.innerHTML = `${position}`;
+        
+        // Eventos drag & drop
+        slot.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          slot.classList.add('ring-4', 'ring-white', 'scale-125');
+        });
+        
+        slot.addEventListener('dragleave', () => {
+          slot.classList.remove('ring-4', 'ring-white', 'scale-125');
+        });
+        
+        slot.addEventListener('drop', (e) => {
+          e.preventDefault();
+          slot.classList.remove('ring-4', 'ring-white', 'scale-125');
+          
+          const playerData = JSON.parse(e.dataTransfer.getData('text/plain'));
+          console.log(`Colocando ${playerData.nombre} en ${slot.id}`);
+          
+          // Verificar posición compatible
+          const compatible = {
+            'POR': ['POR'],
+            'DFC': ['DFC', 'DC'],
+            'DC': ['DC', 'DFC', 'MC'],
+            'MC': ['MC', 'DC']
+          };
+          
+          if (!compatible[position].includes(playerData.posicion)) {
+            alert(`${playerData.nombre} no puede jugar en ${position}`);
+            return;
+          }
+          
+          placePlayer(playerData, slot);
+        });
+        
+        slot.addEventListener('click', () => {
+          removePlayer(slot.id);
+        });
+        
+        grid.appendChild(slot);
+      }
+    }
+
+    // Colocar jugador en slot
+    function placePlayer(player, slot) {
+      const slotSize = slot.className.includes('w-24') ? 'w-24 h-24' :
+                      slot.className.includes('w-20') ? 'w-20 h-20' :
+                      slot.className.includes('w-18') ? 'w-18 h-18' :
+                      slot.className.includes('w-16') ? 'w-16 h-16' : 'w-14 h-14';
+      
+      const imgSize = slot.className.includes('w-24') ? 'w-20 h-20' :
+                      slot.className.includes('w-20') ? 'w-16 h-16' :
+                      slot.className.includes('w-18') ? 'w-14 h-14' :
+                      slot.className.includes('w-16') ? 'w-12 h-12' : 'w-10 h-10';
+      
+      slot.innerHTML = `
+        <img src="${player.foto}" alt="${player.nombre}" 
+             class="${imgSize} rounded-full object-cover border-4 border-white shadow-2xl"
+             onerror="this.src='https://via.placeholder.com/200/ffffff/333333?text=${player.nombre.charAt(0)}'">
+        <div class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 text-white text-xs font-bold bg-black/90 px-1 py-0.5 rounded whitespace-nowrap shadow-xl">
+          ${player.nombre.split(' ')[0]}
+        </div>
+        <div class="absolute -top-1 -right-1 bg-white/90 text-black text-xs font-bold px-1 py-0.5 rounded-full shadow-lg">
+          ${player.ovr}
+        </div>
+      `;
+      
+      slot.className = `${slotSize} border-4 border-solid border-white rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center cursor-pointer transition-all relative shadow-2xl hover:shadow-3xl hover:scale-105`;
+      
+      playersOnField.set(slot.id, player);
+      
+      // Ocultar de la lista
+      const playerCard = document.querySelector(`[data-player*='${player.nombre}']`);
+      if (playerCard) playerCard.style.display = 'none';
+    }
+
+    // Quitar jugador del slot
+    function removePlayer(slotId) {
+      const player = playersOnField.get(slotId);
+      if (!player) return;
+      
+      playersOnField.delete(slotId);
+      
+      // Mostrar en lista
+      const playerCard = document.querySelector(`[data-player*='${player.nombre}']`);
+      if (playerCard) playerCard.style.display = 'block';
+      
+      // Regenerar formación
+      setupFormation(currentFormation);
+    }
+
+    // Configurar formación
+    function setupFormation(formation) {
+      console.log(`🔧 Configurando formación: ${formation}`);
+      const config = formations[formation];
+      
+      // Crear slots para cada línea
+      createSlots('forwards-line', 'forwards-grid', config.forwards, 'DC');
+      createSlots('midfield-line', 'midfield-grid', config.midfield, 'MC');
+      createSlots('defense-line', 'defense-grid', config.defense, 'DFC');
+      createSlots('goalkeeper-line', 'goalkeeper-grid', config.goalkeeper, 'POR');
+      
+      currentFormation = formation;
+      document.getElementById('current-formation').textContent = formation;
+      
+      console.log(`✅ Formación ${formation} configurada`);
+    }
+
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🚀 Inicializando sistema...');
+      
+      // Configurar formación inicial
+      setupFormation('4-4-2');
+      
+      // Configurar drag & drop de jugadores
+      document.querySelectorAll('.player-card').forEach(card => {
+        card.addEventListener('dragstart', (e) => {
+          const playerData = card.getAttribute('data-player');
+          e.dataTransfer.setData('text/plain', playerData);
+          card.classList.add('opacity-50');
+        });
+        
+        card.addEventListener('dragend', () => {
+          card.classList.remove('opacity-50');
+        });
+      });
+      
+      // Configurar botones de formación
+      document.getElementById('btn-442').addEventListener('click', () => changeFormation('4-4-2', 'btn-442'));
+      document.getElementById('btn-433').addEventListener('click', () => changeFormation('4-3-3', 'btn-433'));
+      document.getElementById('btn-343').addEventListener('click', () => changeFormation('3-4-3', 'btn-343'));
+      document.getElementById('btn-451').addEventListener('click', () => changeFormation('4-5-1', 'btn-451'));
+      document.getElementById('btn-352').addEventListener('click', () => changeFormation('3-5-2', 'btn-352'));
+      
+      console.log('✅ Sistema iniciado correctamente');
+    });
+    
+    // Cambiar formación
+    function changeFormation(formation, buttonId) {
+      console.log(`🔄 Cambiando a formación: ${formation}`);
+      
+      // Limpiar campo
+      playersOnField.clear();
+      document.querySelectorAll('.player-card').forEach(card => {
+        card.style.display = 'block';
+      });
+      
+      // Configurar nueva formación
+      setupFormation(formation);
+      
+      // Actualizar botones
+      document.querySelectorAll('.formation-btn').forEach(btn => {
+        btn.className = 'formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold';
+      });
+      document.getElementById(buttonId).className = 'formation-btn bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors font-bold';
+      
+      console.log(`✅ Cambio a ${formation} completado`);
+    }
+  </script>
+
+  <style>
+    .player-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+  </style>
+</BaseLayout>

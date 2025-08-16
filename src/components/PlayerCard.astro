@@ -1,16 +1,95 @@
 ---
 const { jugador } = Astro.props;
-const variacionColor = jugador.variacion > 0 ? "text-green-600" :
-                       jugador.variacion < 0 ? "text-red-600" : "text-gray-500";
-                       ---
 
-                       <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-                         <img src={jugador.foto} alt={jugador.nombre} class="w-24 h-24 rounded-full object-cover mb-3" />
-                           <h3 class="text-lg font-bold">{jugador.nombre}</h3>
-                             <p class="text-sm text-gray-500">{jugador.posicion} — {jugador.edad} años</p>
-                               <p class="mt-2 text-yellow-600 font-semibold">{jugador.puntos} pts</p>
-                                 <p class="mt-1">€{jugador.valor_mercado.toLocaleString()}</p>
-                                   <p class={`mt-1 ${variacionColor}`}>
-                                       {jugador.variacion >= 0 ? "+" : ""}{(jugador.variacion / 1000000).toFixed(1)}M
-                                         </p>
-                                         </div>
+// Validar que el jugador existe y tiene las propiedades necesarias
+if (!jugador) {
+  throw new Error('No se proporcionó información del jugador');
+}
+
+// Asegurar valores por defecto para propiedades que podrían ser undefined
+const playerData = {
+  nombre: jugador.nombre || 'Jugador Desconocido',
+  equipo: jugador.equipo || 'Sin Equipo',
+  posicion: jugador.posicion || 'MC',
+  foto: jugador.foto || '/jugadores/fan.svg',
+  edad: jugador.edad || 0,
+  puntos: jugador.puntos || 0,
+  valor_mercado: jugador.valor_mercado || 0,
+  variacion: jugador.variacion || 0,
+  ovr: jugador.ovr || 0
+};
+
+const variacionColor = playerData.variacion > 0 ? "text-green-600" :
+                       playerData.variacion < 0 ? "text-red-600" : "text-gray-500";
+
+// Función para formatear números con puntos como separadores de miles
+function formatearNumero(numero) {
+  if (!numero || isNaN(numero)) return "0";
+  return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+                       
+const equipoColors = {
+  "Nike FC": "border-orange-500 bg-gradient-to-br from-orange-50 to-orange-100",
+  "Adidas FC": "border-gray-800 bg-gradient-to-br from-gray-50 to-gray-100",
+  "Puma FC": "border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100",
+  "Kappa FC": "border-purple-500 bg-gradient-to-br from-purple-50 to-purple-100"
+};
+
+const posicionColors = {
+  "POR": "bg-yellow-100 text-yellow-800",
+  "DFC": "bg-blue-100 text-blue-800",
+  "DC": "bg-green-100 text-green-800",
+  "MC": "bg-purple-100 text-purple-800"
+};
+---
+
+<a href={`/jugador/${playerData.nombre.replace(/\s+/g, '-').toLowerCase()}`} class="block">
+<div class={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border-2 ${equipoColors[playerData.equipo] || 'border-gray-500 bg-gradient-to-br from-gray-50 to-gray-100'} hover:scale-[1.02] group relative cursor-pointer`}>
+  <!-- OVR Badge in corner -->
+  <div class="absolute top-2 right-2 bg-gray-800 text-white px-2 py-1 rounded-full text-xs font-bold shadow-md">
+    {playerData.ovr}
+  </div>
+  
+  <!-- Header with team info -->
+  <div class="flex justify-between items-center mb-4">
+    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">{playerData.equipo}</span>
+    <span class={`px-3 py-1 rounded-full text-xs font-semibold ${posicionColors[playerData.posicion] || 'bg-gray-100 text-gray-800'}`}>
+      {playerData.posicion}
+    </span>
+  </div>
+  
+  <!-- Player Image and Name -->
+  <div class="flex flex-col items-center mb-4">
+    <img 
+      src={playerData.foto} 
+      alt={playerData.nombre} 
+      class="w-20 h-20 rounded-full object-cover mb-3 border-4 border-white shadow-md group-hover:scale-110 transition-transform duration-300" 
+      onerror="this.src='/jugadores/fan.svg'; this.onerror=null;"
+    />
+    <h3 class="text-lg font-bold text-gray-900 text-center">{playerData.nombre}</h3>
+    <p class="text-sm text-gray-600">{playerData.edad} años</p>
+  </div>
+  
+  <!-- Stats -->
+  <div class="space-y-3">
+    <!-- Points -->
+    <div class="flex items-center justify-between bg-amber-50 rounded-lg p-3 border border-amber-200">
+      <span class="text-sm font-medium text-amber-800">Puntos</span>
+      <span class="text-lg font-bold text-amber-900">{playerData.puntos}</span>
+    </div>
+    
+    <!-- Market Value -->
+    <div class="flex items-center justify-between bg-emerald-50 rounded-lg p-3 border border-emerald-200">
+      <span class="text-sm font-medium text-emerald-800">Valor</span>
+      <div class="text-right">
+        <div class="text-base font-bold text-emerald-900">€{formatearNumero(playerData.valor_mercado)}</div>
+        <div class={`text-xs font-semibold ${variacionColor} flex items-center justify-end gap-1`}>
+          {playerData.variacion > 0 && <span>📈</span>}
+          {playerData.variacion < 0 && <span>📉</span>}
+          {playerData.variacion >= 0 ? "+" : ""}{playerData.variacion === 0 ? "0" : formatearNumero(Math.abs(playerData.variacion))}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</a>

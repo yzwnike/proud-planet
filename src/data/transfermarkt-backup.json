@@ -1,0 +1,832 @@
+[
+  {
+    "nombre": "Yazawa",
+    "equipo": "Nike FC",
+    "posicion": "DC, EI",
+    "edad": 29,
+    "ovr": 92,
+    "valor_transfermarkt": 170000000,
+    "dorsal": 10,
+    "foto": "/jugadores/yazawa.png"
+  },
+  {
+    "nombre": "Mario",
+    "equipo": "Nike FC",
+    "posicion": "MCO, MC",
+    "edad": 27,
+    "ovr": 90,
+    "valor_transfermarkt": 140000000,
+    "dorsal": 8,
+    "foto": "/jugadores/mario.png"
+  },
+  {
+    "nombre": "Mister",
+    "equipo": "Nike FC",
+    "posicion": "DFC",
+    "edad": 32,
+    "ovr": 88,
+    "valor_transfermarkt": 25000000,
+    "dorsal": 3,
+    "foto": "/jugadores/mister.jpg"
+  },
+  {
+    "nombre": "Vehí",
+    "equipo": "Nike FC",
+    "posicion": "POR",
+    "edad": 29,
+    "ovr": 87,
+    "valor_transfermarkt": 33000000,
+    "dorsal": 1,
+    "foto": "/jugadores/vehi.jpg"
+  },
+  {
+    "nombre": "Marcos",
+    "equipo": "Nike FC",
+    "posicion": "DC",
+    "edad": 30,
+    "ovr": 87,
+    "valor_transfermarkt": 70000000,
+    "dorsal": 9,
+    "foto": "/jugadores/marcos.jpg"
+  },
+  {
+    "nombre": "Stark",
+    "equipo": "Nike FC",
+    "posicion": "MD, MC",
+    "edad": 25,
+    "ovr": 87,
+    "valor_transfermarkt": 120000000,
+    "dorsal": 6,
+    "foto": "/jugadores/stark.jpg"
+  },
+  {
+    "nombre": "Viko",
+    "equipo": "Nike FC",
+    "posicion": "MC",
+    "edad": 30,
+    "ovr": 87,
+    "valor_transfermarkt": 50000000,
+    "dorsal": 5,
+    "foto": "/jugadores/viko.jpg"
+  },
+  {
+    "nombre": "Pablo",
+    "equipo": "Nike FC",
+    "posicion": "DFC",
+    "edad": 31,
+    "ovr": 86,
+    "valor_transfermarkt": 18000000,
+    "dorsal": 2,
+    "foto": "/jugadores/pablo.jpg"
+  },
+  {
+    "nombre": "Martawis",
+    "equipo": "Nike FC",
+    "posicion": "DC, ED",
+    "edad": 24,
+    "ovr": 86,
+    "valor_transfermarkt": 75000000,
+    "dorsal": 7,
+    "foto": "/jugadores/martawis.jpg"
+  },
+  {
+    "nombre": "Aznar",
+    "equipo": "Nike FC",
+    "posicion": "MD, ED",
+    "edad": 26,
+    "ovr": 86,
+    "valor_transfermarkt": 75000000,
+    "dorsal": 17,
+    "foto": "/jugadores/aznar.jpg"
+  },
+  {
+    "nombre": "Fan",
+    "equipo": "Nike FC",
+    "posicion": "MC, MI",
+    "edad": 28,
+    "ovr": 84,
+    "valor_transfermarkt": 40000000,
+    "dorsal": 12,
+    "foto": "/jugadores/fan.jpg"
+  },
+  {
+    "nombre": "Perma",
+    "equipo": "Nike FC",
+    "posicion": "DFC",
+    "edad": 28,
+    "ovr": 84,
+    "valor_transfermarkt": 40000000,
+    "dorsal": 4,
+    "foto": "/jugadores/perma.jpg"
+  },
+  {
+    "nombre": "Nike",
+    "equipo": "Nike FC",
+    "posicion": "MCO, MC",
+    "edad": 19,
+    "ovr": 82,
+    "valor_transfermarkt": 60000000,
+    "dorsal": 14,
+    "foto": "/jugadores/nike.jpg"
+  },
+  {
+    "nombre": "Albesa",
+    "equipo": "Nike FC",
+    "posicion": "LI, DFC",
+    "edad": 26,
+    "ovr": 82,
+    "valor_transfermarkt": 28000000,
+    "dorsal": 23,
+    "foto": "/jugadores/albesa.jpg"
+  },
+  {
+    "nombre": "Ale",
+    "equipo": "Nike FC",
+    "posicion": "DC",
+    "edad": 23,
+    "ovr": 79,
+    "valor_transfermarkt": 10000000,
+    "dorsal": 19,
+    "foto": "/jugadores/ale.jpg"
+  },
+  {
+    "nombre": "Berni",
+    "equipo": "Nike FC",
+    "posicion": "DFC, LI",
+    "edad": 38,
+    "ovr": 78,
+    "valor_transfermarkt": 700000,
+    "dorsal": 21,
+    "foto": "/jugadores/berni.jpg"
+  },
+  {
+    "nombre": "Armando",
+    "equipo": "Nike FC",
+    "posicion": "MD, LD",
+    "edad": 27,
+    "ovr": 78,
+    "valor_transfermarkt": 6000000,
+    "dorsal": 17,
+    "foto": "/jugadores/armando.jpg"
+  },
+  {
+    "nombre": "Etarky",
+    "equipo": "Nike FC",
+    "posicion": "DFC, LI",
+    "edad": 25,
+    "ovr": 76,
+    "valor_transfermarkt": 6000000,
+    "dorsal": 18,
+    "foto": "/jugadores/etarky.jpg"
+  },
+  {
+    "nombre": "Krazer",
+    "equipo": "Nike FC",
+    "posicion": "POR",
+    "edad": 25,
+    "ovr": 77,
+    "valor_transfermarkt": 10000000,
+    "dorsal": 25,
+    "foto": "/jugadores/krazer.jpg"
+  },
+  {
+    "nombre": "Albert",
+    "equipo": "Nike FC",
+    "posicion": "DFC, LI",
+    "edad": 26,
+    "ovr": 77,
+    "valor_transfermarkt": 15000000,
+    "dorsal": 19,
+    "foto": "/jugadores/albert.jpg"
+  },
+  {
+    "nombre": "Jan",
+    "equipo": "Adidas FC",
+    "posicion": "POR",
+    "edad": 26,
+    "ovr": 86,
+    "valor_transfermarkt": 34000000,
+    "dorsal": 1,
+    "foto": "/jugadores/jan-por.jpg"
+  },
+  {
+    "nombre": "García",
+    "equipo": "Adidas FC",
+    "posicion": "POR",
+    "edad": 35,
+    "ovr": 79,
+    "valor_transfermarkt": 900000,
+    "dorsal": 13,
+    "foto": "/jugadores/garcia.jpg"
+  },
+  {
+    "nombre": "Hugo",
+    "equipo": "Adidas FC",
+    "posicion": "DFC, LD",
+    "edad": 30,
+    "ovr": 87,
+    "valor_transfermarkt": 25000000,
+    "dorsal": 2,
+    "foto": "/jugadores/hugo.jpg"
+  },
+  {
+    "nombre": "Ferrer",
+    "equipo": "Adidas FC",
+    "posicion": "DFC",
+    "edad": 25,
+    "ovr": 85,
+    "valor_transfermarkt": 55000000,
+    "dorsal": 3,
+    "foto": "/jugadores/ferrer.jpg"
+  },
+  {
+    "nombre": "Jorge",
+    "equipo": "Adidas FC",
+    "posicion": "DFC",
+    "edad": 24,
+    "ovr": 85,
+    "valor_transfermarkt": 40000000,
+    "dorsal": 4,
+    "foto": "/jugadores/jorge.jpg"
+  },
+  {
+    "nombre": "Thomas",
+    "equipo": "Adidas FC",
+    "posicion": "LI",
+    "edad": 24,
+    "ovr": 79,
+    "valor_transfermarkt": 12000000,
+    "dorsal": 12,
+    "foto": "/jugadores/thomas.jpg"
+  },
+  {
+    "nombre": "Yuchang",
+    "equipo": "Adidas FC",
+    "posicion": "DFC",
+    "edad": 28,
+    "ovr": 79,
+    "valor_transfermarkt": 6000000,
+    "dorsal": 15,
+    "foto": "/jugadores/yuchang.jpg"
+  },
+  {
+    "nombre": "Vallejo",
+    "equipo": "Adidas FC",
+    "posicion": "LI",
+    "edad": 27,
+    "ovr": 85,
+    "valor_transfermarkt": 45000000,
+    "dorsal": 11,
+    "foto": "/jugadores/vallejo.jpg"
+  },
+  {
+    "nombre": "Arribas",
+    "equipo": "Adidas FC",
+    "posicion": "MC, MD",
+    "edad": 28,
+    "ovr": 77,
+    "valor_transfermarkt": 4000000,
+    "dorsal": 14,
+    "foto": "/jugadores/arribas.jpg"
+  },
+  {
+    "nombre": "Riviere",
+    "equipo": "Adidas FC",
+    "posicion": "MC, MCO",
+    "edad": 27,
+    "ovr": 85,
+    "valor_transfermarkt": 48000000,
+    "dorsal": 6,
+    "foto": "/jugadores/riviere.jpg"
+  },
+  {
+    "nombre": "Joanet",
+    "equipo": "Adidas FC",
+    "posicion": "MC, MCO",
+    "edad": 26,
+    "ovr": 87,
+    "valor_transfermarkt": 60000000,
+    "dorsal": 8,
+    "foto": "/jugadores/joanet.jpg"
+  },
+  {
+    "nombre": "Manu",
+    "equipo": "Adidas FC",
+    "posicion": "MI, MC",
+    "edad": 31,
+    "ovr": 87,
+    "valor_transfermarkt": 35000000,
+    "dorsal": 7,
+    "foto": "/jugadores/manu.jpg"
+  },
+  {
+    "nombre": "Chalex",
+    "equipo": "Adidas FC",
+    "posicion": "MI, MCO",
+    "edad": 24,
+    "ovr": 80,
+    "valor_transfermarkt": 16000000,
+    "dorsal": 20,
+    "foto": "/jugadores/chalex.jpg"
+  },
+  {
+    "nombre": "Bustos",
+    "equipo": "Adidas FC",
+    "posicion": "MC, MCD",
+    "edad": 33,
+    "ovr": 87,
+    "valor_transfermarkt": 25000000,
+    "dorsal": 5,
+    "foto": "/jugadores/bustos.jpg"
+  },
+  {
+    "nombre": "Jan",
+    "equipo": "Adidas FC",
+    "posicion": "MCO, DC",
+    "edad": 29,
+    "ovr": 88,
+    "valor_transfermarkt": 100000000,
+    "dorsal": 10,
+    "foto": "/jugadores/jan-mco.jpg"
+  },
+  {
+    "nombre": "Sabina",
+    "equipo": "Adidas FC",
+    "posicion": "DC",
+    "edad": 30,
+    "ovr": 89,
+    "valor_transfermarkt": 75000000,
+    "dorsal": 9,
+    "foto": "/jugadores/sabina.jpg"
+  },
+  {
+    "nombre": "Giye",
+    "equipo": "Adidas FC",
+    "posicion": "DC",
+    "edad": 29,
+    "ovr": 82,
+    "valor_transfermarkt": 17000000,
+    "dorsal": 16,
+    "foto": "/jugadores/giye.jpg"
+  },
+  {
+    "nombre": "Porras",
+    "equipo": "Adidas FC",
+    "posicion": "DC",
+    "edad": 29,
+    "ovr": 84,
+    "valor_transfermarkt": 38000000,
+    "dorsal": 17,
+    "foto": "/jugadores/porras.jpg"
+  },
+  {
+    "nombre": "Josep",
+    "equipo": "Adidas FC",
+    "posicion": "MC, MCO",
+    "edad": 27,
+    "ovr": 82,
+    "valor_transfermarkt": 25000000,
+    "dorsal": 18,
+    "foto": "/jugadores/josep.jpg"
+  },
+  {
+    "nombre": "Chuck",
+    "equipo": "Adidas FC",
+    "posicion": "DFC",
+    "edad": 32,
+    "ovr": 81,
+    "valor_transfermarkt": 9000000,
+    "dorsal": 19,
+    "foto": "/jugadores/chuck.jpg"
+  },
+  {
+    "nombre": "Kød",
+    "equipo": "Puma FC",
+    "posicion": "DC",
+    "edad": 22,
+    "ovr": 85,
+    "valor_transfermarkt": 95000000,
+    "dorsal": 4,
+    "foto": "/jugadores/kod.jpg"
+  },
+  {
+    "nombre": "Guerra",
+    "equipo": "Puma FC",
+    "posicion": "DC, SD",
+    "edad": 28,
+    "ovr": 83,
+    "valor_transfermarkt": 30000000,
+    "dorsal": 5,
+    "foto": "/jugadores/guerra.jpg"
+  },
+  {
+    "nombre": "Fernando",
+    "equipo": "Puma FC",
+    "posicion": "DC",
+    "edad": 28,
+    "ovr": 81,
+    "valor_transfermarkt": 18000000,
+    "dorsal": 6,
+    "foto": "/jugadores/fernando.jpg"
+  },
+  {
+    "nombre": "Yazy",
+    "equipo": "Puma FC",
+    "posicion": "DC, EI",
+    "edad": 16,
+    "ovr": 81,
+    "valor_transfermarkt": 70000000,
+    "dorsal": 15,
+    "foto": "/jugadores/yazy.jpg"
+  },
+  {
+    "nombre": "Marin",
+    "equipo": "Puma FC",
+    "posicion": "MCO",
+    "edad": 29,
+    "ovr": 85,
+    "valor_transfermarkt": 40000000,
+    "dorsal": 10,
+    "foto": "/jugadores/marin.jpg"
+  },
+  {
+    "nombre": "Armando M.",
+    "equipo": "Puma FC",
+    "posicion": "MCD, MC",
+    "edad": 28,
+    "ovr": 81,
+    "valor_transfermarkt": 15000000,
+    "dorsal": 8,
+    "foto": "/jugadores/armando-m.jpg"
+  },
+  {
+    "nombre": "Pino",
+    "equipo": "Puma FC",
+    "posicion": "LD, MD",
+    "edad": 26,
+    "ovr": 81,
+    "valor_transfermarkt": 20000000,
+    "dorsal": 2,
+    "foto": "/jugadores/pino.jpg"
+  },
+  {
+    "nombre": "Fran",
+    "equipo": "Puma FC",
+    "posicion": "LD, MC",
+    "edad": 27,
+    "ovr": 77,
+    "valor_transfermarkt": 4000000,
+    "dorsal": 3,
+    "foto": "/jugadores/fran.jpg"
+  },
+  {
+    "nombre": "Ramungut",
+    "equipo": "Puma FC",
+    "posicion": "LI",
+    "edad": 26,
+    "ovr": 82,
+    "valor_transfermarkt": 25000000,
+    "dorsal": 11,
+    "foto": "/jugadores/ramungut.jpg"
+  },
+  {
+    "nombre": "Camello",
+    "equipo": "Puma FC",
+    "posicion": "MCD",
+    "edad": 27,
+    "ovr": 81,
+    "valor_transfermarkt": 22000000,
+    "dorsal": 16,
+    "foto": "/jugadores/camello.jpg"
+  },
+  {
+    "nombre": "Alain",
+    "equipo": "Puma FC",
+    "posicion": "LI",
+    "edad": 27,
+    "ovr": 84,
+    "valor_transfermarkt": 30000000,
+    "dorsal": 12,
+    "foto": "/jugadores/alain.jpg"
+  },
+  {
+    "nombre": "Adriow",
+    "equipo": "Puma FC",
+    "posicion": "POR",
+    "edad": 26,
+    "ovr": 81,
+    "valor_transfermarkt": 17000000,
+    "dorsal": 1,
+    "foto": "/jugadores/adriow.jpg"
+  },
+  {
+    "nombre": "Potpot",
+    "equipo": "Puma FC",
+    "posicion": "MCO, DC",
+    "edad": 33,
+    "ovr": 78,
+    "valor_transfermarkt": 4000000,
+    "dorsal": 13,
+    "foto": "/jugadores/potpot.jpg"
+  },
+  {
+    "nombre": "Márquez",
+    "equipo": "Puma FC",
+    "posicion": "DFC",
+    "edad": 28,
+    "ovr": 80,
+    "valor_transfermarkt": 16000000,
+    "dorsal": 14,
+    "foto": "/jugadores/marquez.jpg"
+  },
+  {
+    "nombre": "Mateo",
+    "equipo": "Puma FC",
+    "posicion": "DFC",
+    "edad": 29,
+    "ovr": 83,
+    "valor_transfermarkt": 15000000,
+    "dorsal": 17,
+    "foto": "/jugadores/mateo.jpg"
+  },
+  {
+    "nombre": "Walter",
+    "equipo": "Puma FC",
+    "posicion": "DFC",
+    "edad": 30,
+    "ovr": 81,
+    "valor_transfermarkt": 7500000,
+    "dorsal": 18,
+    "foto": "/jugadores/walter.jpg"
+  },
+  {
+    "nombre": "Juanito",
+    "equipo": "Puma FC",
+    "posicion": "MCO",
+    "edad": 36,
+    "ovr": 83,
+    "valor_transfermarkt": 4000000,
+    "dorsal": 19,
+    "foto": "/jugadores/juanito.jpg"
+  },
+  {
+    "nombre": "Vega",
+    "equipo": "Puma FC",
+    "posicion": "MC",
+    "edad": 32,
+    "ovr": 83,
+    "valor_transfermarkt": 8000000,
+    "dorsal": 20,
+    "foto": "/jugadores/vega.jpg"
+  },
+  {
+    "nombre": "Yago",
+    "equipo": "Puma FC",
+    "posicion": "ED",
+    "edad": 26,
+    "ovr": 78,
+    "valor_transfermarkt": 10000000,
+    "dorsal": 21,
+    "foto": "/jugadores/yago.jpg"
+  },
+  {
+    "nombre": "Venezuela",
+    "equipo": "Puma FC",
+    "posicion": "DFC",
+    "edad": 25,
+    "ovr": 71,
+    "valor_transfermarkt": 1000000,
+    "dorsal": 22,
+    "foto": "/jugadores/venezuela.jpg"
+  },
+  {
+    "nombre": "Nicki",
+    "equipo": "Puma FC",
+    "posicion": "EI",
+    "edad": 15,
+    "ovr": 65,
+    "valor_transfermarkt": 500000,
+    "dorsal": 23,
+    "foto": "/jugadores/nicki.jpg"
+  },
+  {
+    "nombre": "Denis",
+    "equipo": "Kappa FC",
+    "posicion": "POR",
+    "edad": 30,
+    "ovr": 81,
+    "valor_transfermarkt": 10000000,
+    "dorsal": 1,
+    "foto": "/jugadores/denis.jpg"
+  },
+  {
+    "nombre": "Frasqui",
+    "equipo": "Kappa FC",
+    "posicion": "DFC, LD",
+    "edad": 26,
+    "ovr": 73,
+    "valor_transfermarkt": 1700000,
+    "dorsal": 2,
+    "foto": "/jugadores/frasqui.jpg"
+  },
+  {
+    "nombre": "Peidró",
+    "equipo": "Kappa FC",
+    "posicion": "LD",
+    "edad": 31,
+    "ovr": 83,
+    "valor_transfermarkt": 14000000,
+    "dorsal": 3,
+    "foto": "/jugadores/peidro.jpg"
+  },
+  {
+    "nombre": "Plasencia",
+    "equipo": "Kappa FC",
+    "posicion": "DFC",
+    "edad": 29,
+    "ovr": 79,
+    "valor_transfermarkt": 8000000,
+    "dorsal": 4,
+    "foto": "/jugadores/plasencia.jpg"
+  },
+  {
+    "nombre": "Palusa",
+    "equipo": "Kappa FC",
+    "posicion": "DFC",
+    "edad": 22,
+    "ovr": 79,
+    "valor_transfermarkt": 18000000,
+    "dorsal": 5,
+    "foto": "/jugadores/palusa.jpg"
+  },
+  {
+    "nombre": "Cruañas",
+    "equipo": "Kappa FC",
+    "posicion": "LD, LI",
+    "edad": 30,
+    "ovr": 79,
+    "valor_transfermarkt": 5000000,
+    "dorsal": 6,
+    "foto": "/jugadores/cruanas.jpg"
+  },
+  {
+    "nombre": "Santi",
+    "equipo": "Kappa FC",
+    "posicion": "LD",
+    "edad": 26,
+    "ovr": 79,
+    "valor_transfermarkt": 12000000,
+    "dorsal": 7,
+    "foto": "/jugadores/santi.jpg"
+  },
+  {
+    "nombre": "Manel",
+    "equipo": "Kappa FC",
+    "posicion": "DFC",
+    "edad": 31,
+    "ovr": 74,
+    "valor_transfermarkt": 1600000,
+    "dorsal": 8,
+    "foto": "/jugadores/manel.jpg"
+  },
+  {
+    "nombre": "Yusi",
+    "equipo": "Kappa FC",
+    "posicion": "MC, MCD",
+    "edad": 26,
+    "ovr": 79,
+    "valor_transfermarkt": 12000000,
+    "dorsal": 9,
+    "foto": "/jugadores/yusi.jpg"
+  },
+  {
+    "nombre": "Follama",
+    "equipo": "Kappa FC",
+    "posicion": "MC, MCD",
+    "edad": 26,
+    "ovr": 76,
+    "valor_transfermarkt": 3500000,
+    "dorsal": 10,
+    "foto": "/jugadores/follama.jpg"
+  },
+  {
+    "nombre": "Erik",
+    "equipo": "Kappa FC",
+    "posicion": "MD, MI",
+    "edad": 27,
+    "ovr": 77,
+    "valor_transfermarkt": 4000000,
+    "dorsal": 11,
+    "foto": "/jugadores/erik.jpg"
+  },
+  {
+    "nombre": "Fontcuberta",
+    "equipo": "Kappa FC",
+    "posicion": "MC",
+    "edad": 29,
+    "ovr": 78,
+    "valor_transfermarkt": 5000000,
+    "dorsal": 12,
+    "foto": "/jugadores/fontcuberta.jpg"
+  },
+  {
+    "nombre": "Galisteo",
+    "equipo": "Kappa FC",
+    "posicion": "MC",
+    "edad": 31,
+    "ovr": 80,
+    "valor_transfermarkt": 8000000,
+    "dorsal": 13,
+    "foto": "/jugadores/galisteo.jpg"
+  },
+  {
+    "nombre": "Pedrito",
+    "equipo": "Kappa FC",
+    "posicion": "EI, MI",
+    "edad": 17,
+    "ovr": 74,
+    "valor_transfermarkt": 4600000,
+    "dorsal": 14,
+    "foto": "/jugadores/pedrito.jpg"
+  },
+  {
+    "nombre": "Pol Cubo",
+    "equipo": "Kappa FC",
+    "posicion": "EI",
+    "edad": 26,
+    "ovr": 81,
+    "valor_transfermarkt": 22000000,
+    "dorsal": 15,
+    "foto": "/jugadores/pol-cubo.jpg"
+  },
+  {
+    "nombre": "Martuki",
+    "equipo": "Kappa FC",
+    "posicion": "MCD",
+    "edad": 24,
+    "ovr": 81,
+    "valor_transfermarkt": 30000000,
+    "dorsal": 16,
+    "foto": "/jugadores/martuki.jpg"
+  },
+  {
+    "nombre": "Raigo",
+    "equipo": "Kappa FC",
+    "posicion": "MD",
+    "edad": 28,
+    "ovr": 82,
+    "valor_transfermarkt": 20000000,
+    "dorsal": 17,
+    "foto": "/jugadores/raigo.jpg"
+  },
+  {
+    "nombre": "Ukelele",
+    "equipo": "Kappa FC",
+    "posicion": "MCO, MC",
+    "edad": 27,
+    "ovr": 82,
+    "valor_transfermarkt": 30000000,
+    "dorsal": 18,
+    "foto": "/jugadores/ukelele.jpg"
+  },
+  {
+    "nombre": "Pot",
+    "equipo": "Kappa FC",
+    "posicion": "MCO, DC",
+    "edad": 30,
+    "ovr": 73,
+    "valor_transfermarkt": 1000000,
+    "dorsal": 19,
+    "foto": "/jugadores/pot.jpg"
+  },
+  {
+    "nombre": "Colgan",
+    "equipo": "Kappa FC",
+    "posicion": "DC",
+    "edad": 18,
+    "ovr": 72,
+    "valor_transfermarkt": 4000000,
+    "dorsal": 20,
+    "foto": "/jugadores/colgan.jpg"
+  },
+  {
+    "nombre": "Swit Eme",
+    "equipo": "Kappa FC",
+    "posicion": "DC",
+    "edad": 25,
+    "ovr": 83,
+    "valor_transfermarkt": 40000000,
+    "dorsal": 21,
+    "foto": "/jugadores/swit-eme.jpg"
+  },
+  {
+    "nombre": "Llonch",
+    "equipo": "Kappa FC",
+    "posicion": "DFC",
+    "edad": 33,
+    "ovr": 78,
+    "valor_transfermarkt": 1500000,
+    "dorsal": 22,
+    "foto": "/jugadores/llonch.jpg"
+  }
+]

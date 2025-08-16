@@ -1,0 +1,435 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import jugadores from "../data/players.json";
+
+const equipos = ["Todos", "Nike FC", "Adidas FC", "Puma FC", "Kappa FC"];
+const posiciones = ["Todas", "POR", "DFC", "DC", "MC"];
+
+// Función para formatear números con puntos como separadores de miles
+function formatearNumero(numero) {
+  return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+---
+
+<BaseLayout title="Ajustar Puntos - Fantasy League">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-amber-600 to-orange-600 rounded-2xl shadow-xl p-8 text-white mb-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-bold mb-2">Ajustar Puntos</h1>
+          <p class="text-amber-100">Modifica los puntos de cada jugador después de los partidos</p>
+        </div>
+        <a href="/admin" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">
+          ← Volver al Panel
+        </a>
+      </div>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-200">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">Panel de Control</h2>
+          <p class="text-gray-600">Filtra jugadores y ajusta sus puntos individualmente</p>
+        </div>
+        <div class="flex gap-3">
+          <button id="guardarCambios" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50" disabled>
+            💾 Guardar Cambios
+          </button>
+          <button id="resetearPuntos" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+            🔄 Resetear Todos
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Equipo</label>
+          <select id="filtroEquipo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+            {equipos.map(e => (
+              <option value={e}>{e}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Posición</label>
+          <select id="filtroPosicion" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+            {posiciones.map(p => (
+              <option value={p}>{p}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Buscar Jugador</label>
+          <input type="text" id="buscarJugador" placeholder="Nombre del jugador..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Acciones Rápidas</label>
+          <div class="flex gap-2">
+            <button id="seleccionarTodos" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-2 py-2 rounded text-xs transition-colors">
+              Sel. Todos
+            </button>
+            <button id="limpiarSeleccion" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white px-2 py-2 rounded text-xs transition-colors">
+              Limpiar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel de acciones masivas -->
+      <div class="bg-gray-50 rounded-lg p-4 mb-6">
+        <h3 class="font-semibold text-gray-900 mb-3">Acciones Masivas</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Asignar Puntos</label>
+            <div class="flex">
+              <input type="number" id="puntosAsignar" min="0" max="20" placeholder="0-20" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+              <button id="aplicarPuntosSeleccionados" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-r-lg transition-colors">
+                Aplicar
+              </button>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Sumar/Restar</label>
+            <div class="flex">
+              <input type="number" id="puntosSumar" min="-20" max="20" placeholder="+/-20" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+              <button id="sumarPuntosSeleccionados" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg transition-colors">
+                Modificar
+              </button>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Plantillas Rápidas</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button class="plantilla-btn bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-xs transition-colors" data-puntos="8">
+                Excelente (8)
+              </button>
+              <button class="plantilla-btn bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-xs transition-colors" data-puntos="6">
+                Bueno (6)
+              </button>
+              <button class="plantilla-btn bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-2 rounded text-xs transition-colors" data-puntos="4">
+                Regular (4)
+              </button>
+              <button class="plantilla-btn bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-xs transition-colors" data-puntos="2">
+                Malo (2)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de Jugadores -->
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <h3 class="text-xl font-bold text-gray-900">Jugadores</h3>
+          <span id="contadorResultados" class="text-gray-600">Mostrando 80 de 80 jugadores</span>
+        </div>
+      </div>
+      
+      <div class="overflow-hidden">
+        <div class="max-h-96 overflow-y-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50 sticky top-0">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-amber-600 focus:ring-amber-500">
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jugador</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Puntos Actuales</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nuevos Puntos</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaJugadores" class="bg-white divide-y divide-gray-200">
+              <!-- Los jugadores se cargarán aquí dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel de cambios pendientes -->
+    <div id="panelCambios" class="bg-amber-50 rounded-2xl p-6 border border-amber-200 mt-8 hidden">
+      <h3 class="text-lg font-bold text-amber-900 mb-3">📝 Cambios Pendientes</h3>
+      <div id="listaCambios" class="text-sm text-amber-800">
+        <!-- Los cambios se mostrarán aquí -->
+      </div>
+    </div>
+  </div>
+
+  <script define:vars={{ jugadores, equipos, posiciones, formatearNumero }}>
+    let jugadoresModificados = new Map();
+    let jugadoresFiltrados = [...jugadores];
+    
+    // Referencias a elementos
+    const filtroEquipo = document.getElementById('filtroEquipo');
+    const filtroPosicion = document.getElementById('filtroPosicion');
+    const buscarJugador = document.getElementById('buscarJugador');
+    const tablaJugadores = document.getElementById('tablaJugadores');
+    const contadorResultados = document.getElementById('contadorResultados');
+    const guardarBtn = document.getElementById('guardarCambios');
+    const resetearBtn = document.getElementById('resetearPuntos');
+    const selectAll = document.getElementById('selectAll');
+    const panelCambios = document.getElementById('panelCambios');
+    const listaCambios = document.getElementById('listaCambios');
+
+    // Función para aplicar filtros
+    function aplicarFiltros() {
+      jugadoresFiltrados = jugadores.filter(jugador => {
+        const cumpleEquipo = filtroEquipo.value === 'Todos' || jugador.equipo === filtroEquipo.value;
+        const cumplePosicion = filtroPosicion.value === 'Todas' || jugador.posicion === filtroPosicion.value;
+        const cumpleNombre = !buscarJugador.value || jugador.nombre.toLowerCase().includes(buscarJugador.value.toLowerCase());
+        
+        return cumpleEquipo && cumplePosicion && cumpleNombre;
+      });
+      
+      renderizarTabla();
+    }
+
+    // Función para renderizar la tabla
+    function renderizarTabla() {
+      contadorResultados.textContent = `Mostrando ${jugadoresFiltrados.length} de ${jugadores.length} jugadores`;
+      
+      tablaJugadores.innerHTML = jugadoresFiltrados.map(jugador => {
+        const puntosActuales = jugadoresModificados.get(jugador.nombre)?.puntos ?? jugador.puntos;
+        const hayCambios = jugadoresModificados.has(jugador.nombre);
+        
+        return `
+          <tr class="hover:bg-gray-50 ${hayCambios ? 'bg-amber-50' : ''}">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <input type="checkbox" class="jugador-checkbox rounded border-gray-300 text-amber-600 focus:ring-amber-500" 
+                     data-jugador="${jugador.nombre}">
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <img class="h-8 w-8 rounded-full object-cover" src="${jugador.foto}" alt="${jugador.nombre}"
+                     onerror="this.src='https://via.placeholder.com/32/cccccc/666666?text=?'">
+                <div class="ml-3">
+                  <div class="text-sm font-medium text-gray-900">${jugador.nombre}</div>
+                  <div class="text-sm text-gray-500">${jugador.equipo} - ${jugador.posicion}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm font-semibold">
+                ${jugador.puntos}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <input type="number" min="0" max="20" value="${puntosActuales}" 
+                     class="puntos-input w-20 px-2 py-1 border border-gray-300 rounded text-center focus:ring-2 focus:ring-amber-500 focus:border-amber-500 ${hayCambios ? 'bg-amber-100 border-amber-400' : ''}"
+                     data-jugador="${jugador.nombre}">
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <div class="flex gap-2">
+                <button class="btn-preset bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs transition-colors" 
+                        data-jugador="${jugador.nombre}" data-puntos="8">+8</button>
+                <button class="btn-preset bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs transition-colors" 
+                        data-jugador="${jugador.nombre}" data-puntos="6">+6</button>
+                <button class="btn-preset bg-yellow-600 hover:bg-yellow-700 text-white px-2 py-1 rounded text-xs transition-colors" 
+                        data-jugador="${jugador.nombre}" data-puntos="4">+4</button>
+                <button class="btn-reset bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 rounded text-xs transition-colors" 
+                        data-jugador="${jugador.nombre}">Reset</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Agregar event listeners
+      agregarEventListeners();
+    }
+
+    // Agregar event listeners a los elementos dinámicos
+    function agregarEventListeners() {
+      // Inputs de puntos
+      document.querySelectorAll('.puntos-input').forEach(input => {
+        input.addEventListener('change', (e) => {
+          const jugadorNombre = e.target.dataset.jugador;
+          const jugadorOriginal = jugadores.find(j => j.nombre === jugadorNombre);
+          const nuevosPuntos = parseInt(e.target.value) || 0;
+          
+          if (nuevosPuntos !== jugadorOriginal.puntos) {
+            jugadoresModificados.set(jugadorNombre, {
+              ...jugadorOriginal,
+              puntos: nuevosPuntos
+            });
+          } else {
+            jugadoresModificados.delete(jugadorNombre);
+          }
+          
+          actualizarInterfaz();
+        });
+      });
+
+      // Botones preset
+      document.querySelectorAll('.btn-preset').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const jugadorNombre = e.target.dataset.jugador;
+          const puntos = parseInt(e.target.dataset.puntos);
+          const input = document.querySelector(`.puntos-input[data-jugador="${jugadorNombre}"]`);
+          
+          input.value = puntos;
+          input.dispatchEvent(new Event('change'));
+        });
+      });
+
+      // Botones reset
+      document.querySelectorAll('.btn-reset').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const jugadorNombre = e.target.dataset.jugador;
+          const jugadorOriginal = jugadores.find(j => j.nombre === jugadorNombre);
+          const input = document.querySelector(`.puntos-input[data-jugador="${jugadorNombre}"]`);
+          
+          input.value = jugadorOriginal.puntos;
+          input.dispatchEvent(new Event('change'));
+        });
+      });
+    }
+
+    // Actualizar interfaz
+    function actualizarInterfaz() {
+      const hayCambios = jugadoresModificados.size > 0;
+      guardarBtn.disabled = !hayCambios;
+      
+      if (hayCambios) {
+        panelCambios.classList.remove('hidden');
+        const cambiosArray = Array.from(jugadoresModificados.values());
+        listaCambios.innerHTML = `
+          <div class="mb-2"><strong>${cambiosArray.length} jugadores con cambios:</strong></div>
+          ${cambiosArray.map(j => {
+            const original = jugadores.find(orig => orig.nombre === j.nombre);
+            return `<div>• ${j.nombre}: ${original.puntos} → ${j.puntos} puntos</div>`;
+          }).join('')}
+        `;
+      } else {
+        panelCambios.classList.add('hidden');
+      }
+      
+      renderizarTabla();
+    }
+
+    // Event listeners para filtros
+    filtroEquipo.addEventListener('change', aplicarFiltros);
+    filtroPosicion.addEventListener('change', aplicarFiltros);
+    buscarJugador.addEventListener('input', aplicarFiltros);
+
+    // Event listeners para acciones masivas
+    document.getElementById('seleccionarTodos').addEventListener('click', () => {
+      document.querySelectorAll('.jugador-checkbox').forEach(cb => cb.checked = true);
+    });
+
+    document.getElementById('limpiarSeleccion').addEventListener('click', () => {
+      document.querySelectorAll('.jugador-checkbox').forEach(cb => cb.checked = false);
+    });
+
+    document.getElementById('aplicarPuntosSeleccionados').addEventListener('click', () => {
+      const puntos = parseInt(document.getElementById('puntosAsignar').value) || 0;
+      const seleccionados = document.querySelectorAll('.jugador-checkbox:checked');
+      
+      seleccionados.forEach(cb => {
+        const input = document.querySelector(`.puntos-input[data-jugador="${cb.dataset.jugador}"]`);
+        input.value = puntos;
+        input.dispatchEvent(new Event('change'));
+      });
+    });
+
+    document.getElementById('sumarPuntosSeleccionados').addEventListener('click', () => {
+      const puntosASumar = parseInt(document.getElementById('puntosSumar').value) || 0;
+      const seleccionados = document.querySelectorAll('.jugador-checkbox:checked');
+      
+      seleccionados.forEach(cb => {
+        const input = document.querySelector(`.puntos-input[data-jugador="${cb.dataset.jugador}"]`);
+        const puntosActuales = parseInt(input.value) || 0;
+        input.value = Math.max(0, Math.min(20, puntosActuales + puntosASumar));
+        input.dispatchEvent(new Event('change'));
+      });
+    });
+
+    // Plantillas rápidas
+    document.querySelectorAll('.plantilla-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const puntos = parseInt(e.target.dataset.puntos);
+        const seleccionados = document.querySelectorAll('.jugador-checkbox:checked');
+        
+        seleccionados.forEach(cb => {
+          const input = document.querySelector(`.puntos-input[data-jugador="${cb.dataset.jugador}"]`);
+          input.value = puntos;
+          input.dispatchEvent(new Event('change'));
+        });
+      });
+    });
+
+    // Guardar cambios
+    guardarBtn.addEventListener('click', async () => {
+      if (jugadoresModificados.size === 0) return;
+
+      guardarBtn.disabled = true;
+      guardarBtn.innerHTML = '⏳ Guardando...';
+
+      try {
+        const jugadoresActualizados = jugadores.map(jugadorOriginal => {
+          const modificado = jugadoresModificados.get(jugadorOriginal.nombre);
+          return modificado || jugadorOriginal;
+        });
+
+        // Llamada a la API para actualizar la base de datos
+        const response = await fetch('/api/actualizar-jugadores', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ jugadores: jugadoresActualizados })
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error al actualizar en la base de datos');
+        }
+        
+        const resultado = await response.json();
+        console.log('✅ Actualización exitosa:', resultado);
+        
+        alert(`✅ Puntos actualizados exitosamente en la base de datos!\n\n${jugadoresModificados.size} jugadores modificados.\n\nLa página se recargará para mostrar los cambios.`);
+        
+        // Recargar la página para mostrar los cambios actualizados
+        window.location.reload();
+      } catch (error) {
+        alert('❌ Error al guardar los cambios. Inténtalo de nuevo.');
+        console.error(error);
+      }
+
+      guardarBtn.disabled = false;
+      guardarBtn.innerHTML = '💾 Guardar Cambios';
+    });
+
+    // Resetear todos los puntos
+    resetearBtn.addEventListener('click', () => {
+      if (confirm('⚠️ ¿Estás seguro de que quieres resetear todos los puntos a 0?')) {
+        jugadores.forEach(jugador => {
+          jugadoresModificados.set(jugador.nombre, {
+            ...jugador,
+            puntos: 0
+          });
+        });
+        actualizarInterfaz();
+      }
+    });
+
+    // Select all checkbox
+    selectAll.addEventListener('change', () => {
+      document.querySelectorAll('.jugador-checkbox').forEach(cb => {
+        cb.checked = selectAll.checked;
+      });
+    });
+
+    // Renderizado inicial
+    aplicarFiltros();
+  </script>
+</BaseLayout>

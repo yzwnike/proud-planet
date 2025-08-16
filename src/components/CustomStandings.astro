@@ -1,0 +1,204 @@
+---
+---
+
+<div id="custom-standings" class="bg-white rounded-lg shadow-lg p-6 mb-8">
+  <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Clasificación Equipos Personalizados</h2>
+  
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead class="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <tr>
+          <th class="px-4 py-3 text-left text-sm font-semibold">Pos</th>
+          <th class="px-4 py-3 text-left text-sm font-semibold">Equipo</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold">PJ</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold">G</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold">E</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold">P</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold">GF</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold">GC</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold">DG</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold">Pts</th>
+        </tr>
+      </thead>
+      <tbody id="custom-standings-body">
+        <tr>
+          <td colspan="10" class="px-4 py-8 text-center text-gray-500">
+            <div class="animate-pulse">Cargando clasificación...</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="mt-4 text-center">
+    <p class="text-sm text-gray-500" id="last-updated">
+      <!-- Se actualizará dinámicamente -->
+    </p>
+  </div>
+  
+  <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+    <div class="bg-blue-100 p-3 rounded">
+      <div class="text-xs text-blue-600 font-semibold">TOTAL PARTIDOS</div>
+      <div id="total-matches" class="text-2xl font-bold text-blue-800">-</div>
+    </div>
+    <div class="bg-green-100 p-3 rounded">
+      <div class="text-xs text-green-600 font-semibold">TOTAL GOLES</div>
+      <div id="total-goals" class="text-2xl font-bold text-green-800">-</div>
+    </div>
+    <div class="bg-yellow-100 p-3 rounded">
+      <div class="text-xs text-yellow-600 font-semibold">GOLES/PARTIDO</div>
+      <div id="avg-goals" class="text-2xl font-bold text-yellow-800">-</div>
+    </div>
+    <div class="bg-purple-100 p-3 rounded">
+      <div class="text-xs text-purple-600 font-semibold">PRÓXIMA JORNADA</div>
+      <div id="next-jornada" class="text-2xl font-bold text-purple-800">-</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  class CustomStandingsWidget {
+    constructor() {
+      this.loadStandings();
+      this.loadStats();
+      
+      // Actualizar cada 5 minutos
+      setInterval(() => {
+        this.loadStandings();
+        this.loadStats();
+      }, 5 * 60 * 1000);
+    }
+
+    async loadStandings() {
+      try {
+        const response = await fetch('/api/custom-standings');
+        const result = await response.json();
+        
+        if (result.success && result.data.length > 0) {
+          this.renderStandings(result.data);
+          this.updateLastUpdated(result.lastUpdated);
+        } else {
+          this.renderEmptyState();
+        }
+      } catch (error) {
+        console.error('Error al cargar clasificación:', error);
+        this.renderErrorState();
+      }
+    }
+
+    async loadStats() {
+      try {
+        const response = await fetch('/api/custom-results?action=stats');
+        const result = await response.json();
+        
+        if (result.success) {
+          this.renderStats(result.data);
+        }
+      } catch (error) {
+        console.error('Error al cargar estadísticas:', error);
+      }
+    }
+
+    renderStandings(standings) {
+      const tbody = document.getElementById('custom-standings-body');
+      tbody.innerHTML = '';
+
+      standings.forEach((team, index) => {
+        const row = document.createElement('tr');
+        row.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+        
+        // Determinar color de posición
+        let positionClass = 'text-gray-900';
+        if (index === 0) positionClass = 'text-yellow-600 font-bold'; // Primer lugar
+        else if (index === 1) positionClass = 'text-gray-600 font-bold'; // Segundo lugar
+        else if (index === 2) positionClass = 'text-orange-600 font-bold'; // Tercer lugar
+        
+        row.innerHTML = `
+          <td class="px-4 py-3 text-sm font-medium ${positionClass}">${index + 1}</td>
+          <td class="px-4 py-3 text-sm text-gray-900 font-semibold">${team.team}</td>
+          <td class="px-4 py-3 text-sm text-gray-900 text-center">${team.played}</td>
+          <td class="px-4 py-3 text-sm text-green-600 text-center font-semibold">${team.won}</td>
+          <td class="px-4 py-3 text-sm text-yellow-600 text-center">${team.drawn}</td>
+          <td class="px-4 py-3 text-sm text-red-600 text-center">${team.lost}</td>
+          <td class="px-4 py-3 text-sm text-gray-900 text-center">${team.goalsFor}</td>
+          <td class="px-4 py-3 text-sm text-gray-900 text-center">${team.goalsAgainst}</td>
+          <td class="px-4 py-3 text-sm ${team.goalDifference >= 0 ? 'text-green-600' : 'text-red-600'} text-center font-semibold">
+            ${team.goalDifference > 0 ? '+' : ''}${team.goalDifference}
+          </td>
+          <td class="px-4 py-3 text-sm font-bold text-blue-600 text-center text-lg">${team.points}</td>
+        `;
+        
+        tbody.appendChild(row);
+      });
+    }
+
+    renderStats(stats) {
+      document.getElementById('total-matches').textContent = stats.totalMatches || 0;
+      document.getElementById('total-goals').textContent = stats.totalGoals || 0;
+      document.getElementById('avg-goals').textContent = stats.averageGoalsPerMatch || '0.0';
+      document.getElementById('next-jornada').textContent = stats.nextJornada || 1;
+    }
+
+    renderEmptyState() {
+      const tbody = document.getElementById('custom-standings-body');
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="10" class="px-4 py-8 text-center text-gray-500">
+            <div class="text-lg">🏆 No hay datos de clasificación disponibles</div>
+            <div class="text-sm mt-2">La temporada aún no ha comenzado</div>
+          </td>
+        </tr>
+      `;
+    }
+
+    renderErrorState() {
+      const tbody = document.getElementById('custom-standings-body');
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="10" class="px-4 py-8 text-center text-red-500">
+            <div class="text-lg">❌ Error al cargar los datos</div>
+            <div class="text-sm mt-2">Intenta recargar la página</div>
+          </td>
+        </tr>
+      `;
+    }
+
+    updateLastUpdated(timestamp) {
+      const lastUpdatedEl = document.getElementById('last-updated');
+      if (lastUpdatedEl && timestamp) {
+        const date = new Date(timestamp);
+        lastUpdatedEl.textContent = `Última actualización: ${date.toLocaleString()}`;
+      }
+    }
+  }
+
+  // Inicializar cuando se carga la página
+  document.addEventListener('DOMContentLoaded', () => {
+    new CustomStandingsWidget();
+  });
+</script>
+
+<style>
+  /* Animación para las filas */
+  #custom-standings-body tr {
+    transition: background-color 0.3s ease;
+  }
+  
+  #custom-standings-body tr:hover {
+    background-color: #f3f4f6;
+  }
+  
+  /* Efecto de carga */
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .5;
+    }
+  }
+</style>

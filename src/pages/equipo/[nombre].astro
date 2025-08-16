@@ -1,0 +1,1711 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import jugadores from "../../data/players.json";
+
+export async function getStaticPaths() {
+  const equipos = ["Nike FC", "Adidas FC", "Puma FC", "Kappa FC"];
+  return equipos.map((equipo) => ({
+    params: { nombre: equipo },
+    props: { equipo }
+  }));
+}
+
+const { nombre } = Astro.params;
+const jugadoresEquipo = jugadores.filter(j => j.equipo === nombre);
+---
+
+<BaseLayout title={`${nombre} - Lineup`}>
+  <div class="max-w-full mx-auto px-4">
+    <!-- Header con Selector de Jornada -->
+    <div class="bg-blue-600 rounded-xl shadow-lg p-6 text-white mb-6">
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="text-3xl font-bold">⚽ {nombre}</h1>
+        <a href="/lineups" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">
+          ← Volver
+        </a>
+      </div>
+      <!-- Selector de Jornada -->
+      <div class="flex items-center justify-center space-x-4">
+        <div class="flex items-center space-x-2">
+          <label class="text-lg font-bold">📅 Jornada:</label>
+          <select id="selectorJornada" class="bg-white/20 text-white border-2 border-white/30 rounded-lg px-4 py-2 text-lg font-bold focus:outline-none focus:border-white">
+            <!-- Se llenarán las 38 jornadas -->
+          </select>
+        </div>
+        <div class="text-lg font-bold" id="estadoJornada">
+          Estado: <span class="text-green-200" id="estadoJornadaTexto">No guardada</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SELECTOR DE ALINEACIÓN FUERA DEL CAMPO -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-200">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">🎯 Seleccionar Formación</h2>
+      <div class="flex justify-center space-x-4 flex-wrap gap-2">
+        <button id="btn-442" class="formation-btn bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors font-bold" data-alineacion="4-4-2">
+          4-4-2
+        </button>
+        <button id="btn-433" class="formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold" data-alineacion="4-3-3">
+          4-3-3
+        </button>
+        <button id="btn-343" class="formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold" data-alineacion="3-4-3">
+          3-4-3
+        </button>
+        <button id="btn-451" class="formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold" data-alineacion="4-5-1">
+          4-5-1
+        </button>
+        <button id="btn-352" class="formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold" data-alineacion="3-5-2">
+          3-5-2
+        </button>
+      </div>
+      <p class="text-center text-gray-600 mt-4">Formación actual: <span id="current-formation" class="font-bold text-blue-600">4-4-2</span></p>
+    </div>
+
+    <!-- Layout Principal: CAMPO GIGANTE A LA IZQUIERDA + JUGADORES A LA DERECHA -->
+    <div class="flex flex-row gap-6 min-h-screen">
+      
+      <!-- CAMPO SÚPER GIGANTESCO OCUPA 75% -->
+      <div class="flex-1 w-3/4">
+        <div class="bg-green-500 rounded-3xl shadow-2xl p-6 min-h-screen relative" style="height: calc(100vh - 280px);">
+          <!-- Header del Campo Simplificado -->
+          <div class="text-center mb-4">
+            <h2 class="text-white text-4xl font-bold">⚽ CAMPO DE JUEGO ⚽</h2>
+            <p class="text-green-100 text-lg mt-2">Arrastra jugadores aquí para formar tu equipo</p>
+          </div>
+          
+          <!-- Líneas del campo SÚPER visibles -->
+          <div class="absolute inset-8 border-6 border-white rounded-2xl bg-green-600/40">
+            <!-- Línea central -->
+            <div class="absolute top-1/2 left-0 right-0 h-2 bg-white/90"></div>
+            <!-- Círculo central -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 border-4 border-white rounded-full"></div>
+            
+            <!-- Portería arriba (DELANTEROS) -->
+            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 w-40 h-8 border-4 border-white rounded-t-2xl bg-white/30"></div>
+            
+            <!-- Portería abajo (PORTERO) -->
+            <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-40 h-8 border-4 border-white rounded-b-2xl bg-white/30"></div>
+          </div>
+
+          <!-- CONTENEDOR DE SLOTS DINÁMICO -->
+          <div id="slotsContainer" class="absolute inset-8">
+            <!-- Los slots se generarán dinámicamente con JavaScript -->
+          </div>
+        </div>
+        
+        <!-- SECCIÓN DE SUPLENTES DEBAJO DEL CAMPO -->
+        <div class="bg-gray-800 rounded-xl shadow-lg p-4 mt-4">
+          <h3 class="text-white text-lg font-bold mb-3 text-center">🪑 Suplentes</h3>
+          <div class="flex justify-center space-x-4" id="suplentesContainer">
+            <!-- 5 slots para suplentes -->
+            <div class="suplente-slot w-16 h-16 border-4 border-dashed border-gray-400 bg-gray-700/50 hover:bg-gray-600/50 rounded-full flex items-center justify-center cursor-pointer transition-all" id="suplente-1">
+              <span class="text-gray-400 text-xs font-bold">S1</span>
+            </div>
+            <div class="suplente-slot w-16 h-16 border-4 border-dashed border-gray-400 bg-gray-700/50 hover:bg-gray-600/50 rounded-full flex items-center justify-center cursor-pointer transition-all" id="suplente-2">
+              <span class="text-gray-400 text-xs font-bold">S2</span>
+            </div>
+            <div class="suplente-slot w-16 h-16 border-4 border-dashed border-gray-400 bg-gray-700/50 hover:bg-gray-600/50 rounded-full flex items-center justify-center cursor-pointer transition-all" id="suplente-3">
+              <span class="text-gray-400 text-xs font-bold">S3</span>
+            </div>
+            <div class="suplente-slot w-16 h-16 border-4 border-dashed border-gray-400 bg-gray-700/50 hover:bg-gray-600/50 rounded-full flex items-center justify-center cursor-pointer transition-all" id="suplente-4">
+              <span class="text-gray-400 text-xs font-bold">S4</span>
+            </div>
+            <div class="suplente-slot w-16 h-16 border-4 border-dashed border-gray-400 bg-gray-700/50 hover:bg-gray-600/50 rounded-full flex items-center justify-center cursor-pointer transition-all" id="suplente-5">
+              <span class="text-gray-400 text-xs font-bold">S5</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- BOTÓN GUARDAR ALINEACIÓN -->
+        <div class="text-center mt-4">
+          <button id="guardarAlineacion" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-colors">
+            💾 Guardar Alineación
+          </button>
+        </div>
+      </div>
+
+      <!-- LISTA DE JUGADORES A LA DERECHA (25%) -->
+      <div class="w-1/4 min-w-[320px]">
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 sticky top-4">
+          <div class="p-4 bg-gray-50 rounded-t-2xl border-b">
+            <h3 class="text-xl font-bold text-gray-900">🏃‍♂️ {nombre}</h3>
+            <p class="text-sm text-gray-500">{jugadoresEquipo.length} jugadores disponibles</p>
+          </div>
+          
+          <!-- JUGADORES SEPARADOS POR POSICIONES -->
+          <div class="p-4 space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto" id="listaJugadores">
+            
+            <!-- PORTEROS -->
+            <div>
+              <h4 class="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">🥅 Porteros</h4>
+              <div class="space-y-2">
+                {jugadoresEquipo.filter(j => j.posicion === 'POR')
+                  .sort((a, b) => (b.puntos || 0) - (a.puntos || 0))
+                  .map(jugador => (
+                  <div class="jugador-card bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg p-3 cursor-grab active:cursor-grabbing transition-all transform hover:-translate-y-1 hover:shadow-lg"
+                       draggable="true"
+                       data-jugador={JSON.stringify(jugador)}>
+                    <div class="flex items-center space-x-3">
+                      <img src={jugador.foto} alt={jugador.nombre} 
+                           class="w-10 h-10 rounded-full object-cover border-2 border-gray-300 shadow-md"
+                           onerror="this.src='https://via.placeholder.com/40/cccccc/666666?text=?'">
+                      <div class="flex-1 min-w-0">
+                        <div class="text-sm font-bold text-gray-900 truncate">{jugador.nombre}</div>
+                        <div class="text-xs text-gray-600">{jugador.posicion} • OVR: {jugador.ovr}</div>
+                        <div class="text-xs text-green-600 font-bold">€{jugador.valor_mercado.toLocaleString('es-ES')}</div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-sm font-bold text-blue-600">{jugador.puntos || 0} pts</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <!-- DEFENSAS -->
+            <div>
+              <h4 class="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">🛡️ Defensas</h4>
+              <div class="space-y-2">
+                {jugadoresEquipo.filter(j => j.posicion === 'DFC')
+                  .sort((a, b) => (b.puntos || 0) - (a.puntos || 0))
+                  .map(jugador => (
+                  <div class="jugador-card bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg p-3 cursor-grab active:cursor-grabbing transition-all transform hover:-translate-y-1 hover:shadow-lg"
+                       draggable="true"
+                       data-jugador={JSON.stringify(jugador)}>
+                    <div class="flex items-center space-x-3">
+                      <img src={jugador.foto} alt={jugador.nombre} 
+                           class="w-10 h-10 rounded-full object-cover border-2 border-gray-300 shadow-md"
+                           onerror="this.src='https://via.placeholder.com/40/cccccc/666666?text=?'">
+                      <div class="flex-1 min-w-0">
+                        <div class="text-sm font-bold text-gray-900 truncate">{jugador.nombre}</div>
+                        <div class="text-xs text-gray-600">{jugador.posicion} • OVR: {jugador.ovr}</div>
+                        <div class="text-xs text-green-600 font-bold">€{jugador.valor_mercado.toLocaleString('es-ES')}</div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-sm font-bold text-blue-600">{jugador.puntos || 0} pts</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <!-- CENTROCAMPISTAS -->
+            <div>
+              <h4 class="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">⚽ Centrocampistas</h4>
+              <div class="space-y-2">
+                {jugadoresEquipo.filter(j => j.posicion === 'MC')
+                  .sort((a, b) => (b.puntos || 0) - (a.puntos || 0))
+                  .map(jugador => (
+                  <div class="jugador-card bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg p-3 cursor-grab active:cursor-grabbing transition-all transform hover:-translate-y-1 hover:shadow-lg"
+                       draggable="true"
+                       data-jugador={JSON.stringify(jugador)}>
+                    <div class="flex items-center space-x-3">
+                      <img src={jugador.foto} alt={jugador.nombre} 
+                           class="w-10 h-10 rounded-full object-cover border-2 border-gray-300 shadow-md"
+                           onerror="this.src='https://via.placeholder.com/40/cccccc/666666?text=?'">
+                      <div class="flex-1 min-w-0">
+                        <div class="text-sm font-bold text-gray-900 truncate">{jugador.nombre}</div>
+                        <div class="text-xs text-gray-600">{jugador.posicion} • OVR: {jugador.ovr}</div>
+                        <div class="text-xs text-green-600 font-bold">€{jugador.valor_mercado.toLocaleString('es-ES')}</div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-sm font-bold text-blue-600">{jugador.puntos || 0} pts</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <!-- DELANTEROS -->
+            <div>
+              <h4 class="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">🚀 Delanteros</h4>
+              <div class="space-y-2">
+                {jugadoresEquipo.filter(j => j.posicion === 'DC')
+                  .sort((a, b) => (b.puntos || 0) - (a.puntos || 0))
+                  .map(jugador => (
+                  <div class="jugador-card bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg p-3 cursor-grab active:cursor-grabbing transition-all transform hover:-translate-y-1 hover:shadow-lg"
+                       draggable="true"
+                       data-jugador={JSON.stringify(jugador)}>
+                    <div class="flex items-center space-x-3">
+                      <img src={jugador.foto} alt={jugador.nombre} 
+                           class="w-10 h-10 rounded-full object-cover border-2 border-gray-300 shadow-md"
+                           onerror="this.src='https://via.placeholder.com/40/cccccc/666666?text=?'">
+                      <div class="flex-1 min-w-0">
+                        <div class="text-sm font-bold text-gray-900 truncate">{jugador.nombre}</div>
+                        <div class="text-xs text-gray-600">{jugador.posicion} • OVR: {jugador.ovr}</div>
+                        <div class="text-xs text-green-600 font-bold">€{jugador.valor_mercado.toLocaleString('es-ES')}</div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-sm font-bold text-blue-600">{jugador.puntos || 0} pts</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+          </div>
+          
+          <!-- SECCIÓN DE JUGADORES NO DISPONIBLES -->
+          <div id="jugadoresNoDisponibles" class="mt-6 border-t border-gray-300 pt-4">
+            <h4 class="text-sm font-bold text-red-700 mb-3 uppercase tracking-wider">🚫 Jugadores No Disponibles</h4>
+            <div class="space-y-2" id="listaNoDisponibles">
+              <!-- Se llenará dinámicamente -->
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <!-- SECCIÓN DE ESTADÍSTICAS Y PUNTOS -->
+    <div id="estadisticasGuardadas" class="bg-gray-50 rounded-xl shadow-lg p-6 mt-6" style="display: none;">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">📊 Estadísticas del Partido</h2>
+      
+      <!-- Sistema completo de estadísticas por jugador -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="estadisticasJugadores">
+        <!-- Se llenará dinámicamente con jugadores guardados -->
+      </div>
+      
+      <!-- Resumen total -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+        <div class="bg-blue-500 text-white rounded-lg p-4 text-center">
+          <h3 class="text-lg font-bold mb-2">🏆 Puntos Totales</h3>
+          <div class="text-2xl font-bold" id="puntosTotales">0 pts</div>
+        </div>
+        <div class="bg-green-500 text-white rounded-lg p-4 text-center">
+          <h3 class="text-lg font-bold mb-2">⚽ Goles Totales</h3>
+          <div class="text-2xl font-bold" id="golesTotales">0</div>
+        </div>
+        <div class="bg-purple-500 text-white rounded-lg p-4 text-center">
+          <h3 class="text-lg font-bold mb-2">🎯 Asistencias Totales</h3>
+          <div class="text-2xl font-bold" id="asistenciasTotales">0</div>
+        </div>
+        <div class="bg-yellow-500 text-white rounded-lg p-4 text-center">
+          <h3 class="text-lg font-bold mb-2">🟨 Tarjetas Totales</h3>
+          <div class="text-2xl font-bold" id="tarjetasTotales">0</div>
+        </div>
+      </div>
+      
+      <!-- Botón guardar estadísticas -->
+      <div class="text-center mt-6">
+        <button id="guardarEstadisticas" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-colors">
+          💾 Guardar Estadísticas
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script define:vars={{ jugadoresEquipo, nombre }}>
+    console.log(`=== INICIALIZACIÓN ${nombre} ===`);
+    console.log('Jugadores cargados:', jugadoresEquipo.length);
+
+    // Variables globales del sistema de jornadas
+    let jugadoresEnCampo = new Map();
+    let suplentes = new Map(); // Para almacenar suplentes
+    let alineacionActual = '4-4-2';
+    let alineacionGuardadaData = null; // Para almacenar la alineación guardada
+    let jornadaActual = 1; // Jornada actual (1-38)
+    let datosJornadas = {}; // Almacena datos de todas las jornadas
+    let estadoJugadores = {}; // Estado de jugadores (lesiones, sanciones)
+
+    // CONFIGURACIONES DE ALINEACIONES SIMPLES
+    const alineaciones = {
+      '4-4-2': { delanteros: 2, centrocampo: 4, defensa: 4, portero: 1 },
+      '4-3-3': { delanteros: 3, centrocampo: 3, defensa: 4, portero: 1 },
+      '3-4-3': { delanteros: 3, centrocampo: 4, defensa: 3, portero: 1 },
+      '4-5-1': { delanteros: 1, centrocampo: 5, defensa: 4, portero: 1 },
+      '3-5-2': { delanteros: 2, centrocampo: 5, defensa: 3, portero: 1 }
+    };
+
+    // Generar alineación con 4 líneas horizontales y grids adaptativos
+    function generarAlineacion(formacion) {
+      const container = document.getElementById('slotsContainer');
+      container.innerHTML = '';
+      
+      const config = alineaciones[formacion];
+      console.log(`🔧 Generando ${formacion}:`, config);
+      
+      // Crear las 4 líneas (DE ARRIBA A ABAJO: DC, MC, DFC, POR) - DISTRIBUÍDAS EN TODO EL CAMPO
+      const lineas = [
+        { nombre: 'delanteros', letra: 'DC', cantidad: config.delanteros, color: 'red', posicion: '15%' },
+        { nombre: 'centrocampo', letra: 'MC', cantidad: config.centrocampo, color: 'green', posicion: '40%' },
+        { nombre: 'defensa', letra: 'DFC', cantidad: config.defensa, color: 'blue', posicion: '65%' },
+        { nombre: 'portero', letra: 'POR', cantidad: config.portero, color: 'yellow', posicion: '85%' }
+      ];
+      
+      lineas.forEach((linea, lineaIndex) => {
+        if (linea.cantidad > 0) {
+          console.log(`📍 Creando línea ${linea.nombre}: ${linea.cantidad} jugadores`);
+          
+          // Crear contenedor de línea con CSS GRID GIGANTESCO
+          const lineaDiv = document.createElement('div');
+          lineaDiv.className = 'absolute left-0 right-0 flex items-center justify-center px-4';
+          lineaDiv.style.top = linea.posicion;
+          lineaDiv.style.transform = 'translateY(-50%)';
+          lineaDiv.style.height = '120px'; // Altura fija generosa para los slots
+          
+          // Crear grid interno que se adapta al número de jugadores
+          const gridDiv = document.createElement('div');
+          gridDiv.className = 'grid place-items-center w-full';
+          gridDiv.style.gridTemplateColumns = `repeat(${linea.cantidad}, 1fr)`;
+          
+          // GAP dinámico: menos jugadores = más espacio entre ellos
+          const gapMap = {
+            1: '0px',     // 1 jugador: sin gap (centrado)
+            2: '180px',   // 2 jugadores: gap enorme 
+            3: '120px',   // 3 jugadores: gap grande
+            4: '90px',    // 4 jugadores: gap mediano
+            5: '60px'     // 5 jugadores: gap normal
+          };
+          gridDiv.style.gap = gapMap[linea.cantidad] || '30px';
+          
+          // Crear slots para esta línea
+          for (let i = 0; i < linea.cantidad; i++) {
+            const slot = document.createElement('div');
+            const slotId = `slot-${linea.letra}${linea.letra === 'POR' ? '' : '-' + (i + 1)}`;
+            slot.id = slotId;
+            
+            // TAMAÑO UNIFORME PARA TODOS LOS SLOTS
+            let size, fontSize;
+            if (linea.letra === 'POR') {
+              // Portero mismo tamaño que los demás
+              size = 'w-18 h-18'; // 72px x 72px - TAMAÑO MEDIO UNIFORME
+              fontSize = 'text-base';
+            } else {
+              // Todos los jugadores de campo tienen el mismo tamaño
+              size = 'w-18 h-18'; // 72px x 72px - TAMAÑO MEDIO UNIFORME
+              fontSize = 'text-base';
+            }
+            
+            console.log(`  🎯 Slot ${slotId}: tamaño ${size}, cantidad en línea: ${linea.cantidad}`);
+            
+            // Colores por posición con mejor contraste
+            let colorClass;
+            if (linea.letra === 'POR') {
+              colorClass = 'border-yellow-400 bg-yellow-500/50 hover:bg-yellow-400/70 text-yellow-900';
+            } else {
+              const colors = {
+                'red': 'border-red-400 bg-red-500/50 hover:bg-red-400/70 text-red-100',
+                'green': 'border-green-400 bg-green-500/50 hover:bg-green-400/70 text-green-100',
+                'blue': 'border-blue-400 bg-blue-500/50 hover:bg-blue-400/70 text-blue-100'
+              };
+              colorClass = colors[linea.color];
+            }
+            
+            slot.className = `${size} border-4 border-dashed ${colorClass} rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-110 backdrop-blur-sm`;
+            slot.innerHTML = `<span class="${fontSize} font-bold drop-shadow-2xl">${linea.letra}</span>`;
+            
+            // Configurar drag & drop
+            configurarSlotDragDrop(slot);
+            
+            gridDiv.appendChild(slot);
+          }
+          
+          lineaDiv.appendChild(gridDiv);
+          container.appendChild(lineaDiv);
+        }
+      });
+      
+      console.log(`✅ Alineación ${formacion} generada con grids adaptativos`);
+    }
+    
+    // Configurar eventos drag & drop para un slot
+    function configurarSlotDragDrop(slot) {
+      slot.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        slot.classList.add('ring-4', 'ring-blue-400', 'scale-110');
+      });
+
+      slot.addEventListener('dragleave', (e) => {
+        slot.classList.remove('ring-4', 'ring-blue-400', 'scale-110');
+      });
+
+      slot.addEventListener('drop', (e) => {
+        e.preventDefault();
+        slot.classList.remove('ring-4', 'ring-blue-400', 'scale-110');
+        
+        const jugadorData = JSON.parse(e.dataTransfer.getData('text/plain'));
+        console.log('Jugador dropeado:', jugadorData.nombre, 'en slot:', slot.id);
+        
+        // CUALQUIER JUGADOR PUEDE JUGAR EN CUALQUIER POSICIÓN
+        const slotPosicion = slot.id.split('-')[1];
+        console.log(`✅ ${jugadorData.nombre} (${jugadorData.posicion}) puede jugar en posición ${slotPosicion}`);
+
+        // Colocar jugador en el slot
+        colocarJugadorEnSlot(jugadorData, slot);
+      });
+
+      slot.addEventListener('click', () => {
+        quitarJugadorDelSlot(slot.id);
+      });
+    }
+
+    // Colocar jugador en slot con tamaños adaptativos dinámicos
+    function colocarJugadorEnSlot(jugador, slot) {
+      slot.innerHTML = '';
+      
+      // Obtener el tamaño actual del slot para adaptarnos a él
+      const slotClasses = slot.className;
+      
+      // TAMAÑO UNIFORME PARA TODOS LOS JUGADORES COLOCADOS
+      let slotSize, imgSize, textSize, nombreBottom;
+      
+      // Todos los jugadores (incluido el portero) tienen el mismo tamaño uniforme
+      slotSize = 'w-18 h-18';  // 72px x 72px - TAMAÑO MEDIO UNIFORME
+      imgSize = 'w-14 h-14';   // 56px x 56px - Imagen proporcional
+      textSize = 'text-xs';
+      nombreBottom = '-bottom-6';
+      
+      if (slot.id.includes('POR')) {
+        // PORTERO - Mismo tamaño, color amarillo
+        slot.className = `${slotSize} border-4 border-solid border-yellow-400 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center cursor-pointer transition-all relative shadow-2xl hover:shadow-3xl hover:scale-105`;
+      } else {
+        // JUGADORES DE CAMPO - Mismo tamaño, colores por posición
+        
+        // Color según posición
+        let bgColor;
+        if (slot.id.includes('DC')) {
+          bgColor = 'bg-gradient-to-br from-red-500 to-red-700';
+        } else if (slot.id.includes('MC')) {
+          bgColor = 'bg-gradient-to-br from-green-500 to-green-700';
+        } else if (slot.id.includes('DFC')) {
+          bgColor = 'bg-gradient-to-br from-blue-500 to-blue-700';
+        } else {
+          bgColor = 'bg-gradient-to-br from-gray-500 to-gray-700';
+        }
+        
+        slot.className = `${slotSize} border-4 border-solid border-white rounded-full ${bgColor} flex items-center justify-center cursor-pointer transition-all relative shadow-2xl hover:shadow-3xl hover:scale-105`;
+      }
+      
+      console.log(`🎯 Colocando ${jugador.nombre} con tamaño: ${slotSize}`);
+      
+      // Crear imagen con tamaño adaptativo
+      const img = document.createElement('img');
+      img.src = jugador.foto;
+      img.alt = jugador.nombre;
+      img.className = `${imgSize} rounded-full object-cover border-4 border-white shadow-2xl`;
+      img.onerror = function() { 
+        const size = imgSize.includes('w-20') ? '80' : 
+                     imgSize.includes('w-16') ? '64' : 
+                     imgSize.includes('w-14') ? '56' : 
+                     imgSize.includes('w-12') ? '48' : 
+                     imgSize.includes('w-10') ? '40' : '48';
+        this.src = `https://via.placeholder.com/${size}/ffffff/333333?text=${jugador.nombre.charAt(0)}`; 
+      };
+      
+      // Crear nombre con tamaño adaptativo
+      const nombre = document.createElement('div');
+      nombre.className = `absolute ${nombreBottom} left-1/2 transform -translate-x-1/2 text-white ${textSize} font-bold bg-black/90 px-3 py-1 rounded-lg whitespace-nowrap shadow-xl backdrop-blur-sm`;
+      nombre.textContent = jugador.nombre.split(' ')[0];
+      
+      // Crear stats overlay para jugadores grandes
+      if (slotSize.includes('w-48') || slotSize.includes('w-56') || slotSize.includes('w-64') || slotSize.includes('w-72')) {
+        const stats = document.createElement('div');
+        const statsSize = slotSize.includes('w-72') || slotSize.includes('w-64') ? 'text-sm' : 'text-xs';
+        stats.className = `absolute top-2 right-2 bg-white/90 text-black ${statsSize} font-bold px-2 py-1 rounded-full shadow-lg`;
+        stats.textContent = `OVR ${jugador.ovr}`;
+        slot.appendChild(stats);
+      }
+      
+      slot.appendChild(img);
+      slot.appendChild(nombre);
+      
+      // Guardar en mapa
+      jugadoresEnCampo.set(slot.id, jugador);
+      
+      // Ocultar de lista
+      const card = document.querySelector(`[data-jugador*='${jugador.nombre}']`);
+      if (card) card.style.display = 'none';
+
+      console.log(`✅ ${jugador.nombre} colocado en ${slot.id} con tamaño ${slotSize}`);
+    }
+
+    // Quitar jugador del slot
+    function quitarJugadorDelSlot(slotId) {
+      const jugador = jugadoresEnCampo.get(slotId);
+      if (!jugador) return;
+
+      jugadoresEnCampo.delete(slotId);
+      
+      // Mostrar en lista
+      const card = document.querySelector(`[data-jugador*='${jugador.nombre}']`);
+      if (card) card.style.display = 'block';
+
+      // Regenerar alineación para restaurar slot y mantener otros jugadores
+      regenerarAlineacionConJugadores();
+
+      console.log(`❌ ${jugador.nombre} quitado de ${slotId}`);
+    }
+
+    // Regenerar alineación manteniendo jugadores existentes
+    function regenerarAlineacionConJugadores() {
+      // Guardar jugadores actuales
+      const jugadoresActuales = new Map(jugadoresEnCampo);
+      
+      // Limpiar mapa actual
+      jugadoresEnCampo.clear();
+      
+      // Regenerar alineación
+      generarAlineacion(alineacionActual);
+      
+      // Recolocar jugadores compatibles
+      jugadoresActuales.forEach((jugador, slotId) => {
+        const nuevoSlot = document.getElementById(slotId);
+        if (nuevoSlot && nuevoSlot.innerHTML.includes('span')) {
+          // El slot existe y está vacío, recolocar jugador
+          colocarJugadorEnSlot(jugador, nuevoSlot);
+        } else {
+          // Si el slot ya no existe, mostrar jugador en lista
+          const card = document.querySelector(`[data-jugador*='${jugador.nombre}']`);
+          if (card) {
+            card.style.display = 'block';
+            console.log(`🔄 Devolviendo ${jugador.nombre} a la lista (slot ${slotId} no disponible)`);
+          }
+        }
+      });
+    }
+
+    // ===== SISTEMA DE JORNADAS =====
+    
+    // Inicializar selector de jornadas
+    function inicializarSelectorJornadas() {
+      const selector = document.getElementById('selectorJornada');
+      
+      // Llenar con las 38 jornadas
+      for (let i = 1; i <= 38; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `Jornada ${i}`;
+        if (i === jornadaActual) option.selected = true;
+        selector.appendChild(option);
+      }
+      
+      // Evento para cambiar jornada
+      selector.addEventListener('change', (e) => {
+        cambiarJornada(parseInt(e.target.value));
+      });
+    }
+    
+    // Cambiar a una jornada específica
+    function cambiarJornada(nuevaJornada) {
+      console.log(`📅 Cambiando a jornada ${nuevaJornada}`);
+      
+      // Guardar estado actual si hay cambios
+      if (jugadoresEnCampo.size > 0 || suplentes.size > 0) {
+        guardarEstadoJornadaActual();
+      }
+      
+      jornadaActual = nuevaJornada;
+      
+      // Limpiar campo actual
+      limpiarCampoCompleto();
+      
+      // Cargar datos de la nueva jornada
+      cargarDatosJornada(nuevaJornada);
+      
+      // Actualizar estado visual
+      actualizarEstadoJornadaVisual();
+      
+      // Actualizar disponibilidad de jugadores
+      actualizarDisponibilidadJugadores();
+    }
+    
+    // Guardar estado de jornada actual
+    function guardarEstadoJornadaActual() {
+      if (!datosJornadas[jornadaActual]) {
+        datosJornadas[jornadaActual] = {};
+      }
+      
+      datosJornadas[jornadaActual] = {
+        ...datosJornadas[jornadaActual],
+        formacion: alineacionActual,
+        jugadoresCampo: Array.from(jugadoresEnCampo.entries()),
+        suplentes: Array.from(suplentes.entries()),
+        fechaModificacion: new Date().toISOString()
+      };
+      
+      // Guardar en localStorage
+      localStorage.setItem(`jornadas_${nombre}`, JSON.stringify(datosJornadas));
+    }
+    
+    // Cargar datos de una jornada específica
+    function cargarDatosJornada(jornada) {
+      // Cargar desde localStorage
+      const datosGuardados = localStorage.getItem(`jornadas_${nombre}`);
+      if (datosGuardados) {
+        datosJornadas = JSON.parse(datosGuardados);
+      }
+      
+      const datosJornada = datosJornadas[jornada];
+      if (datosJornada) {
+        // Restaurar formación
+        if (datosJornada.formacion) {
+          alineacionActual = datosJornada.formacion;
+          document.getElementById('current-formation').textContent = alineacionActual;
+          
+          // Actualizar botones de formación
+          document.querySelectorAll('.formation-btn').forEach(btn => {
+            btn.className = 'formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold';
+          });
+          const botonActivo = document.querySelector(`[data-alineacion="${alineacionActual}"]`);
+          if (botonActivo) {
+            botonActivo.className = 'formation-btn bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors font-bold';
+          }
+        }
+        
+        // Generar alineación limpia
+        generarAlineacion(alineacionActual);
+        
+        // LIMPIAR SUPLENTES ANTES DE RESTAURAR
+        restaurarSuplentersLimpios();
+        
+        // Restaurar jugadores en campo
+        if (datosJornada.jugadoresCampo) {
+          datosJornada.jugadoresCampo.forEach(([slotId, jugador]) => {
+            const slot = document.getElementById(slotId);
+            if (slot) {
+              colocarJugadorEnSlot(jugador, slot);
+            }
+          });
+        }
+        
+        // Restaurar suplentes de ESTA jornada específica
+        if (datosJornada.suplentes) {
+          datosJornada.suplentes.forEach(([slotId, jugador]) => {
+            const slot = document.getElementById(slotId);
+            if (slot) {
+              colocarJugadorEnSuplentes(jugador, slot);
+            }
+          });
+        }
+      } else {
+        // Jornada nueva, generar alineación por defecto y limpiar suplentes
+        generarAlineacion(alineacionActual);
+        restaurarSuplentersLimpios();
+      }
+    }
+    
+    // Función para restaurar slots de suplentes limpios
+    function restaurarSuplentersLimpios() {
+      console.log('🧹 Limpiando slots de suplentes...');
+      
+      // Limpiar el mapa de suplentes
+      suplentes.clear();
+      
+      // Restaurar slots de suplentes a estado vacío
+      for (let i = 1; i <= 5; i++) {
+        const slot = document.getElementById(`suplente-${i}`);
+        if (slot) {
+          slot.className = 'suplente-slot w-16 h-16 border-4 border-dashed border-gray-400 bg-gray-700/50 hover:bg-gray-600/50 rounded-full flex items-center justify-center cursor-pointer transition-all';
+          slot.innerHTML = `<span class="text-gray-400 text-xs font-bold">S${i}</span>`;
+        }
+      }
+      
+      console.log('✅ Slots de suplentes limpiados');
+    }
+    
+    // Limpiar campo completamente
+    function limpiarCampoCompleto() {
+      jugadoresEnCampo.clear();
+      suplentes.clear();
+      
+      // Mostrar todos los jugadores en la lista
+      document.querySelectorAll('.jugador-card').forEach(card => {
+        card.style.display = 'block';
+      });
+      
+      // Ocultar sección de estadísticas
+      document.getElementById('estadisticasGuardadas').style.display = 'none';
+      alineacionGuardadaData = null;
+    }
+    
+    // Actualizar estado visual de la jornada
+    function actualizarEstadoJornadaVisual() {
+      const estadoTexto = document.getElementById('estadoJornadaTexto');
+      const jornadaGuardada = datosJornadas[jornadaActual] && datosJornadas[jornadaActual].estadisticasGuardadas;
+      
+      if (jornadaGuardada) {
+        estadoTexto.textContent = 'Completada';
+        estadoTexto.className = 'text-green-300';
+      } else {
+        estadoTexto.textContent = 'No guardada';
+        estadoTexto.className = 'text-yellow-300';
+      }
+    }
+    
+    // ===== GESTIÓN DE ESTADO DE JUGADORES =====
+    
+    // Inicializar estado de jugadores
+    function inicializarEstadoJugadores() {
+      const estadoGuardado = localStorage.getItem(`estado_jugadores_${nombre}`);
+      if (estadoGuardado) {
+        estadoJugadores = JSON.parse(estadoGuardado);
+      }
+      
+      // Inicializar jugadores que no estén en el estado
+      jugadoresEquipo.forEach(jugador => {
+        if (!estadoJugadores[jugador.nombre]) {
+          estadoJugadores[jugador.nombre] = {
+            lesionJornadasRestantes: 0,
+            suspendidoJornadasRestantes: 0,
+            tarjetasAmarillasAcumuladas: 0,
+            historialLesiones: [],
+            historialSanciones: []
+          };
+        }
+      });
+      
+      // Reducir jornadas de lesiones y sanciones para la jornada actual
+      actualizarEstadosJornada();
+    }
+    
+    // Actualizar estados de jugadores para la jornada actual
+    function actualizarEstadosJornada() {
+      Object.keys(estadoJugadores).forEach(nombreJugador => {
+        const estado = estadoJugadores[nombreJugador];
+        
+        // Reducir lesiones (solo si es mayor que 0)
+        if (estado.lesionJornadasRestantes > 0) {
+          estado.lesionJornadasRestantes = Math.max(0, estado.lesionJornadasRestantes - 1);
+        }
+        
+        // Reducir suspensiones (solo si es mayor que 0)
+        if (estado.suspendidoJornadasRestantes > 0) {
+          estado.suspendidoJornadasRestantes = Math.max(0, estado.suspendidoJornadasRestantes - 1);
+        }
+      });
+      
+      // Guardar estado actualizado
+      localStorage.setItem(`estado_jugadores_${nombre}`, JSON.stringify(estadoJugadores));
+    }
+    
+    // Verificar si un jugador está disponible para jugar
+    function jugadorDisponible(nombreJugador) {
+      const estado = estadoJugadores[nombreJugador];
+      if (!estado) return true;
+      
+      return estado.lesionJornadasRestantes === 0 && estado.suspendidoJornadasRestantes === 0;
+    }
+    
+    // Actualizar disponibilidad visual de jugadores
+    function actualizarDisponibilidadJugadores() {
+      document.querySelectorAll('.jugador-card').forEach(card => {
+        const jugadorData = JSON.parse(card.getAttribute('data-jugador'));
+        const disponible = jugadorDisponible(jugadorData.nombre);
+        
+        if (!disponible) {
+          const estado = estadoJugadores[jugadorData.nombre];
+          card.classList.add('opacity-50', 'cursor-not-allowed');
+          card.setAttribute('draggable', 'false');
+          
+          // Agregar indicador visual
+          let indicador = card.querySelector('.indicador-estado');
+          if (!indicador) {
+            indicador = document.createElement('div');
+            indicador.className = 'indicador-estado absolute top-1 right-1 text-xs font-bold px-2 py-1 rounded-full';
+            card.style.position = 'relative';
+            card.appendChild(indicador);
+          }
+          
+          if (estado.lesionJornadasRestantes > 0) {
+            indicador.textContent = `🩹 ${estado.lesionJornadasRestantes}J`;
+            indicador.className = 'indicador-estado absolute top-1 right-1 text-xs font-bold px-2 py-1 rounded-full bg-red-500 text-white';
+          } else if (estado.suspendidoJornadasRestantes > 0) {
+            indicador.textContent = `🟥 ${estado.suspendidoJornadasRestantes}J`;
+            indicador.className = 'indicador-estado absolute top-1 right-1 text-xs font-bold px-2 py-1 rounded-full bg-orange-500 text-white';
+          }
+        } else {
+          card.classList.remove('opacity-50', 'cursor-not-allowed');
+          card.setAttribute('draggable', 'true');
+          
+          // Remover indicador
+          const indicador = card.querySelector('.indicador-estado');
+          if (indicador) indicador.remove();
+        }
+      });
+      
+      // Actualizar sección de jugadores no disponibles
+      actualizarSeccionJugadoresNoDisponibles();
+    }
+    
+    // Aplicar lesión a un jugador
+    function aplicarLesion(nombreJugador, jornadas) {
+      if (!estadoJugadores[nombreJugador]) return;
+      
+      estadoJugadores[nombreJugador].lesionJornadasRestantes = Math.max(
+        estadoJugadores[nombreJugador].lesionJornadasRestantes,
+        jornadas
+      );
+      
+      estadoJugadores[nombreJugador].historialLesiones.push({
+        jornada: jornadaActual,
+        duracion: jornadas,
+        fecha: new Date().toISOString()
+      });
+      
+      localStorage.setItem(`estado_jugadores_${nombre}`, JSON.stringify(estadoJugadores));
+      actualizarDisponibilidadJugadores();
+      
+      console.log(`🩹 ${nombreJugador} lesionado por ${jornadas} jornadas`);
+    }
+    
+    // Aplicar sanción a un jugador
+    function aplicarSancion(nombreJugador, tipo) {
+      if (!estadoJugadores[nombreJugador]) return;
+      
+      const estado = estadoJugadores[nombreJugador];
+      
+      if (tipo === 'tarjeta_roja') {
+        estado.suspendidoJornadasRestantes = Math.max(estado.suspendidoJornadasRestantes, 1);
+        estado.historialSanciones.push({
+          jornada: jornadaActual,
+          tipo: 'roja',
+          duracion: 1,
+          fecha: new Date().toISOString()
+        });
+        console.log(`🟥 ${nombreJugador} suspendido 1 jornada por tarjeta roja`);
+      } else if (tipo === 'quinta_amarilla') {
+        estado.tarjetasAmarillasAcumuladas = 0; // Reset después de la quinta
+        estado.suspendidoJornadasRestantes = Math.max(estado.suspendidoJornadasRestantes, 1);
+        estado.historialSanciones.push({
+          jornada: jornadaActual,
+          tipo: 'quinta_amarilla',
+          duracion: 1,
+          fecha: new Date().toISOString()
+        });
+        console.log(`🟨🟨🟨🟨🟨 ${nombreJugador} suspendido 1 jornada por 5 amarillas`);
+      }
+      
+      localStorage.setItem(`estado_jugadores_${nombre}`, JSON.stringify(estadoJugadores));
+      actualizarDisponibilidadJugadores();
+    }
+    
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM cargado, configurando sistema...');
+      
+      // Inicializar sistema de jornadas
+      inicializarSelectorJornadas();
+      inicializarEstadoJugadores();
+      
+      // Cargar datos de jornada actual
+      cargarDatosJornada(jornadaActual);
+      actualizarEstadoJornadaVisual();
+      actualizarDisponibilidadJugadores();
+      
+      // Hacer draggables las cartas de jugadores
+      const jugadorCards = document.querySelectorAll('.jugador-card');
+      jugadorCards.forEach(card => {
+        card.addEventListener('dragstart', (e) => {
+          const jugadorData = JSON.parse(card.getAttribute('data-jugador'));
+          
+          // Verificar si el jugador está disponible
+          if (!jugadorDisponible(jugadorData.nombre)) {
+            e.preventDefault();
+            alert(`❌ ${jugadorData.nombre} no está disponible para jugar en esta jornada`);
+            return;
+          }
+          
+          e.dataTransfer.setData('text/plain', card.getAttribute('data-jugador'));
+          card.classList.add('opacity-50');
+        });
+
+        card.addEventListener('dragend', (e) => {
+          card.classList.remove('opacity-50');
+        });
+      });
+
+      // Configurar botones de alineación con método CORREGIDO
+      const botonesFormacion = document.querySelectorAll('.formation-btn');
+      console.log('Botones encontrados:', botonesFormacion.length);
+      
+      // Función para cambiar formación
+      function cambiarFormacion(nuevaFormacion, botonId) {
+        console.log(`🔄 Cambiando a formación: ${nuevaFormacion}`);
+        
+        if (nuevaFormacion === alineacionActual) {
+          console.log(`⚠️ Ya estás en formación ${nuevaFormacion}`);
+          return;
+        }
+        
+        // Limpiar campo
+        jugadoresEnCampo.clear();
+        document.querySelectorAll('.jugador-card').forEach(card => {
+          card.style.display = 'block';
+        });
+        
+        // Configurar nueva formación
+        alineacionActual = nuevaFormacion;
+        generarAlineacion(nuevaFormacion);
+        
+        // Actualizar indicador de formación actual
+        document.getElementById('current-formation').textContent = nuevaFormacion;
+        
+        // Actualizar botones
+        document.querySelectorAll('.formation-btn').forEach(btn => {
+          btn.className = 'formation-btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors font-bold';
+        });
+        document.getElementById(botonId).className = 'formation-btn bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors font-bold';
+        
+        console.log(`✅ Cambio a ${nuevaFormacion} completado`);
+      }
+      
+      // Configurar eventos de botones
+      document.getElementById('btn-442').addEventListener('click', () => cambiarFormacion('4-4-2', 'btn-442'));
+      document.getElementById('btn-433').addEventListener('click', () => cambiarFormacion('4-3-3', 'btn-433'));
+      document.getElementById('btn-343').addEventListener('click', () => cambiarFormacion('3-4-3', 'btn-343'));
+      document.getElementById('btn-451').addEventListener('click', () => cambiarFormacion('4-5-1', 'btn-451'));
+      document.getElementById('btn-352').addEventListener('click', () => cambiarFormacion('3-5-2', 'btn-352'));
+      
+      // Configurar suplentes drag & drop
+      configurarSuplentesDragDrop();
+      
+      // Configurar botón de guardar alineación
+      document.getElementById('guardarAlineacion').addEventListener('click', guardarAlineacion);
+    });
+    
+    // Configurar drag & drop para slots de suplentes
+    function configurarSuplentesDragDrop() {
+      const suplenteSlots = document.querySelectorAll('.suplente-slot');
+      
+      suplenteSlots.forEach(slot => {
+        slot.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          slot.classList.add('ring-4', 'ring-green-400', 'scale-110');
+        });
+
+        slot.addEventListener('dragleave', (e) => {
+          slot.classList.remove('ring-4', 'ring-green-400', 'scale-110');
+        });
+
+        slot.addEventListener('drop', (e) => {
+          e.preventDefault();
+          slot.classList.remove('ring-4', 'ring-green-400', 'scale-110');
+          
+          const jugadorData = JSON.parse(e.dataTransfer.getData('text/plain'));
+          console.log('Suplente dropeado:', jugadorData.nombre, 'en slot:', slot.id);
+          
+          // Colocar jugador en suplentes
+          colocarJugadorEnSuplentes(jugadorData, slot);
+        });
+
+        slot.addEventListener('click', () => {
+          quitarSuplenteDelSlot(slot.id);
+        });
+      });
+    }
+    
+    // Colocar jugador en slot de suplente
+    function colocarJugadorEnSuplentes(jugador, slot) {
+      slot.innerHTML = '';
+      
+      // Aplicar estilo de suplente activo
+      slot.className = 'suplente-slot w-16 h-16 border-4 border-solid border-green-400 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center cursor-pointer transition-all relative shadow-xl hover:shadow-2xl hover:scale-105';
+      
+      // Crear imagen del jugador
+      const img = document.createElement('img');
+      img.src = jugador.foto;
+      img.alt = jugador.nombre;
+      img.className = 'w-12 h-12 rounded-full object-cover border-2 border-white shadow-lg';
+      img.onerror = function() { 
+        this.src = `https://via.placeholder.com/48/ffffff/333333?text=${jugador.nombre.charAt(0)}`; 
+      };
+      
+      // Crear nombre abajo del slot
+      const nombre = document.createElement('div');
+      nombre.className = 'absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-white text-xs font-bold bg-black/90 px-2 py-1 rounded whitespace-nowrap shadow-lg';
+      nombre.textContent = jugador.nombre.split(' ')[0];
+      
+      slot.appendChild(img);
+      slot.appendChild(nombre);
+      
+      // Guardar en mapa de suplentes
+      suplentes.set(slot.id, jugador);
+      
+      // Ocultar de lista
+      const card = document.querySelector(`[data-jugador*='${jugador.nombre}']`);
+      if (card) card.style.display = 'none';
+
+      console.log(`✅ ${jugador.nombre} colocado como suplente en ${slot.id}`);
+    }
+    
+    // Quitar suplente del slot
+    function quitarSuplenteDelSlot(slotId) {
+      const jugador = suplentes.get(slotId);
+      if (!jugador) return;
+
+      suplentes.delete(slotId);
+      
+      // Restaurar slot vacío
+      const slot = document.getElementById(slotId);
+      const slotNumber = slotId.split('-')[1];
+      slot.className = 'suplente-slot w-16 h-16 border-4 border-dashed border-gray-400 bg-gray-700/50 hover:bg-gray-600/50 rounded-full flex items-center justify-center cursor-pointer transition-all';
+      slot.innerHTML = `<span class="text-gray-400 text-xs font-bold">S${slotNumber}</span>`;
+      
+      // Mostrar en lista
+      const card = document.querySelector(`[data-jugador*='${jugador.nombre}']`);
+      if (card) card.style.display = 'block';
+
+      console.log(`❌ Suplente ${jugador.nombre} quitado de ${slotId}`);
+    }
+    
+    // Función para guardar alineación
+    function guardarAlineacion() {
+      if (jugadoresEnCampo.size === 0) {
+        alert('❌ Debes colocar al menos un jugador en el campo antes de guardar.');
+        return;
+      }
+      
+      // Crear datos de la alineación guardada
+      alineacionGuardadaData = {
+        formacion: alineacionActual,
+        jugadoresCampo: Array.from(jugadoresEnCampo.entries()),
+        suplentes: Array.from(suplentes.entries()),
+        fechaGuardado: new Date().toLocaleString('es-ES')
+      };
+      
+      console.log('Alineación guardada:', alineacionGuardadaData);
+      
+      // Mostrar sección de alineación guardada
+      mostrarAlineacionGuardada();
+      
+      // Feedback visual
+      const boton = document.getElementById('guardarAlineacion');
+      const textoOriginal = boton.textContent;
+      boton.textContent = '✅ ¡Guardado!';
+      boton.className = 'bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-colors';
+      
+      setTimeout(() => {
+        boton.textContent = textoOriginal;
+        boton.className = 'bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-colors';
+      }, 2000);
+      
+      alert(`✅ Alineación guardada exitosamente\n\n📊 Formación: ${alineacionActual}\n👥 Jugadores en campo: ${jugadoresEnCampo.size}\n🪑 Suplentes: ${suplentes.size}\n🕒 Fecha: ${alineacionGuardadaData.fechaGuardado}`);
+    }
+    
+    // Mostrar sección de estadísticas
+    function mostrarAlineacionGuardada() {
+      const seccion = document.getElementById('estadisticasGuardadas');
+      seccion.style.display = 'block';
+      
+      // Mostrar sistema completo de estadísticas
+      mostrarSistemaEstadisticas();
+      
+      // Configurar botón de guardar estadísticas
+      document.getElementById('guardarEstadisticas').addEventListener('click', guardarEstadisticasCompletas);
+      
+      // Scroll suave hacia la sección
+      seccion.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Mostrar sistema completo de estadísticas
+    function mostrarSistemaEstadisticas() {
+      const container = document.getElementById('estadisticasJugadores');
+      container.innerHTML = '';
+      
+      if (!alineacionGuardadaData) return;
+      
+      // Crear tarjetas de estadísticas para cada jugador (titulares y suplentes)
+      const todosLosJugadores = [
+        ...alineacionGuardadaData.jugadoresCampo,
+        ...Array.from(suplentes.entries())
+      ];
+      
+      todosLosJugadores.forEach(([slotId, jugador]) => {
+        const jugadorDiv = document.createElement('div');
+        const esSuplente = slotId.startsWith('suplente');
+        jugadorDiv.className = `bg-white rounded-lg p-4 shadow-md border ${esSuplente ? 'border-orange-300 bg-orange-50' : ''}`;
+        
+        // Inicializar estadísticas del jugador si no existen
+        const estadisticas = {
+          puntos: jugador.puntos || 0,
+          goles: jugador.goles || 0,
+          asistencias: jugador.asistencias || 0,
+          tarjetasAmarillas: jugador.tarjetasAmarillas || 0,
+          tarjetasRojas: jugador.tarjetasRojas || 0,
+          lesion: jugador.lesion || false
+        };
+        
+        jugadorDiv.innerHTML = `
+          <div class="flex items-center space-x-3 mb-4">
+            <img src="${jugador.foto}" alt="${jugador.nombre}" 
+                 class="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
+                 onerror="this.src='https://via.placeholder.com/48/cccccc/666666?text=${jugador.nombre.charAt(0)}'">
+            <div class="flex-1">
+              <div class="font-bold text-lg">${jugador.nombre} ${esSuplente ? '🪑' : ''}</div>
+              <div class="text-sm text-gray-600">${jugador.posicion} • OVR: ${jugador.ovr} ${esSuplente ? '(Suplente)' : '(Titular)'}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-lg font-bold text-blue-600" id="puntos-${slotId}">${estadisticas.puntos} pts</div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-3">
+            <!-- Puntos -->
+            <div class="flex flex-col">
+              <label class="text-xs font-bold text-gray-700 mb-1">🏆 Puntos (0-30)</label>
+              <input type="number" min="0" max="30" value="${estadisticas.puntos}" 
+                     class="w-full px-2 py-1 border rounded text-center font-bold"
+                     data-jugador="${jugador.nombre}" data-stat="puntos"
+                     onchange="actualizarEstadistica('${jugador.nombre}', 'puntos', this.value)">
+            </div>
+            
+            <!-- Goles -->
+            <div class="flex flex-col">
+              <label class="text-xs font-bold text-gray-700 mb-1">⚽ Goles</label>
+              <input type="number" min="0" max="10" value="${estadisticas.goles}" 
+                     class="w-full px-2 py-1 border rounded text-center font-bold"
+                     data-jugador="${jugador.nombre}" data-stat="goles"
+                     onchange="actualizarEstadistica('${jugador.nombre}', 'goles', this.value)">
+            </div>
+            
+            <!-- Asistencias -->
+            <div class="flex flex-col">
+              <label class="text-xs font-bold text-gray-700 mb-1">🎯 Asistencias</label>
+              <input type="number" min="0" max="10" value="${estadisticas.asistencias}" 
+                     class="w-full px-2 py-1 border rounded text-center font-bold"
+                     data-jugador="${jugador.nombre}" data-stat="asistencias"
+                     onchange="actualizarEstadistica('${jugador.nombre}', 'asistencias', this.value)">
+            </div>
+            
+            <!-- Tarjetas Amarillas -->
+            <div class="flex flex-col">
+              <label class="text-xs font-bold text-gray-700 mb-1">🟨 T. Amarillas</label>
+              <input type="number" min="0" max="2" value="${estadisticas.tarjetasAmarillas}" 
+                     class="w-full px-2 py-1 border rounded text-center font-bold"
+                     data-jugador="${jugador.nombre}" data-stat="tarjetasAmarillas"
+                     onchange="actualizarEstadistica('${jugador.nombre}', 'tarjetasAmarillas', this.value)">
+            </div>
+            
+            <!-- Tarjetas Rojas -->
+            <div class="flex flex-col">
+              <label class="text-xs font-bold text-gray-700 mb-1">🟥 T. Rojas</label>
+              <input type="number" min="0" max="1" value="${estadisticas.tarjetasRojas}" 
+                     class="w-full px-2 py-1 border rounded text-center font-bold"
+                     data-jugador="${jugador.nombre}" data-stat="tarjetasRojas"
+                     onchange="actualizarEstadistica('${jugador.nombre}', 'tarjetasRojas', this.value)">
+            </div>
+            
+            <!-- Lesión -->
+            <div class="flex flex-col">
+              <label class="text-xs font-bold text-gray-700 mb-1">🩹 Duración Lesión (Jornadas)</label>
+              <input type="number" min="0" max="10" value="${estadisticas.lesionJornadas || 0}" 
+                     class="w-full px-2 py-1 border rounded text-center font-bold"
+                     data-jugador="${jugador.nombre}" data-stat="lesionJornadas"
+                     onchange="actualizarEstadistica('${jugador.nombre}', 'lesionJornadas', this.value)">
+              <small class="text-xs text-gray-500 mt-1">0 = sin lesión</small>
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(jugadorDiv);
+        
+        // Guardar estadísticas del jugador en el mapa (titulares y suplentes)
+        alineacionGuardadaData.jugadoresCampo = alineacionGuardadaData.jugadoresCampo.map(([slot, jug]) => {
+          if (jug.nombre === jugador.nombre) {
+            return [slot, { ...jug, ...estadisticas }];
+          }
+          return [slot, jug];
+        });
+        
+        // También actualizar suplentes si es necesario
+        if (suplentes.has(slotId)) {
+          const jugadorSuplente = suplentes.get(slotId);
+          suplentes.set(slotId, { ...jugadorSuplente, ...estadisticas });
+        }
+      });
+      
+      // Calcular totales iniciales
+      calcularTotales();
+    }
+    
+    // Actualizar una estadística específica de un jugador (disponible globalmente)
+    window.actualizarEstadistica = function(nombreJugador, estadistica, valor) {
+      let valorProcesado;
+      
+      if (estadistica === 'lesion') {
+        valorProcesado = valor; // boolean
+      } else {
+        valorProcesado = parseInt(valor) || 0;
+      }
+      
+      console.log(`📊 Actualizando ${estadistica} de ${nombreJugador}: ${valorProcesado}`);
+      
+      // Actualizar en datos guardados (TITULARES)
+      if (alineacionGuardadaData) {
+        alineacionGuardadaData.jugadoresCampo = alineacionGuardadaData.jugadoresCampo.map(([slotId, jugador]) => {
+          if (jugador.nombre === nombreJugador) {
+            const jugadorActualizado = { ...jugador };
+            jugadorActualizado[estadistica] = valorProcesado;
+            return [slotId, jugadorActualizado];
+          }
+          return [slotId, jugador];
+        });
+      }
+      
+      // Actualizar en SUPLENTES también
+      suplentes.forEach((jugador, slotId) => {
+        if (jugador.nombre === nombreJugador) {
+          const jugadorActualizado = { ...jugador };
+          jugadorActualizado[estadistica] = valorProcesado;
+          suplentes.set(slotId, jugadorActualizado);
+          console.log(`🪑 Suplente ${nombreJugador} actualizado:`, jugadorActualizado);
+        }
+      });
+      
+      // Actualizar visualización de puntos en el header del jugador
+      if (estadistica === 'puntos') {
+        const puntoElements = document.querySelectorAll(`[id*="puntos-"]`);
+        puntoElements.forEach(element => {
+          if (element.id.includes(nombreJugador.replace(/\s+/g, '').toLowerCase()) || 
+              element.parentElement.textContent.includes(nombreJugador)) {
+            element.textContent = `${valorProcesado} pts`;
+          }
+        });
+      }
+      
+      // Recalcular totales
+      calcularTotales();
+    }
+    
+    // Calcular todos los totales
+    function calcularTotales() {
+      if (!alineacionGuardadaData) return;
+      
+      let totalPuntos = 0;
+      let totalGoles = 0;
+      let totalAsistencias = 0;
+      let totalTarjetasAmarillas = 0;
+      let totalTarjetasRojas = 0;
+      
+      console.log('🧮 Calculando totales...');
+      
+      // Calcular totales de TITULARES
+      alineacionGuardadaData.jugadoresCampo.forEach(([slotId, jugador]) => {
+        console.log(`👤 Titular ${jugador.nombre}: ${jugador.puntos || 0} pts`);
+        totalPuntos += (jugador.puntos || 0);
+        totalGoles += (jugador.goles || 0);
+        totalAsistencias += (jugador.asistencias || 0);
+        totalTarjetasAmarillas += (jugador.tarjetasAmarillas || 0);
+        totalTarjetasRojas += (jugador.tarjetasRojas || 0);
+      });
+      
+      // Calcular totales de SUPLENTES
+      suplentes.forEach((jugador, slotId) => {
+        console.log(`🪑 Suplente ${jugador.nombre}: ${jugador.puntos || 0} pts`);
+        totalPuntos += (jugador.puntos || 0);
+        totalGoles += (jugador.goles || 0);
+        totalAsistencias += (jugador.asistencias || 0);
+        totalTarjetasAmarillas += (jugador.tarjetasAmarillas || 0);
+        totalTarjetasRojas += (jugador.tarjetasRojas || 0);
+      });
+      
+      console.log(`📊 TOTALES: ${totalPuntos} puntos, ${totalGoles} goles, ${totalAsistencias} asistencias`);
+      
+      // Actualizar displays
+      document.getElementById('puntosTotales').textContent = `${totalPuntos} pts`;
+      document.getElementById('golesTotales').textContent = totalGoles;
+      document.getElementById('asistenciasTotales').textContent = totalAsistencias;
+      document.getElementById('tarjetasTotales').textContent = totalTarjetasAmarillas + totalTarjetasRojas;
+      
+      // Agregar animación de actualización
+      ['puntosTotales', 'golesTotales', 'asistenciasTotales', 'tarjetasTotales'].forEach(id => {
+        const elemento = document.getElementById(id);
+        elemento.classList.add('animate-pulse');
+        setTimeout(() => {
+          elemento.classList.remove('animate-pulse');
+        }, 500);
+      });
+    }
+    
+    // Función para guardar estadísticas completas
+    async function guardarEstadisticasCompletas() {
+      if (!alineacionGuardadaData || alineacionGuardadaData.jugadoresCampo.length === 0) {
+        alert('❌ No hay estadísticas para guardar. Primero guarda una alineación.');
+        return;
+      }
+      
+      console.log('💾 Procesando estadísticas para la jornada', jornadaActual);
+      
+      // Procesar sanciones y lesiones ANTES de guardar las estadísticas
+      alineacionGuardadaData.jugadoresCampo.forEach(([slotId, jugador]) => {
+        // Procesar tarjetas rojas
+        if (jugador.tarjetasRojas && jugador.tarjetasRojas > 0) {
+          aplicarSancion(jugador.nombre, 'tarjeta_roja');
+          console.log(`🟥 ${jugador.nombre} recibe suspensión por tarjeta roja`);
+        }
+        
+        // Procesar acumulación de tarjetas amarillas
+        if (jugador.tarjetasAmarillas && jugador.tarjetasAmarillas > 0) {
+          if (!estadoJugadores[jugador.nombre]) {
+            estadoJugadores[jugador.nombre] = {
+              lesionJornadasRestantes: 0,
+              suspendidoJornadasRestantes: 0,
+              tarjetasAmarillasAcumuladas: 0,
+              historialLesiones: [],
+              historialSanciones: []
+            };
+          }
+          
+          estadoJugadores[jugador.nombre].tarjetasAmarillasAcumuladas += jugador.tarjetasAmarillas;
+          
+          // Si llega a 5 amarillas, aplicar sanción
+          if (estadoJugadores[jugador.nombre].tarjetasAmarillasAcumuladas >= 5) {
+            aplicarSancion(jugador.nombre, 'quinta_amarilla');
+            console.log(`🟨🟨🟨🟨🟨 ${jugador.nombre} suspendido por 5 amarillas acumuladas`);
+          }
+        }
+        
+        // Procesar lesiones
+        if (jugador.lesionJornadas && jugador.lesionJornadas > 0) {
+          aplicarLesion(jugador.nombre, jugador.lesionJornadas);
+          console.log(`🩹 ${jugador.nombre} lesionado por ${jugador.lesionJornadas} jornadas`);
+        }
+      });
+      
+      // Crear objeto con todas las estadísticas del partido
+      const estadisticasPartido = {
+        jornada: jornadaActual,
+        fecha: new Date().toISOString(),
+        equipo: nombre,
+        formacion: alineacionGuardadaData.formacion,
+        jugadores: [
+          // Titulares
+          ...alineacionGuardadaData.jugadoresCampo.map(([slotId, jugador]) => ({
+            nombre: jugador.nombre,
+            posicion: jugador.posicion,
+            puntos: jugador.puntos || 0,
+            goles: jugador.goles || 0,
+            asistencias: jugador.asistencias || 0,
+            tarjetasAmarillas: jugador.tarjetasAmarillas || 0,
+            tarjetasRojas: jugador.tarjetasRojas || 0,
+            lesionJornadas: jugador.lesionJornadas || 0,
+            valorMercado: jugador.valor_mercado,
+            ovr: jugador.ovr,
+            esTitular: true
+          })),
+          // Suplentes
+          ...Array.from(suplentes.entries()).map(([slotId, jugador]) => ({
+            nombre: jugador.nombre,
+            posicion: jugador.posicion,
+            puntos: jugador.puntos || 0,
+            goles: jugador.goles || 0,
+            asistencias: jugador.asistencias || 0,
+            tarjetasAmarillas: jugador.tarjetasAmarillas || 0,
+            tarjetasRojas: jugador.tarjetasRojas || 0,
+            lesionJornadas: jugador.lesionJornadas || 0,
+            valorMercado: jugador.valor_mercado,
+            ovr: jugador.ovr,
+            esTitular: false
+          }))
+        ],
+      };
+      
+      // Calcular totales después de crear el objeto
+      estadisticasPartido.totales = {
+        puntos: estadisticasPartido.jugadores.reduce((sum, j) => sum + (j.puntos || 0), 0),
+        goles: estadisticasPartido.jugadores.reduce((sum, j) => sum + (j.goles || 0), 0),
+        asistencias: estadisticasPartido.jugadores.reduce((sum, j) => sum + (j.asistencias || 0), 0),
+        tarjetasAmarillas: estadisticasPartido.jugadores.reduce((sum, j) => sum + (j.tarjetasAmarillas || 0), 0),
+        tarjetasRojas: estadisticasPartido.jugadores.reduce((sum, j) => sum + (j.tarjetasRojas || 0), 0),
+        jugadoresTotales: estadisticasPartido.jugadores.length,
+        titulares: estadisticasPartido.jugadores.filter(j => j.esTitular).length,
+        suplentes: estadisticasPartido.jugadores.filter(j => !j.esTitular).length
+      };
+      
+      // Guardar en localStorage para persistencia
+      const estadisticasGuardadas = JSON.parse(localStorage.getItem('estadisticasPartidos') || '[]');
+      estadisticasGuardadas.push(estadisticasPartido);
+      localStorage.setItem('estadisticasPartidos', JSON.stringify(estadisticasGuardadas));
+      
+      // Actualizar estadísticas de los jugadores individuales
+      estadisticasPartido.jugadores.forEach(jugador => {
+        actualizarEstadisticasJugador(jugador);
+      });
+      
+      console.log('💾 Estadísticas guardadas:', estadisticasPartido);
+      
+      // GUARDAR EN BASE DE DATOS
+      try {
+        console.log('📤 Iniciando guardado en base de datos...');
+        console.log('📊 Estadísticas del partido completas:', estadisticasPartido);
+        console.log('👥 Jugadores a enviar:', estadisticasPartido.jugadores.length);
+        
+        // Log detallado de cada jugador
+        estadisticasPartido.jugadores.forEach((j, index) => {
+          console.log(`🏃 Jugador ${index + 1}:`, {
+            nombre: j.nombre,
+            puntos: j.puntos,
+            goles: j.goles,
+            asistencias: j.asistencias,
+            tarjetasAmarillas: j.tarjetasAmarillas,
+            tarjetasRojas: j.tarjetasRojas,
+            esTitular: j.esTitular
+          });
+        });
+        
+        const datosParaEnviar = {
+          jugadores: estadisticasPartido.jugadores.map(j => ({
+            nombre: j.nombre,
+            posicion: j.posicion,
+            puntos: parseInt(j.puntos) || 0,
+            goles: parseInt(j.goles) || 0,
+            asistencias: parseInt(j.asistencias) || 0,
+            tarjetasAmarillas: parseInt(j.tarjetasAmarillas) || 0,
+            tarjetasRojas: parseInt(j.tarjetasRojas) || 0
+          }))
+        };
+        
+        console.log('📦 Datos procesados para envío:', datosParaEnviar);
+        
+        const response = await fetch('/api/guardar-estadisticas', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(datosParaEnviar)
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error al guardar en la base de datos');
+        }
+        
+        const resultado = await response.json();
+        console.log('✅ Guardado en base de datos:', resultado);
+      } catch (error) {
+        console.error('❌ Error al guardar en base de datos:', error);
+        alert('⚠️ Los datos se guardaron localmente pero hubo un error al actualizar la base de datos.');
+      }
+      
+      // ACTUALIZAR ESTADÍSTICAS ACUMULADAS EN ARCHIVO JSON
+      try {
+        console.log('📄 Actualizando estadísticas acumuladas en archivo JSON...');
+        
+        // Obtener estadísticas acumuladas de localStorage
+        const estadisticasJugadores = JSON.parse(localStorage.getItem('estadisticasJugadores') || '{}');
+        
+        // Filtrar solo jugadores que participaron en esta jornada para actualizar el archivo
+        const jugadoresParaActualizar = {};
+        estadisticasPartido.jugadores.forEach(jugador => {
+          if (estadisticasJugadores[jugador.nombre]) {
+            jugadoresParaActualizar[jugador.nombre] = estadisticasJugadores[jugador.nombre];
+            console.log(`📈 Preparando actualización para ${jugador.nombre}:`, {
+              puntosTotal: estadisticasJugadores[jugador.nombre].puntosTotal,
+              golesTotal: estadisticasJugadores[jugador.nombre].golesTotal,
+              partidosJugados: estadisticasJugadores[jugador.nombre].partidosJugados
+            });
+          }
+        });
+        
+        if (Object.keys(jugadoresParaActualizar).length > 0) {
+          const responseActualizacion = await fetch('/api/actualizar-jugadores', {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              jugadoresActualizados: jugadoresParaActualizar
+            })
+          });
+          
+          if (!responseActualizacion.ok) {
+            throw new Error('Error al actualizar estadísticas acumuladas');
+          }
+          
+          const resultadoActualizacion = await responseActualizacion.json();
+          console.log('✅ Estadísticas acumuladas actualizadas:', resultadoActualizacion);
+        } else {
+          console.log('🔄 No hay jugadores para actualizar en el archivo JSON');
+        }
+      } catch (error) {
+        console.error('❌ Error al actualizar estadísticas acumuladas:', error);
+        // No mostramos alert aquí porque las estadísticas locales ya se guardaron correctamente
+      }
+      
+      // Feedback visual
+      const boton = document.getElementById('guardarEstadisticas');
+      const textoOriginal = boton.textContent;
+      boton.textContent = '✅ ¡Estadísticas Guardadas!';
+      boton.className = 'bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-colors';
+      
+      setTimeout(() => {
+        boton.textContent = textoOriginal;
+        boton.className = 'bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-colors';
+      }, 3000);
+      
+      // Marcar jornada como completada y MANTENER ALINEACIÓN
+      if (!datosJornadas[jornadaActual]) {
+        datosJornadas[jornadaActual] = {};
+      }
+      datosJornadas[jornadaActual].estadisticasGuardadas = true;
+      datosJornadas[jornadaActual].estadisticasPartido = estadisticasPartido;
+      
+      // MANTENER LA ALINEACIÓN ACTUAL - NO LIMPIAR EL CAMPO
+      datosJornadas[jornadaActual].formacion = alineacionActual;
+      datosJornadas[jornadaActual].jugadoresCampo = Array.from(jugadoresEnCampo.entries());
+      datosJornadas[jornadaActual].suplentes = Array.from(suplentes.entries());
+      datosJornadas[jornadaActual].fechaModificacion = new Date().toISOString();
+      
+      localStorage.setItem(`jornadas_${nombre}`, JSON.stringify(datosJornadas));
+      
+      // Actualizar estado visual
+      actualizarEstadoJornadaVisual();
+      
+      console.log(`💾 Jornada ${jornadaActual} guardada completamente con alineación preservada`);
+      
+      // Mostrar resumen con información de lesiones y sanciones aplicadas
+      let resumenSanciones = '';
+      let jugadoresSancionados = [];
+      let jugadoresLesionados = [];
+      
+      estadisticasPartido.jugadores.forEach(jugador => {
+        if (jugador.tarjetasRojas > 0) {
+          jugadoresSancionados.push(`${jugador.nombre} (🟥 1J)`);
+        }
+        if (jugador.lesionJornadas > 0) {
+          jugadoresLesionados.push(`${jugador.nombre} (🩹 ${jugador.lesionJornadas}J)`);
+        }
+      });
+      
+      if (jugadoresSancionados.length > 0 || jugadoresLesionados.length > 0) {
+        resumenSanciones = '\n\n📋 JUGADORES AFECTADOS:';
+        if (jugadoresSancionados.length > 0) {
+          resumenSanciones += `\n🚫 Suspendidos: ${jugadoresSancionados.join(', ')}`;
+        }
+        if (jugadoresLesionados.length > 0) {
+          resumenSanciones += `\n🏥 Lesionados: ${jugadoresLesionados.join(', ')}`;
+        }
+        resumenSanciones += '\n\n⚠️ Estos jugadores NO estarán disponibles en las próximas jornadas.';
+      }
+      
+      alert(`✅ Jornada ${jornadaActual} completada exitosamente\n\n📅 Fecha: ${new Date().toLocaleDateString('es-ES')}\n🎆 Equipo: ${nombre}\n📊 Formación: ${estadisticasPartido.formacion}\n🏆 Puntos totales: ${estadisticasPartido.totales.puntos}\n⚽ Goles totales: ${estadisticasPartido.totales.goles}\n🎯 Asistencias totales: ${estadisticasPartido.totales.asistencias}\n🟨 Tarjetas amarillas: ${estadisticasPartido.totales.tarjetasAmarillas}\n🟥 Tarjetas rojas: ${estadisticasPartido.totales.tarjetasRojas}${resumenSanciones}`);
+    }
+    
+    // Actualizar estadísticas históricas de un jugador
+    function actualizarEstadisticasJugador(datosPartido) {
+      const estadisticasJugadores = JSON.parse(localStorage.getItem('estadisticasJugadores') || '{}');
+      
+      if (!estadisticasJugadores[datosPartido.nombre]) {
+        estadisticasJugadores[datosPartido.nombre] = {
+          nombre: datosPartido.nombre,
+          posicion: datosPartido.posicion,
+          partidosJugados: 0,
+          puntosTotal: 0,
+          golesTotal: 0,
+          asistenciasTotal: 0,
+          tarjetasAmarillasTotal: 0,
+          tarjetasRojasTotal: 0,
+          lesionesTotal: 0,
+          valorMercadoActual: datosPartido.valorMercado,
+          ovr: datosPartido.ovr,
+          historial: []
+        };
+      }
+      
+      const jugador = estadisticasJugadores[datosPartido.nombre];
+      
+      // Actualizar totales
+      jugador.partidosJugados += 1;
+      jugador.puntosTotal += datosPartido.puntos;
+      jugador.golesTotal += datosPartido.goles;
+      jugador.asistenciasTotal += datosPartido.asistencias;
+      jugador.tarjetasAmarillasTotal += datosPartido.tarjetasAmarillas;
+      jugador.tarjetasRojasTotal += datosPartido.tarjetasRojas;
+      if (datosPartido.lesion) jugador.lesionesTotal += 1;
+      
+      // Actualizar datos actuales
+      jugador.valorMercadoActual = datosPartido.valorMercado;
+      
+      // Agregar al historial
+      jugador.historial.push({
+        fecha: new Date().toISOString(),
+        puntos: datosPartido.puntos,
+        goles: datosPartido.goles,
+        asistencias: datosPartido.asistencias,
+        tarjetasAmarillas: datosPartido.tarjetasAmarillas,
+        tarjetasRojas: datosPartido.tarjetasRojas,
+        lesion: datosPartido.lesion,
+        valorMercado: datosPartido.valorMercado
+      });
+      
+      // Guardar estadísticas actualizadas
+      localStorage.setItem('estadisticasJugadores', JSON.stringify(estadisticasJugadores));
+    }
+    
+    // Actualizar sección de jugadores no disponibles
+    function actualizarSeccionJugadoresNoDisponibles() {
+      const container = document.getElementById('listaNoDisponibles');
+      const seccion = document.getElementById('jugadoresNoDisponibles');
+      container.innerHTML = '';
+      
+      const jugadoresNoDisponibles = jugadoresEquipo.filter(jugador => 
+        !jugadorDisponible(jugador.nombre)
+      );
+      
+      if (jugadoresNoDisponibles.length === 0) {
+        // Ocultar sección si no hay jugadores no disponibles
+        seccion.style.display = 'none';
+        return;
+      }
+      
+      // Mostrar sección
+      seccion.style.display = 'block';
+      
+      jugadoresNoDisponibles.forEach(jugador => {
+        const estado = estadoJugadores[jugador.nombre];
+        const div = document.createElement('div');
+        
+        div.className = 'bg-red-50 border border-red-200 rounded-lg p-3 opacity-75';
+        
+        // Determinar tipo de indisponibilidad
+        let tipoIndisponibilidad = '';
+        let iconoEstado = '';
+        let colorFondo = 'bg-red-50 border-red-200';
+        
+        if (estado.lesionJornadasRestantes > 0) {
+          tipoIndisponibilidad = `Lesionado (${estado.lesionJornadasRestantes} jornadas)`;
+          iconoEstado = '🩹';
+          colorFondo = 'bg-red-50 border-red-200';
+        } else if (estado.suspendidoJornadasRestantes > 0) {
+          tipoIndisponibilidad = `Suspendido (${estado.suspendidoJornadasRestantes} jornadas)`;
+          iconoEstado = '🟥';
+          colorFondo = 'bg-orange-50 border-orange-200';
+        }
+        
+        div.className = `${colorFondo} rounded-lg p-3 opacity-75`;
+        
+        div.innerHTML = `
+          <div class="flex items-center space-x-3">
+            <img src="${jugador.foto}" alt="${jugador.nombre}" 
+                 class="w-8 h-8 rounded-full object-cover border border-gray-300 grayscale"
+                 onerror="this.src='https://via.placeholder.com/32/cccccc/666666?text=?'">
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-bold text-gray-700 truncate">${jugador.nombre}</div>
+              <div class="text-xs text-gray-600">${jugador.posicion} • OVR: ${jugador.ovr}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-bold text-red-600">${iconoEstado} ${tipoIndisponibilidad}</div>
+              <div class="text-xs text-gray-500">${jugador.puntos || 0} pts</div>
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(div);
+      });
+      
+      console.log(`🚫 ${jugadoresNoDisponibles.length} jugadores no disponibles mostrados`);
+    }
+  </script>
+
+  <style>
+    .jugador-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+  </style>
+</BaseLayout>

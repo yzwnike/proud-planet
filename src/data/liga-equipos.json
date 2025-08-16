@@ -1,0 +1,482 @@
+{
+  "Real Madrid": {
+    "id": 1,
+    "nombre": "Real Madrid CF",
+    "nombre_corto": "Real Madrid",
+    "ciudad": "Madrid",
+    "estadio": "Santiago Bernabéu",
+    "fundado": 1902,
+    "escudo": "/escudos/real-madrid.png",
+    "colores": {
+      "primario": "#ffffff",
+      "secundario": "#ffd700"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 1
+    }
+  },
+  "FC Barcelona": {
+    "id": 2,
+    "nombre": "Futbol Club Barcelona",
+    "nombre_corto": "FC Barcelona",
+    "ciudad": "Barcelona",
+    "estadio": "Spotify Camp Nou",
+    "fundado": 1899,
+    "escudo": "/escudos/fc-barcelona.png",
+    "colores": {
+      "primario": "#a50044",
+      "secundario": "#004d98"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 2
+    }
+  },
+  "Atlético Madrid": {
+    "id": 3,
+    "nombre": "Club Atlético de Madrid",
+    "nombre_corto": "Atlético Madrid",
+    "ciudad": "Madrid",
+    "estadio": "Cívitas Metropolitano",
+    "fundado": 1903,
+    "escudo": "/escudos/atletico-madrid.png",
+    "colores": {
+      "primario": "#ce1124",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 3
+    }
+  },
+  "Athletic Club": {
+    "id": 4,
+    "nombre": "Athletic Club",
+    "nombre_corto": "Athletic Club",
+    "ciudad": "Bilbao",
+    "estadio": "San Mamés",
+    "fundado": 1898,
+    "escudo": "/escudos/athletic-club.png",
+    "colores": {
+      "primario": "#ee2526",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 4
+    }
+  },
+  "Real Sociedad": {
+    "id": 5,
+    "nombre": "Real Sociedad de Fútbol",
+    "nombre_corto": "Real Sociedad",
+    "ciudad": "San Sebastián",
+    "estadio": "Reale Arena",
+    "fundado": 1909,
+    "escudo": "/escudos/real-sociedad.png",
+    "colores": {
+      "primario": "#003399",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 5
+    }
+  },
+  "Villarreal": {
+    "id": 6,
+    "nombre": "Villarreal Club de Fútbol",
+    "nombre_corto": "Villarreal",
+    "ciudad": "Villarreal",
+    "estadio": "Estadio de la Cerámica",
+    "fundado": 1923,
+    "escudo": "/escudos/villarreal.png",
+    "colores": {
+      "primario": "#ffe500",
+      "secundario": "#003399"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 6
+    }
+  },
+  "Real Betis": {
+    "id": 7,
+    "nombre": "Real Betis Balompié",
+    "nombre_corto": "Real Betis",
+    "ciudad": "Sevilla",
+    "estadio": "Benito Villamarín",
+    "fundado": 1907,
+    "escudo": "/escudos/real-betis.png",
+    "colores": {
+      "primario": "#00954c",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 7
+    }
+  },
+  "Sevilla": {
+    "id": 8,
+    "nombre": "Sevilla Fútbol Club",
+    "nombre_corto": "Sevilla FC",
+    "ciudad": "Sevilla",
+    "estadio": "Ramón Sánchez-Pizjuán",
+    "fundado": 1890,
+    "escudo": "/escudos/sevilla.png",
+    "colores": {
+      "primario": "#d50000",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 8
+    }
+  },
+  "Valencia": {
+    "id": 9,
+    "nombre": "Valencia Club de Fútbol",
+    "nombre_corto": "Valencia CF",
+    "ciudad": "Valencia",
+    "estadio": "Mestalla",
+    "fundado": 1919,
+    "escudo": "/escudos/valencia.png",
+    "colores": {
+      "primario": "#ff8c00",
+      "secundario": "#000000"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 9
+    }
+  },
+  "Espanyol": {
+    "id": 10,
+    "nombre": "Real Club Deportivo Espanyol",
+    "nombre_corto": "RCD Espanyol",
+    "ciudad": "Barcelona",
+    "estadio": "RCDE Stadium",
+    "fundado": 1900,
+    "escudo": "/escudos/espanyol.png",
+    "colores": {
+      "primario": "#004cad",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 10
+    }
+  },
+  "Osasuna": {
+    "id": 11,
+    "nombre": "Club Atlético Osasuna",
+    "nombre_corto": "CA Osasuna",
+    "ciudad": "Pamplona",
+    "estadio": "El Sadar",
+    "fundado": 1920,
+    "escudo": "/escudos/osasuna.png",
+    "colores": {
+      "primario": "#d50000",
+      "secundario": "#003399"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 11
+    }
+  },
+  "Celta de Vigo": {
+    "id": 12,
+    "nombre": "Real Club Celta de Vigo",
+    "nombre_corto": "RC Celta",
+    "ciudad": "Vigo",
+    "estadio": "Balaídos",
+    "fundado": 1923,
+    "escudo": "/escudos/celta-vigo.png",
+    "colores": {
+      "primario": "#87ceeb",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 12
+    }
+  },
+  "Rayo Vallecano": {
+    "id": 13,
+    "nombre": "Rayo Vallecano de Madrid",
+    "nombre_corto": "Rayo Vallecano",
+    "ciudad": "Madrid",
+    "estadio": "Campo de Fútbol de Vallecas",
+    "fundado": 1924,
+    "escudo": "/escudos/rayo-vallecano.png",
+    "colores": {
+      "primario": "#ff0000",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 13
+    }
+  },
+  "Mallorca": {
+    "id": 14,
+    "nombre": "Real Club Deportivo Mallorca",
+    "nombre_corto": "RCD Mallorca",
+    "ciudad": "Palma",
+    "estadio": "Visit Mallorca Estadi",
+    "fundado": 1916,
+    "escudo": "/escudos/mallorca.png",
+    "colores": {
+      "primario": "#ff0000",
+      "secundario": "#ffff00"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 14
+    }
+  },
+  "Las Palmas": {
+    "id": 15,
+    "nombre": "Unión Deportiva Las Palmas",
+    "nombre_corto": "UD Las Palmas",
+    "ciudad": "Las Palmas de Gran Canaria",
+    "estadio": "Estadio de Gran Canaria",
+    "fundado": 1949,
+    "escudo": "/escudos/las-palmas.png",
+    "colores": {
+      "primario": "#ffff00",
+      "secundario": "#003399"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 15
+    }
+  },
+  "Alavés": {
+    "id": 16,
+    "nombre": "Deportivo Alavés",
+    "nombre_corto": "Deportivo Alavés",
+    "ciudad": "Vitoria-Gasteiz",
+    "estadio": "Mendizorroza",
+    "fundado": 1921,
+    "escudo": "/escudos/alaves.png",
+    "colores": {
+      "primario": "#003399",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 16
+    }
+  },
+  "Getafe": {
+    "id": 17,
+    "nombre": "Getafe Club de Fútbol",
+    "nombre_corto": "Getafe CF",
+    "ciudad": "Getafe",
+    "estadio": "Coliseum",
+    "fundado": 1946,
+    "escudo": "/escudos/getafe.png",
+    "colores": {
+      "primario": "#003399",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 17
+    }
+  },
+  "Girona": {
+    "id": 18,
+    "nombre": "Girona Fútbol Club",
+    "nombre_corto": "Girona FC",
+    "ciudad": "Girona",
+    "estadio": "Montilivi",
+    "fundado": 1930,
+    "escudo": "/escudos/girona.png",
+    "colores": {
+      "primario": "#ff0000",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 18
+    }
+  },
+  "Leganés": {
+    "id": 19,
+    "nombre": "Club de Fútbol Leganés",
+    "nombre_corto": "CD Leganés",
+    "ciudad": "Leganés",
+    "estadio": "Butarque",
+    "fundado": 1928,
+    "escudo": "/escudos/leganes.png",
+    "colores": {
+      "primario": "#003399",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 19
+    }
+  },
+  "Valladolid": {
+    "id": 20,
+    "nombre": "Real Valladolid Club de Fútbol",
+    "nombre_corto": "Real Valladolid",
+    "ciudad": "Valladolid",
+    "estadio": "José Zorrilla",
+    "fundado": 1928,
+    "escudo": "/escudos/valladolid.png",
+    "colores": {
+      "primario": "#663399",
+      "secundario": "#ffffff"
+    },
+    "estadisticas": {
+      "partidos_jugados": 0,
+      "ganados": 0,
+      "empatados": 0,
+      "perdidos": 0,
+      "goles_favor": 0,
+      "goles_contra": 0,
+      "diferencia_goles": 0,
+      "puntos": 0,
+      "posicion": 20
+    }
+  }
+}

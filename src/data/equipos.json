@@ -1,0 +1,70 @@
+{
+  "Nike FC": {
+    "nombre": "Nike FC",
+    "color": "orange",
+    "partidos_jugados": 0,
+    "goles_favor": 0,
+    "goles_contra": 0,
+    "puntos_liga": 0,
+    "lineup_actual": {
+      "formacion": "4-4-2",
+      "titulares": [],
+      "suplentes": [],
+      "fecha_creacion": null,
+      "partido_siguiente": ""
+    },
+    "historial_partidos": [],
+    "historial_cambios_valor": []
+  },
+  "Adidas FC": {
+    "nombre": "Adidas FC", 
+    "color": "gray",
+    "partidos_jugados": 0,
+    "goles_favor": 0,
+    "goles_contra": 0,
+    "puntos_liga": 0,
+    "lineup_actual": {
+      "formacion": "4-4-2",
+      "titulares": [],
+      "suplentes": [],
+      "fecha_creacion": null,
+      "partido_siguiente": ""
+    },
+    "historial_partidos": [],
+    "historial_cambios_valor": []
+  },
+  "Puma FC": {
+    "nombre": "Puma FC",
+    "color": "blue", 
+    "partidos_jugados": 0,
+    "goles_favor": 0,
+    "goles_contra": 0,
+    "puntos_liga": 0,
+    "lineup_actual": {
+      "formacion": "4-4-2",
+      "titulares": [],
+      "suplentes": [],
+      "fecha_creacion": null,
+      "partido_siguiente": ""
+    },
+    "historial_partidos": [],
+    "historial_cambios_valor": []
+  },
+  "Kappa FC": {
+    "nombre": "Kappa FC",
+    "color": "purple",
+    "partidos_jugados": 0,
+    "goles_favor": 0,
+    "goles_contra": 0,
+    "puntos_liga": 0,
+    "lineup_actual": {
+      "formacion": "4-4-2",
+      "titulares": [],
+      "suplentes": [],
+      "fecha_creacion": null,
+      "partido_siguiente": ""
+    },
+    "historial_partidos": [],
+    "historial_cambios_valor": []
+  }
+}

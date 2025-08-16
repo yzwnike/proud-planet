@@ -2,45 +2,45 @@
   {
     "nombre": "Yazawa",
     "posicion": "DC",
-    "puntos": 0,
+    "puntos": 11,
     "valor_mercado": 23790000,
     "variacion": 0,
     "edad": 29,
     "equipo": "Nike FC",
     "foto": "/jugadores/yazawa.png",
     "ovr": 92,
-    "goles": 0,
+    "goles": 1,
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.429Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Mario",
     "posicion": "MC",
-    "puntos": 0,
+    "puntos": 15,
     "valor_mercado": 19930000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Nike FC",
     "foto": "/jugadores/mario.png",
     "ovr": 90,
-    "goles": 0,
-    "asistencias": 0,
+    "goles": 1,
+    "asistencias": 1,
     "tarjetasAmarillas": 1,
     "tarjetasRojas": 0,
-    "tarjetas_amarillas": 0,
+    "tarjetas_amarillas": 2,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.429Z"
   },
   {
     "nombre": "Mister",
     "posicion": "DFC",
-    "puntos": 0,
+    "puntos": 8,
     "valor_mercado": 9050000,
     "variacion": 0,
     "edad": 32,
@@ -51,15 +51,15 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.429Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Vehí",
     "posicion": "POR",
-    "puntos": 0,
+    "puntos": 5,
     "valor_mercado": 6410000,
     "variacion": 0,
     "edad": 29,
@@ -72,32 +72,32 @@
     "tarjetasRojas": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.429Z"
   },
   {
     "nombre": "Marcos",
     "posicion": "DC",
-    "puntos": 0,
+    "puntos": 9,
     "valor_mercado": 14030000,
     "variacion": 0,
     "edad": 30,
     "equipo": "Nike FC",
     "foto": "/jugadores/marcos.png",
     "ovr": 87,
-    "goles": 0,
+    "goles": 1,
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.430Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Stark",
     "posicion": "MC",
-    "puntos": 0,
+    "puntos": 9,
     "valor_mercado": 15020000,
     "variacion": 0,
     "edad": 25,
@@ -105,18 +105,18 @@
     "foto": "/jugadores/stark.png",
     "ovr": 87,
     "goles": 0,
-    "asistencias": 0,
+    "asistencias": 1,
     "tarjetasAmarillas": 1,
     "tarjetasRojas": 0,
-    "tarjetas_amarillas": 0,
+    "tarjetas_amarillas": 1,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.430Z"
   },
   {
     "nombre": "Viko",
     "posicion": "MC",
-    "puntos": 0,
+    "puntos": 6,
     "valor_mercado": 10970000,
     "variacion": 0,
     "edad": 30,
@@ -127,15 +127,15 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.430Z",
     "tarjetasAmarillas": 1,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Pablo",
     "posicion": "DFC",
-    "puntos": 0,
+    "puntos": 5,
     "valor_mercado": 6150000,
     "variacion": 0,
     "edad": 31,
@@ -146,15 +146,15 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.430Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Martawis",
     "posicion": "DC",
-    "puntos": 0,
+    "puntos": 4,
     "valor_mercado": 13080000,
     "variacion": 0,
     "edad": 24,
@@ -162,18 +162,18 @@
     "foto": "/jugadores/martawis.png",
     "ovr": 86,
     "goles": 0,
-    "asistencias": 0,
+    "asistencias": 1,
     "tarjetas_amarillas": 0,
-    "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "tarjetas_rojas": 2,
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.430Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 1
   },
   {
     "nombre": "Aznar",
     "posicion": "MC",
-    "puntos": 0,
+    "puntos": 4,
     "valor_mercado": 9460000,
     "variacion": 0,
     "edad": 26,
@@ -183,16 +183,16 @@
     "goles": 0,
     "asistencias": 0,
     "tarjetas_amarillas": 0,
-    "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "tarjetas_rojas": 2,
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.431Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 1
   },
   {
     "nombre": "Fan",
     "posicion": "MC",
-    "puntos": 0,
+    "puntos": 5,
     "valor_mercado": 6830000,
     "variacion": 0,
     "edad": 28,
@@ -203,15 +203,15 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.431Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Perma",
     "posicion": "DFC",
-    "puntos": 0,
+    "puntos": 5,
     "valor_mercado": 4690000,
     "variacion": 0,
     "edad": 28,
@@ -219,18 +219,18 @@
     "foto": "/jugadores/perma.png",
     "ovr": 84,
     "goles": 0,
-    "asistencias": 0,
-    "tarjetas_amarillas": 0,
+    "asistencias": 1,
+    "tarjetas_amarillas": 1,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.431Z",
     "tarjetasAmarillas": 1,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Nike",
     "posicion": "MC",
-    "puntos": 0,
+    "puntos": 5,
     "valor_mercado": 5790000,
     "variacion": 0,
     "edad": 19,
@@ -241,15 +241,15 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.431Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Albesa",
     "posicion": "DFC",
-    "puntos": 0,
+    "puntos": 3,
     "valor_mercado": 3860000,
     "variacion": 0,
     "edad": 26,
@@ -262,8 +262,8 @@
     "tarjetasRojas": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.432Z"
   },
   {
     "nombre": "Ale",
@@ -280,7 +280,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.105Z"
   },
   {
     "nombre": "Berni",
@@ -297,12 +297,12 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.105Z"
   },
   {
     "nombre": "Armando",
     "posicion": "MC",
-    "puntos": 0,
+    "puntos": 5,
     "valor_mercado": 890000,
     "variacion": 0,
     "edad": 27,
@@ -313,15 +313,15 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 1,
+    "ultima_actualizacion": "2025-08-14T19:11:51.105Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Etarky",
     "posicion": "DFC",
-    "puntos": 0,
+    "puntos": 4,
     "valor_mercado": 1090000,
     "variacion": 0,
     "edad": 25,
@@ -332,8 +332,8 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 1,
+    "ultima_actualizacion": "2025-08-14T23:41:19.432Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
@@ -352,12 +352,12 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.105Z"
   },
   {
     "nombre": "Albert",
     "posicion": "DFC",
-    "puntos": 0,
+    "puntos": 5,
     "valor_mercado": 2260000,
     "variacion": 0,
     "edad": 26,
@@ -366,10 +366,10 @@
     "ovr": 77,
     "goles": 0,
     "asistencias": 0,
-    "tarjetas_amarillas": 0,
+    "tarjetas_amarillas": 2,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-14T23:41:19.432Z",
     "tarjetasAmarillas": 1,
     "tarjetasRojas": 0
   },
@@ -390,7 +390,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.105Z"
   },
   {
     "nombre": "García",
@@ -409,7 +409,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.105Z"
   },
   {
     "nombre": "Hugo",
@@ -426,7 +426,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.105Z"
   },
   {
     "nombre": "Ferrer",
@@ -443,7 +443,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.105Z"
   },
   {
     "nombre": "Jorge",
@@ -462,7 +462,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.105Z"
   },
   {
     "nombre": "Thomas",
@@ -479,7 +479,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Yuchang",
@@ -498,7 +498,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Vallejo",
@@ -515,7 +515,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Arribas",
@@ -532,7 +532,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Riviere",
@@ -549,7 +549,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Joanet",
@@ -568,7 +568,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Manu",
@@ -587,7 +587,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Chalex",
@@ -604,7 +604,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Bustos",
@@ -621,7 +621,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Jan DC",
@@ -638,7 +638,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Sabina",
@@ -655,7 +655,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Giye",
@@ -672,7 +672,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Porras",
@@ -689,7 +689,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Josep",
@@ -706,7 +706,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Chuck",
@@ -723,7 +723,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Kød",
@@ -740,7 +740,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Guerra",
@@ -757,7 +757,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.106Z"
   },
   {
     "nombre": "Fernando",
@@ -774,7 +774,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Yazy",
@@ -791,7 +791,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Marin",
@@ -808,7 +808,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Armando M.",
@@ -825,7 +825,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Pino",
@@ -842,7 +842,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Fran",
@@ -859,7 +859,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Ramungut",
@@ -876,7 +876,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Camello",
@@ -893,7 +893,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Alain",
@@ -910,7 +910,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Adriow",
@@ -927,7 +927,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Potpot",
@@ -944,7 +944,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Márquez",
@@ -961,7 +961,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Mateo",
@@ -978,7 +978,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Walter",
@@ -995,7 +995,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.107Z"
   },
   {
     "nombre": "Juanito",
@@ -1012,7 +1012,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Vega",
@@ -1029,7 +1029,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Yago",
@@ -1046,7 +1046,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Venezuela",
@@ -1063,7 +1063,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Nicki",
@@ -1080,7 +1080,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Denis",
@@ -1097,7 +1097,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Frasqui",
@@ -1114,7 +1114,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Peidró",
@@ -1131,7 +1131,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Plasencia",
@@ -1148,7 +1148,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Palusa",
@@ -1165,7 +1165,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Cruañas",
@@ -1182,7 +1182,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Santi",
@@ -1199,7 +1199,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Manel",
@@ -1216,7 +1216,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.108Z"
   },
   {
     "nombre": "Yusi",
@@ -1233,7 +1233,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Follama",
@@ -1250,7 +1250,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Erik",
@@ -1267,7 +1267,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Fontcuberta",
@@ -1284,7 +1284,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Galisteo",
@@ -1301,7 +1301,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Pedrito",
@@ -1318,7 +1318,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Pol Cubo",
@@ -1335,7 +1335,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Martuki",
@@ -1352,7 +1352,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Raigo",
@@ -1369,7 +1369,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Ukelele",
@@ -1386,7 +1386,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Pot",
@@ -1403,7 +1403,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.109Z"
   },
   {
     "nombre": "Colgan",
@@ -1420,7 +1420,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.110Z"
   },
   {
     "nombre": "Swit Eme",
@@ -1437,7 +1437,7 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.110Z"
   },
   {
     "nombre": "Llonch",
@@ -1454,6 +1454,6 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-14T19:11:51.110Z"
   }
 ]

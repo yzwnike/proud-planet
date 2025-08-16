@@ -2,15 +2,101 @@
 const { title = "Fantasy League" } = Astro.props;
 ---
 
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>{title}</title>
-      </head>
-      <body class="bg-gray-100 text-gray-900">
-        <main class="container mx-auto p-4">
-            <slot />
-              </main>
-              </body>
-              </html>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .nav-link.active {
+      background-color: rgb(59 130 246);
+      color: white !important;
+      font-weight: 600;
+    }
+    
+    .nav-link {
+      transition: all 0.2s ease-in-out;
+    }
+    
+    .nav-link:hover {
+      transform: translateY(-1px);
+    }
+    
+    @media (max-width: 640px) {
+      .nav-container {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+      }
+      
+      .nav-link {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-slate-100 text-gray-900 font-sans min-h-screen">
+  <header class="bg-white shadow-sm border-b border-gray-200">
+    <div class="container mx-auto px-4 py-4">
+      <h1 class="text-4xl font-bold text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        ⚽ Fantasy League
+      </h1>
+      <p class="text-center text-gray-600 mt-2 text-lg">Liga de 80 jugadores distribuidos en 4 equipos</p>
+      
+      <!-- Navegación principal -->
+      <nav class="mt-6">
+          <div class="flex justify-center space-x-1 nav-container">
+          <a href="/" class="nav-link px-4 py-2 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium" data-page="/">
+            🏠 Inicio
+          </a>
+          <a href="/transfermarkt" class="nav-link px-4 py-2 rounded-lg text-gray-600 hover:text-purple-600 hover:bg-purple-50 transition-colors font-medium" data-page="/transfermarkt">
+            💰 Transfermarkt
+          </a>
+          <a href="/mercado" class="nav-link px-4 py-2 rounded-lg text-gray-600 hover:text-green-600 hover:bg-green-50 transition-colors font-medium" data-page="/mercado">
+            📈 Mercado Biwenger
+          </a>
+          <a href="/laliga" class="nav-link px-4 py-2 rounded-lg text-gray-600 hover:text-orange-600 hover:bg-orange-50 transition-colors font-medium" data-page="/laliga">
+            🏆 Liga EA Sports
+          </a>
+          <a href="/lineups" class="nav-link px-4 py-2 rounded-lg text-gray-600 hover:text-cyan-600 hover:bg-cyan-50 transition-colors font-medium" data-page="/lineups">
+            📋 Lineups
+          </a>
+          <a href="/admin" class="nav-link px-4 py-2 rounded-lg text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors font-medium" data-page="/admin">
+            ⚙️ Admin
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+  
+  <main class="container mx-auto px-4 py-8 max-w-7xl">
+    <slot />
+  </main>
+  
+  <footer class="bg-white border-t border-gray-200 mt-16">
+    <div class="container mx-auto px-4 py-6 text-center text-gray-600">
+      <p>&copy; 2024 Fantasy League - Nike FC • Adidas FC • Puma FC • Kappa FC</p>
+    </div>
+  </footer>
+  
+  <script>
+    // Activar navegación automáticamente según la página actual
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentPath = window.location.pathname;
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      navLinks.forEach(link => {
+        const pagePath = link.getAttribute('data-page');
+        if (currentPath === pagePath || (currentPath === '' && pagePath === '/')) {
+          link.classList.add('active');
+        } else if (pagePath === '/laliga' && currentPath.startsWith('/laliga')) {
+          // Activar el enlace de Liga EA Sports para todas las subpáginas de /laliga
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

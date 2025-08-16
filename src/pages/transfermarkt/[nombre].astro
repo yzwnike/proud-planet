@@ -1,0 +1,578 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import jugadores from "../../data/transfermarkt.json";
+import historialTransfermarkt from "../../data/historial-transfermarkt.json";
+
+export async function getStaticPaths() {
+  console.log('Generando rutas para jugadores de Transfermarkt:', jugadores.length);
+  
+  const paths = jugadores
+    .filter(jugador => jugador && jugador.nombre) // Filtrar jugadores válidos
+    .map((jugador) => {
+      const nombreSlug = jugador.nombre.replace(/\s+/g, '-').toLowerCase();
+      console.log(`Ruta Transfermarkt generada: ${nombreSlug} para jugador:`, jugador.nombre);
+      
+      return {
+        params: { nombre: nombreSlug },
+        props: { jugador }
+      };
+    });
+    
+  console.log('Total de rutas Transfermarkt generadas:', paths.length);
+  return paths;
+}
+
+// Obtener el jugador de las props o buscar por parámetro
+let { jugador } = Astro.props;
+const { nombre } = Astro.params;
+
+// Fallback para modo desarrollo
+if (!jugador && nombre) {
+  console.log('Modo desarrollo Transfermarkt: buscando jugador por parámetro:', nombre);
+  
+  // Buscar el jugador en el JSON usando el slug del parámetro
+  jugador = jugadores.find(j => {
+    if (!j || !j.nombre) return false;
+    const slugGenerado = j.nombre.replace(/\s+/g, '-').toLowerCase();
+    return slugGenerado === nombre;
+  });
+  
+  console.log('Jugador Transfermarkt encontrado:', jugador?.nombre || 'No encontrado');
+}
+
+// Verificar que el jugador existe después del fallback
+if (!jugador) {
+  throw new Error(`Jugador no encontrado en Transfermarkt para el slug: ${nombre}`);
+}
+
+console.log('Renderizando página Transfermarkt para jugador:', jugador.nombre);
+---
+
+<BaseLayout title={`${jugador.nombre || 'Jugador'} - Transfermarkt`}>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Header del Jugador -->
+    <div class="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-800 rounded-2xl shadow-2xl p-8 text-white mb-8">
+      <div class="flex flex-col lg:flex-row items-center lg:items-start gap-8">
+        <!-- Foto del Jugador -->
+        <div class="flex-shrink-0">
+          <img 
+            src={jugador.foto} 
+            alt={jugador.nombre}
+            class="w-48 h-48 rounded-full object-cover border-8 border-white/30 shadow-2xl"
+            onerror="this.src='/jugadores/fan.svg'; this.onerror=null;"
+          >
+        </div>
+        
+        <!-- Info Principal -->
+        <div class="flex-1 text-center lg:text-left">
+          <h1 class="text-5xl font-bold mb-4">{jugador.nombre}</h1>
+          <div class="grid grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
+            <div class="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+              <div class="text-2xl font-bold">{jugador.posicion || 'N/A'}</div>
+              <div class="text-sm opacity-80">Posición</div>
+            </div>
+            <div class="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+              <div class="text-2xl font-bold">#{jugador.dorsal || 0}</div>
+              <div class="text-sm opacity-80">Dorsal</div>
+            </div>
+            <div class="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+              <div class="text-2xl font-bold">{jugador.ovr || 0}</div>
+              <div class="text-sm opacity-80">OVR</div>
+            </div>
+            <div class="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+              <div class="text-2xl font-bold">{jugador.edad || 0}</div>
+              <div class="text-sm opacity-80">Años</div>
+            </div>
+            <div class="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+              <div class="text-2xl font-bold" data-valor-transfermarkt>€{(jugador.valor_transfermarkt || 0).toLocaleString('es-ES')}</div>
+              <div class="text-sm opacity-80">Transfermarkt</div>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <span class="bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-sm">
+              🏆 {jugador.equipo || 'Sin equipo'}
+            </span>
+            <span class="bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-sm">
+              💰 Transfermarkt
+            </span>
+          </div>
+        </div>
+        
+        <!-- Botón Volver -->
+        <div class="flex-shrink-0">
+          <a href="/transfermarkt" class="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-lg transition-colors font-semibold backdrop-blur-sm">
+            ← Volver a Transfermarkt
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid Principal -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Columna Izquierda: Gráficos -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- Información General -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">📊 Información Transfermarkt</h2>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-purple-50 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-purple-600" id="valor-actual-display">€{(jugador.valor_transfermarkt / 1000000).toFixed(1)}M</div>
+              <div class="text-sm text-gray-600">Valor Actual</div>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-blue-600" id="ranking-posicion">-</div>
+              <div class="text-sm text-gray-600">Ranking Liga</div>
+            </div>
+            <div class="bg-green-50 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-green-600" id="ranking-equipo">-</div>
+              <div class="text-sm text-gray-600">Ranking Equipo</div>
+            </div>
+            <div class="bg-yellow-50 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-yellow-600" id="variacion-total">-</div>
+              <div class="text-sm text-gray-600">Variación Total</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfico de Valor Transfermarkt -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">💰 Evolución Valor Transfermarkt</h2>
+          <canvas id="transfermarktChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Comparación con Equipo -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">🏆 Comparación en el Equipo</h2>
+          <canvas id="equipoChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Historial de Actualizaciones -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">📅 Historial de Actualizaciones</h2>
+          <div id="historial-actualizaciones" class="space-y-3">
+            <!-- Se llenará dinámicamente -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Stats Detalladas -->
+      <div class="space-y-8">
+        
+        <!-- Valor Detallado -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">💰 Valor Transfermarkt</h2>
+          
+          <div class="text-center">
+            <div class="text-3xl font-bold text-green-600 mb-2" id="valor-transfermarkt-principal" data-valor-transfermarkt>
+              €{(jugador.valor_transfermarkt || 0).toLocaleString('es-ES')}
+            </div>
+            <div class="text-sm text-gray-600 mb-4">Valor Actual</div>
+            
+            <div class="bg-gray-50 rounded-lg p-3">
+              <div class="text-sm text-gray-600 mb-1">Variación desde inicio</div>
+              <div class="font-bold" id="variacion-valor-total">
+                <span class="text-gray-500">Sin cambios</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparaciones -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">📊 Comparaciones</h2>
+          
+          <div class="space-y-4">
+            <!-- Más Valioso del Equipo -->
+            <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+              <span class="font-semibold text-gray-700">👑 Más Valioso Equipo</span>
+              <span class="font-bold text-purple-600" id="mas-valioso-equipo">-</span>
+            </div>
+            
+            <!-- Promedio del Equipo -->
+            <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+              <span class="font-semibold text-gray-700">📈 Promedio Equipo</span>
+              <span class="font-bold text-blue-600" id="promedio-equipo">-</span>
+            </div>
+            
+            <!-- Posición en Liga -->
+            <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+              <span class="font-semibold text-gray-700">🏆 Top Liga</span>
+              <span class="font-bold text-green-600" id="posicion-liga">-</span>
+            </div>
+            
+            <!-- Posición por Posición -->
+            <div class="flex justify-between items-center p-3 bg-yellow-50 rounded-lg">
+              <span class="font-semibold text-gray-700">⚽ Top Posición</span>
+              <span class="font-bold text-yellow-600" id="top-posicion">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Datos Técnicos -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">⚙️ Datos Técnicos</h2>
+          
+          <div class="space-y-4">
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <span class="font-semibold text-gray-700">🎂 Edad</span>
+              <span class="font-bold text-gray-700">{jugador.edad || 0} años</span>
+            </div>
+            
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <span class="font-semibold text-gray-700">🎯 Posición</span>
+              <span class="font-bold text-gray-700">{jugador.posicion || 'N/A'}</span>
+            </div>
+            
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <span class="font-semibold text-gray-700">👕 Dorsal</span>
+              <span class="font-bold text-gray-700">#{jugador.dorsal || 0}</span>
+            </div>
+            
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <span class="font-semibold text-gray-700">⭐ OVR</span>
+              <span class="font-bold text-gray-700">{jugador.ovr || 0}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Última Actualización -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">🕒 Actualización</h2>
+          
+          <div class="text-center">
+            <div class="text-lg font-semibold text-gray-700 mb-2" id="ultima-actualizacion">
+              JUL-2025
+            </div>
+            <div class="text-sm text-gray-600">Última actualización</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script define:vars={{ jugador, historialTransfermarkt }}>
+    document.addEventListener('DOMContentLoaded', async function() {
+      try {
+        console.log('=== PERFIL TRANSFERMARKT ===');
+        console.log('Jugador:', jugador?.nombre || 'No disponible');
+        
+        // Cargar datos actualizados del jugador dinámicamente
+        let jugadorActualizado = jugador;
+        let todosJugadores = [];
+        
+        try {
+          console.log('🔄 Cargando datos actualizados de Transfermarkt...');
+          const response = await fetch('/api/jugadores');
+          if (response.ok) {
+            const jugadoresData = await response.json();
+            
+            // Intentar cargar desde transfermarkt.json directamente
+            try {
+              const responseTransfermarkt = await fetch('/src/data/transfermarkt.json');
+              if (responseTransfermarkt.ok) {
+                todosJugadores = await responseTransfermarkt.json();
+              }
+            } catch (e) {
+              console.log('Usando datos base de transfermarkt');
+              // Fallback: usar datos de transfermarkt desde import
+              todosJugadores = [jugador]; // Al menos tenemos el jugador actual
+            }
+            
+            const jugadorEncontrado = todosJugadores.find(j => j.nombre === jugador.nombre);
+            
+            if (jugadorEncontrado) {
+              jugadorActualizado = jugadorEncontrado;
+              console.log('✅ Datos del jugador Transfermarkt actualizados');
+              
+              // Actualizar valor de transfermarkt en la página
+              const valorElementos = document.querySelectorAll('[data-valor-transfermarkt]');
+              valorElementos.forEach(elem => {
+                elem.textContent = `€${(jugadorActualizado.valor_transfermarkt || 0).toLocaleString('es-ES')}`;
+              });
+            }
+          } else {
+            console.warn('⚠️ No se pudo cargar datos actualizados de Transfermarkt');
+          }
+        } catch (error) {
+          console.error('❌ Error al cargar datos actualizados:', error);
+        }
+
+        if (!jugador || !jugador.nombre) {
+          console.error('Error: Datos del jugador no disponibles');
+          return;
+        }
+
+        // Simular datos de todos los jugadores para comparaciones
+        // En un caso real, cargarías todos los jugadores de transfermarkt.json
+        const jugadoresEquipo = todosJugadores.filter(j => j.equipo === jugador.equipo) || [];
+        const jugadoresLiga = todosJugadores || [];
+
+        // Calcular rankings y estadísticas
+        const valorActual = jugadorActualizado.valor_transfermarkt || 0;
+        
+        // Ranking en la liga (todos los jugadores)
+        const jugadoresOrdenadosLiga = jugadoresLiga
+          .sort((a, b) => (b.valor_transfermarkt || 0) - (a.valor_transfermarkt || 0));
+        const rankingLiga = jugadoresOrdenadosLiga.findIndex(j => j.nombre === jugador.nombre) + 1;
+        
+        // Ranking en el equipo
+        const jugadoresOrdenadosEquipo = jugadoresEquipo
+          .sort((a, b) => (b.valor_transfermarkt || 0) - (a.valor_transfermarkt || 0));
+        const rankingEquipo = jugadoresOrdenadosEquipo.findIndex(j => j.nombre === jugador.nombre) + 1;
+        
+        // Promedio del equipo
+        const promedioEquipo = jugadoresEquipo.length > 0 
+          ? jugadoresEquipo.reduce((sum, j) => sum + (j.valor_transfermarkt || 0), 0) / jugadoresEquipo.length
+          : 0;
+          
+        // Más valioso del equipo
+        const masValiosoEquipo = jugadoresOrdenadosEquipo[0];
+        
+        // Jugadores de la misma posición
+        const posicionPrincipal = jugador.posicion.split(',')[0].trim();
+        const jugadoresPosicion = jugadoresLiga.filter(j => 
+          j.posicion.includes(posicionPrincipal)
+        ).sort((a, b) => (b.valor_transfermarkt || 0) - (a.valor_transfermarkt || 0));
+        const rankingPosicion = jugadoresPosicion.findIndex(j => j.nombre === jugador.nombre) + 1;
+
+        // Actualizar elementos del DOM
+        const elementos = {
+          'ranking-posicion': `#${rankingLiga}`,
+          'ranking-equipo': `#${rankingEquipo}`,
+          'mas-valioso-equipo': masValiosoEquipo ? (masValiosoEquipo.nombre === jugador.nombre ? 'Sí' : 'No') : '-',
+          'promedio-equipo': `€${(promedioEquipo / 1000000).toFixed(1)}M`,
+          'posicion-liga': `#${rankingLiga} de ${jugadoresLiga.length}`,
+          'top-posicion': `#${rankingPosicion} ${posicionPrincipal}`,
+          'valor-actual-display': `€${(valorActual / 1000000).toFixed(1)}M`
+        };
+
+        Object.entries(elementos).forEach(([id, valor]) => {
+          const elemento = document.getElementById(id);
+          if (elemento) {
+            elemento.textContent = valor;
+          }
+        });
+
+        // Crear gráfico de evolución de Transfermarkt
+        const ctxTransfermarkt = document.getElementById('transfermarktChart');
+        if (ctxTransfermarkt && window.Chart) {
+          try {
+            // Usar historial real del jugador
+            const historialJugador = historialTransfermarkt.historial_transfermarkt[jugador.nombre] || [];
+            
+            let historialValores;
+            if (historialJugador.length > 0) {
+              historialValores = historialJugador.map(h => ({
+                fecha: h.fecha.substring(0, 7), // YYYY-MM
+                valor: h.valor
+              }));
+            } else {
+              // Fallback si no hay historial
+              historialValores = [
+                { fecha: '2024-10', valor: valorActual * 0.85 },
+                { fecha: '2025-01', valor: valorActual * 0.92 },
+                { fecha: '2025-04', valor: valorActual * 0.96 },
+                { fecha: '2025-07', valor: valorActual }
+              ];
+            }
+
+            const labels = historialValores.map(v => v.fecha);
+            const valores = historialValores.map(v => v.valor / 1000000); // Convertir a millones
+
+            new Chart(ctxTransfermarkt.getContext('2d'), {
+              type: 'line',
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: 'Valor (M€)',
+                  data: valores,
+                  borderColor: 'rgb(147, 51, 234)',
+                  backgroundColor: 'rgba(147, 51, 234, 0.1)',
+                  tension: 0.3,
+                  fill: true,
+                  pointBackgroundColor: 'rgb(147, 51, 234)',
+                  pointBorderColor: '#fff',
+                  pointBorderWidth: 2,
+                  pointRadius: 6
+                }]
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: { 
+                    position: 'top',
+                    labels: {
+                      usePointStyle: true
+                    }
+                  },
+                  title: {
+                    display: true,
+                    text: 'Evolución del Valor de Transfermarkt'
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: false,
+                    title: {
+                      display: true,
+                      text: 'Valor (Millones €)'
+                    },
+                    ticks: {
+                      callback: function(value) {
+                        return '€' + value.toFixed(1) + 'M';
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          } catch (error) {
+            console.error('Error al crear el gráfico de Transfermarkt:', error);
+          }
+        }
+
+        // Crear gráfico de comparación con equipo
+        const ctxEquipo = document.getElementById('equipoChart');
+        if (ctxEquipo && window.Chart) {
+          try {
+            const jugadoresEquipoTop = jugadoresOrdenadosEquipo.slice(0, 5);
+            const nombres = jugadoresEquipoTop.map(j => j.nombre);
+            const valoresEquipo = jugadoresEquipoTop.map(j => (j.valor_transfermarkt || 0) / 1000000);
+            
+            const colores = jugadoresEquipoTop.map(j => 
+              j.nombre === jugador.nombre ? 'rgba(147, 51, 234, 0.8)' : 'rgba(59, 130, 246, 0.6)'
+            );
+
+            new Chart(ctxEquipo.getContext('2d'), {
+              type: 'bar',
+              data: {
+                labels: nombres,
+                datasets: [{
+                  label: 'Valor (M€)',
+                  data: valoresEquipo,
+                  backgroundColor: colores,
+                  borderColor: jugadoresEquipoTop.map(j => 
+                    j.nombre === jugador.nombre ? 'rgb(147, 51, 234)' : 'rgb(59, 130, 246)'
+                  ),
+                  borderWidth: 2
+                }]
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: { display: false },
+                  title: {
+                    display: true,
+                    text: `Top 5 Jugadores - ${jugador.equipo}`
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    title: {
+                      display: true,
+                      text: 'Valor (Millones €)'
+                    },
+                    ticks: {
+                      callback: function(value) {
+                        return '€' + value.toFixed(1) + 'M';
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          } catch (error) {
+            console.error('Error al crear el gráfico del equipo:', error);
+          }
+        }
+
+        // Mostrar historial de actualizaciones usando datos reales
+        const historialContainer = document.getElementById('historial-actualizaciones');
+        if (historialContainer) {
+          const historialJugador = historialTransfermarkt.historial_transfermarkt[jugador.nombre] || [];
+          
+          // Usar historial real o crear datos de ejemplo
+          let actualizaciones;
+          if (historialJugador.length > 0) {
+            actualizaciones = [...historialJugador].reverse(); // Mostrar más reciente primero
+          } else {
+            actualizaciones = [
+              { fecha: '2025-07-01', valor: valorActual, cambio: 0, descripcion: 'Actualización JUL-2025' },
+              { fecha: '2025-04-01', valor: valorActual * 0.96, cambio: valorActual * 0.04, descripcion: 'Actualización ABR-2025' },
+              { fecha: '2025-01-01', valor: valorActual * 0.92, cambio: valorActual * 0.04, descripcion: 'Actualización ENE-2025' }
+            ];
+          }
+
+          if (actualizaciones.length === 0) {
+            historialContainer.innerHTML = `
+              <div class="text-center text-gray-500 py-8">
+                <div class="text-4xl mb-4">📊</div>
+                <p>No hay actualizaciones registradas aún.</p>
+              </div>
+            `;
+          } else {
+            historialContainer.innerHTML = actualizaciones.map(actualizacion => {
+              const fecha = new Date(actualizacion.fecha).toLocaleDateString('es-ES');
+              const cambioIcon = actualizacion.cambio > 0 ? '📈' : actualizacion.cambio < 0 ? '📉' : '📊';
+              const cambioColor = actualizacion.cambio > 0 ? 'text-green-600' : actualizacion.cambio < 0 ? 'text-red-600' : 'text-gray-600';
+              
+              return `
+                <div class="bg-gray-50 rounded-lg p-4 flex justify-between items-center">
+                  <div class="flex-1">
+                    <div class="font-semibold">${actualizacion.descripcion}</div>
+                    <div class="text-sm text-gray-600">
+                      ${fecha} ${cambioIcon}
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-lg font-bold text-purple-600">€${(actualizacion.valor / 1000000).toFixed(1)}M</div>
+                    <div class="text-xs ${cambioColor}">
+                      ${actualizacion.cambio > 0 ? '+' : ''}${actualizacion.cambio !== 0 ? '€' + (actualizacion.cambio / 1000000).toFixed(1) + 'M' : 'Sin cambio'}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          }
+          
+          // Actualizar variación total usando historial real
+          if (actualizaciones.length > 1) {
+            const valorInicial = actualizaciones[actualizaciones.length - 1].valor;
+            const valorActualReal = actualizaciones[0].valor;
+            const variacionTotal = valorActualReal - valorInicial;
+            
+            const elementoVariacion = document.getElementById('variacion-valor-total');
+            if (elementoVariacion) {
+              const variacionIcon = variacionTotal > 0 ? '📈' : variacionTotal < 0 ? '📉' : '📊';
+              const variacionColor = variacionTotal > 0 ? 'text-green-600' : variacionTotal < 0 ? 'text-red-600' : 'text-gray-600';
+              elementoVariacion.innerHTML = `
+                <span class="${variacionColor}">
+                  ${variacionIcon} ${variacionTotal > 0 ? '+' : ''}€${(variacionTotal / 1000000).toFixed(1)}M
+                </span>
+              `;
+            }
+            
+            // Actualizar variación total en la tarjeta de información
+            const elementoVariacionTotal = document.getElementById('variacion-total');
+            if (elementoVariacionTotal) {
+              elementoVariacionTotal.textContent = `${variacionTotal > 0 ? '+' : ''}€${(variacionTotal / 1000000).toFixed(1)}M`;
+              elementoVariacionTotal.className = `text-3xl font-bold ${
+                variacionTotal > 0 ? 'text-green-600' : variacionTotal < 0 ? 'text-red-600' : 'text-yellow-600'
+              }`;
+            }
+          }
+        }
+
+      } catch (error) {
+        console.error('Error en el script del perfil Transfermarkt:', error);
+      }
+    });
+  </script>
+</BaseLayout>

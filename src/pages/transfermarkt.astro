@@ -1,0 +1,828 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import jugadores from "../data/transfermarkt.json";
+
+// Ordenar jugadores por valor de Transfermarkt (mayor a menor) por defecto
+const jugadoresOrdenados = [...jugadores].sort((a, b) => b.valor_transfermarkt - a.valor_transfermarkt);
+
+// Agrupar por equipos para estadísticas
+const jugadoresPorEquipo = jugadores.reduce((acc, jugador) => {
+  const equipo = jugador.equipo || 'Sin equipo';
+  if (!acc[equipo]) {
+    acc[equipo] = [];
+  }
+  acc[equipo].push(jugador);
+  return acc;
+}, {});
+
+// Orden específico de equipos
+const ordenEquipos = ['Nike FC', 'Adidas FC', 'Puma FC', 'Kappa FC'];
+
+// Calcular estadísticas por equipo
+const estadisticasEquipos = ordenEquipos.map(equipo => {
+  const jugadoresEquipo = jugadoresPorEquipo[equipo] || [];
+  const valorTotal = jugadoresEquipo.reduce((sum, j) => sum + j.valor_transfermarkt, 0);
+  const valorPromedio = valorTotal / jugadoresEquipo.length;
+  const jugadorMasCaro = jugadoresEquipo.reduce((max, j) => j.valor_transfermarkt > max.valor_transfermarkt ? j : max, jugadoresEquipo[0]);
+  
+  return {
+    equipo,
+    valorTotal,
+    valorPromedio,
+    numJugadores: jugadoresEquipo.length,
+    jugadorMasCaro
+  };
+});
+
+// Estadísticas globales
+const valorTotalLiga = jugadores.reduce((sum, j) => sum + j.valor_transfermarkt, 0);
+const valorPromedioJugador = valorTotalLiga / jugadores.length;
+const jugadorMasCaroLiga = jugadores.reduce((max, j) => j.valor_transfermarkt > max.valor_transfermarkt ? j : max);
+
+// Distribución por posiciones
+const posiciones = {};
+jugadores.forEach(j => {
+  const pos = j.posicion.split(',')[0].trim(); // Tomar la primera posición
+  if (!posiciones[pos]) {
+    posiciones[pos] = { count: 0, valorTotal: 0 };
+  }
+  posiciones[pos].count++;
+  posiciones[pos].valorTotal += j.valor_transfermarkt;
+});
+---
+
+<BaseLayout title="Valores Transfermarkt">
+  <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-5xl font-bold text-gray-900 mb-4">
+          🏆 <span class="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Transfermarkt</span>
+        </h1>
+        <p class="text-gray-600 text-lg">Valores de mercado oficiales - Actualización JUL-2025</p>
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="text-2xl font-bold text-green-600">€{valorTotalLiga.toLocaleString('es-ES')}</div>
+            <div class="text-sm text-gray-600">Valor total de la liga</div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="text-2xl font-bold text-blue-600">€{Math.round(valorPromedioJugador).toLocaleString('es-ES')}</div>
+            <div class="text-sm text-gray-600">Valor promedio por jugador</div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="text-2xl font-bold text-purple-600">{jugadores.length}</div>
+            <div class="text-sm text-gray-600">Jugadores totales</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles y Filtros -->
+      <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <div class="flex flex-wrap gap-4 justify-between items-center">
+          <!-- Filtros por equipo -->
+          <div class="flex flex-wrap gap-2">
+            <button id="filtro-todos" class="filtro-equipo px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-semibold active">
+              Todos ({jugadores.length})
+            </button>
+            {ordenEquipos.map(equipo => (
+              <button class="filtro-equipo px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-semibold" 
+                      data-equipo={equipo}>
+                {equipo.replace(' FC', '')} ({jugadoresPorEquipo[equipo]?.length || 0})
+              </button>
+            ))}
+          </div>
+          
+          <!-- Ordenación -->
+          <div class="flex gap-2">
+            <select id="orden-select" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="valor-desc">Valor ↓</option>
+              <option value="valor-asc">Valor ↑</option>
+              <option value="edad-asc">Edad ↑</option>
+              <option value="edad-desc">Edad ↓</option>
+              <option value="dorsal-asc">Dorsal ↑</option>
+              <option value="nombre-asc">Nombre A-Z</option>
+              <option value="ovr-desc">OVR ↓</option>
+            </select>
+            <button id="vista-toggle" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold">
+              📊 Vista Gráfica
+            </button>
+            <button id="editar-valores" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-semibold">
+              ✏️ Editar Valores
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista de Gráficos (oculta por defecto) -->
+      <div id="vista-graficos" class="hidden mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <!-- Gráfico de Valores por Equipo -->
+          <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">💰 Valor Total por Equipo</h3>
+            <canvas id="grafico-equipos" width="400" height="300"></canvas>
+          </div>
+          
+          <!-- Gráfico de Distribución por Posiciones -->
+          <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">📍 Distribución por Posiciones</h3>
+            <canvas id="grafico-posiciones" width="400" height="300"></canvas>
+          </div>
+        </div>
+        
+        <!-- Gráfico de Top 10 Jugadores -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <h3 class="text-xl font-bold text-gray-800 mb-4">🌟 Top 10 Jugadores más Valiosos</h3>
+          <canvas id="grafico-top10" width="800" height="400"></canvas>
+        </div>
+      </div>
+
+      <!-- Tabla de Jugadores -->
+      <div id="vista-tabla" class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4">
+          <h2 class="text-2xl font-bold">📋 Listado de Jugadores</h2>
+          <p id="contador-jugadores" class="text-purple-100">Mostrando {jugadores.length} jugadores</p>
+        </div>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jugador</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Equipo</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posición</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dorsal</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Edad</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">OVR</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor Transfermarkt</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-jugadores" class="bg-white divide-y divide-gray-200">
+              {jugadoresOrdenados.map((jugador, index) => (
+                <tr class="hover:bg-gray-50 jugador-row" 
+                    data-equipo={jugador.equipo}
+                    data-nombre={jugador.nombre}
+                    data-valor={jugador.valor_transfermarkt}
+                    data-edad={jugador.edad}
+                    data-dorsal={jugador.dorsal}
+                    data-ovr={jugador.ovr}>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {index + 1}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <img 
+                        class="h-12 w-12 rounded-full object-cover border-2 border-gray-200" 
+                        src={jugador.foto} 
+                        alt={jugador.nombre}
+                        onerror="this.src='/jugadores/fan.svg'; this.onerror=null;"
+                      />
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">{jugador.nombre}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      jugador.equipo === 'Nike FC' ? 'bg-red-100 text-red-800' :
+                      jugador.equipo === 'Adidas FC' ? 'bg-blue-100 text-blue-800' :
+                      jugador.equipo === 'Puma FC' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {jugador.equipo.replace(' FC', '')}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {jugador.posicion}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm font-semibold">
+                      #{jugador.dorsal}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {jugador.edad} años
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class={`px-2 py-1 text-xs font-semibold rounded-full ${
+                      jugador.ovr >= 88 ? 'bg-purple-100 text-purple-800' :
+                      jugador.ovr >= 85 ? 'bg-blue-100 text-blue-800' :
+                      jugador.ovr >= 80 ? 'bg-green-100 text-green-800' :
+                      'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {jugador.ovr}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-lg font-bold text-green-600">
+                      €{jugador.valor_transfermarkt.toLocaleString('es-ES')}
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <a href={`/transfermarkt/${jugador.nombre.replace(/\s+/g, '-').toLowerCase()}`} 
+                       class="inline-flex items-center px-3 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors">
+                      👁️ Ver Perfil
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Estadísticas por Equipo -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+        {estadisticasEquipos.map(stat => (
+          <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-gray-800">{stat.equipo.replace(' FC', '')}</h3>
+              <span class={`px-2 py-1 text-xs font-semibold rounded-full ${
+                stat.equipo === 'Nike FC' ? 'bg-red-100 text-red-800' :
+                stat.equipo === 'Adidas FC' ? 'bg-blue-100 text-blue-800' :
+                stat.equipo === 'Puma FC' ? 'bg-yellow-100 text-yellow-800' :
+                'bg-green-100 text-green-800'
+              }`}>
+                {stat.numJugadores} jugadores
+              </span>
+            </div>
+            <div class="space-y-2">
+              <div>
+                <div class="text-sm text-gray-600">Valor Total</div>
+                <div class="text-xl font-bold text-green-600">€{stat.valorTotal.toLocaleString('es-ES')}</div>
+              </div>
+              <div>
+                <div class="text-sm text-gray-600">Promedio</div>
+                <div class="text-lg font-semibold text-blue-600">€{Math.round(stat.valorPromedio).toLocaleString('es-ES')}</div>
+              </div>
+              <div>
+                <div class="text-sm text-gray-600">Más valioso</div>
+                <div class="text-sm font-medium text-gray-800">{stat.jugadorMasCaro?.nombre}</div>
+                <div class="text-sm font-bold text-purple-600">€{stat.jugadorMasCaro?.valor_transfermarkt.toLocaleString('es-ES')}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Edición de Valores -->
+  <div id="modal-edicion" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+      <div class="mt-3">
+        <!-- Header del Modal -->
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold text-gray-900">✏️ Editar Valores de Transfermarkt</h3>
+          <button id="cerrar-modal" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">
+            ×
+          </button>
+        </div>
+        
+        <!-- Controles de Edición Masiva -->
+        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+          <h4 class="text-lg font-semibold text-gray-800 mb-4">🔧 Cambios Masivos</h4>
+          <div class="flex flex-wrap gap-3 justify-center">
+            <button onclick="aplicarCambioMasivo(10000000)" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">+10M Todos</button>
+            <button onclick="aplicarCambioMasivo(5000000)" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-semibold">+5M Todos</button>
+            <button onclick="aplicarCambioMasivo(1000000)" class="px-4 py-2 bg-green-400 text-white rounded-lg hover:bg-green-500 transition-colors font-semibold">+1M Todos</button>
+            <button onclick="aplicarCambioMasivo(-1000000)" class="px-4 py-2 bg-red-400 text-white rounded-lg hover:bg-red-500 transition-colors font-semibold">-1M Todos</button>
+            <button onclick="aplicarCambioMasivo(-5000000)" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-semibold">-5M Todos</button>
+            <button onclick="aplicarCambioMasivo(-10000000)" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold">-10M Todos</button>
+            <button onclick="resetearTodos()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-semibold">Resetear</button>
+          </div>
+        </div>
+
+        <!-- Lista de Jugadores Editables -->
+        <div class="max-h-96 overflow-y-auto mb-6">
+          <div id="lista-edicion" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Los jugadores se cargarán dinámicamente aquí -->
+          </div>
+        </div>
+        
+        <!-- Botones del Modal -->
+        <div class="flex justify-between items-center">
+          <div>
+            <span id="cambios-contador" class="text-sm text-gray-600">0 cambios pendientes</span>
+          </div>
+          <div class="flex gap-3">
+            <button id="cancelar-edicion" class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-semibold">
+              Cancelar
+            </button>
+            <button id="guardar-cambios" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+              💾 Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script define:vars={{ jugadores, estadisticasEquipos, posiciones }}>
+    let jugadoresData = [...jugadores];
+    let vistaActual = 'tabla';
+
+    // Configurar gráficos
+    let graficoEquipos, graficoPosiciones, graficoTop10;
+
+    function inicializarGraficos() {
+      // Gráfico de valores por equipo
+      const ctxEquipos = document.getElementById('grafico-equipos');
+      if (ctxEquipos) {
+        graficoEquipos = new Chart(ctxEquipos, {
+          type: 'doughnut',
+          data: {
+            labels: estadisticasEquipos.map(e => e.equipo.replace(' FC', '')),
+            datasets: [{
+              data: estadisticasEquipos.map(e => e.valorTotal),
+              backgroundColor: ['#EF4444', '#3B82F6', '#F59E0B', '#10B981'],
+              borderWidth: 2,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const value = context.parsed;
+                    return context.label + ': €' + value.toLocaleString('es-ES');
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Gráfico de posiciones
+      const ctxPosiciones = document.getElementById('grafico-posiciones');
+      if (ctxPosiciones) {
+        const posicionesData = Object.entries(posiciones);
+        graficoPosiciones = new Chart(ctxPosiciones, {
+          type: 'bar',
+          data: {
+            labels: posicionesData.map(([pos]) => pos),
+            datasets: [{
+              label: 'Número de jugadores',
+              data: posicionesData.map(([, data]) => data.count),
+              backgroundColor: '#8B5CF6',
+              borderColor: '#7C3AED',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        });
+      }
+
+      // Gráfico top 10
+      const ctxTop10 = document.getElementById('grafico-top10');
+      if (ctxTop10) {
+        const top10 = [...jugadoresData]
+          .sort((a, b) => b.valor_transfermarkt - a.valor_transfermarkt)
+          .slice(0, 10);
+
+        graficoTop10 = new Chart(ctxTop10, {
+          type: 'bar',
+          data: {
+            labels: top10.map(j => j.nombre),
+            datasets: [{
+              label: 'Valor Transfermarkt (€)',
+              data: top10.map(j => j.valor_transfermarkt),
+              backgroundColor: top10.map((j, i) => {
+                const colors = ['#FFD700', '#C0C0C0', '#CD7F32', '#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#6B7280', '#9CA3AF'];
+                return colors[i] || '#8B5CF6';
+              }),
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: function(value) {
+                    return '€' + (value / 1000000).toFixed(0) + 'M';
+                  }
+                }
+              },
+              x: {
+                ticks: {
+                  maxRotation: 45
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return 'Valor: €' + context.parsed.y.toLocaleString('es-ES');
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    // Funciones de filtrado y ordenación
+    function filtrarJugadores(equipoFiltro = null) {
+      const rows = document.querySelectorAll('.jugador-row');
+      let countVisible = 0;
+
+      rows.forEach(row => {
+        if (!equipoFiltro || row.dataset.equipo === equipoFiltro) {
+          row.style.display = '';
+          countVisible++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      // Actualizar contador
+      const contador = document.getElementById('contador-jugadores');
+      if (contador) {
+        const texto = equipoFiltro ? 
+          `Mostrando ${countVisible} jugadores de ${equipoFiltro}` :
+          `Mostrando ${countVisible} jugadores`;
+        contador.textContent = texto;
+      }
+
+      // Actualizar numeración
+      const rowsVisible = document.querySelectorAll('.jugador-row[style=""], .jugador-row:not([style])');
+      rowsVisible.forEach((row, index) => {
+        const numeroCell = row.querySelector('td:first-child');
+        if (numeroCell) {
+          numeroCell.textContent = index + 1;
+        }
+      });
+    }
+
+    function ordenarTabla(criterio) {
+      const tbody = document.getElementById('tabla-jugadores');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+
+      rows.sort((a, b) => {
+        switch (criterio) {
+          case 'valor-desc':
+            return parseInt(b.dataset.valor) - parseInt(a.dataset.valor);
+          case 'valor-asc':
+            return parseInt(a.dataset.valor) - parseInt(b.dataset.valor);
+          case 'edad-asc':
+            return parseInt(a.dataset.edad) - parseInt(b.dataset.edad);
+          case 'edad-desc':
+            return parseInt(b.dataset.edad) - parseInt(a.dataset.edad);
+          case 'dorsal-asc':
+            return parseInt(a.dataset.dorsal) - parseInt(b.dataset.dorsal);
+          case 'nombre-asc':
+            return a.dataset.nombre.localeCompare(b.dataset.nombre);
+          case 'ovr-desc':
+            return parseInt(b.dataset.ovr) - parseInt(a.dataset.ovr);
+          default:
+            return 0;
+        }
+      });
+
+      // Reconstruir tabla
+      rows.forEach(row => tbody.appendChild(row));
+      
+      // Reordenar numeración
+      filtrarJugadores(); // Esto también actualiza la numeración
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      inicializarGraficos();
+
+      // Filtros por equipo
+      document.querySelectorAll('.filtro-equipo').forEach(btn => {
+        btn.addEventListener('click', function() {
+          // Actualizar botones activos
+          document.querySelectorAll('.filtro-equipo').forEach(b => b.classList.remove('active', 'bg-gray-600'));
+          this.classList.add('active', 'bg-gray-600');
+
+          // Filtrar
+          const equipo = this.dataset.equipo || null;
+          filtrarJugadores(equipo);
+        });
+      });
+
+      // Selector de ordenación
+      const ordenSelect = document.getElementById('orden-select');
+      if (ordenSelect) {
+        ordenSelect.addEventListener('change', function() {
+          ordenarTabla(this.value);
+        });
+      }
+
+      // Toggle de vista
+      const vistaToggle = document.getElementById('vista-toggle');
+      const vistaGraficos = document.getElementById('vista-graficos');
+      const vistaTabla = document.getElementById('vista-tabla');
+
+      if (vistaToggle) {
+        vistaToggle.addEventListener('click', function() {
+          if (vistaActual === 'tabla') {
+            vistaTabla.classList.add('hidden');
+            vistaGraficos.classList.remove('hidden');
+            this.textContent = '📋 Vista Tabla';
+            vistaActual = 'graficos';
+          } else {
+            vistaGraficos.classList.add('hidden');
+            vistaTabla.classList.remove('hidden');
+            this.textContent = '📊 Vista Gráfica';
+            vistaActual = 'tabla';
+          }
+        });
+      }
+
+      // Modal de edición
+      setupModalEdicion();
+    });
+
+    // Variables para el modal de edición
+    let cambiosPendientes = {};
+    let modalEdicion, listaEdicion, contadorCambios;
+
+    function setupModalEdicion() {
+      modalEdicion = document.getElementById('modal-edicion');
+      listaEdicion = document.getElementById('lista-edicion');
+      contadorCambios = document.getElementById('cambios-contador');
+      
+      const btnEditar = document.getElementById('editar-valores');
+      const btnCerrar = document.getElementById('cerrar-modal');
+      const btnCancelar = document.getElementById('cancelar-edicion');
+      const btnGuardar = document.getElementById('guardar-cambios');
+      
+      if (btnEditar) {
+        btnEditar.addEventListener('click', abrirModal);
+      }
+      
+      if (btnCerrar) {
+        btnCerrar.addEventListener('click', cerrarModal);
+      }
+      
+      if (btnCancelar) {
+        btnCancelar.addEventListener('click', cerrarModal);
+      }
+      
+      if (btnGuardar) {
+        btnGuardar.addEventListener('click', guardarCambiosTransfermarkt);
+      }
+      
+      // Cerrar modal al hacer clic fuera
+      modalEdicion.addEventListener('click', function(e) {
+        if (e.target === modalEdicion) {
+          cerrarModal();
+        }
+      });
+    }
+
+    function abrirModal() {
+      modalEdicion.classList.remove('hidden');
+      cargarJugadoresEnModal();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarModal() {
+      modalEdicion.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+      cambiosPendientes = {};
+      actualizarContadorCambios();
+    }
+
+    function cargarJugadoresEnModal() {
+      listaEdicion.innerHTML = '';
+      
+      jugadoresData.forEach(jugador => {
+        const jugadorDiv = document.createElement('div');
+        jugadorDiv.className = 'bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow';
+        jugadorDiv.innerHTML = `
+          <div class="flex items-center gap-3 mb-3">
+            <img 
+              src="${jugador.foto}" 
+              alt="${jugador.nombre}"
+              class="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
+              onerror="this.src='/jugadores/fan.svg'; this.onerror=null;"
+            />
+            <div class="flex-1">
+              <div class="font-bold text-gray-900">${jugador.nombre}</div>
+              <div class="text-sm text-gray-600">${jugador.equipo} • ${jugador.posicion}</div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Valor Transfermarkt</label>
+            <input 
+              type="number" 
+              id="valor-${jugador.nombre.replace(/\s+/g, '-')}" 
+              value="${jugador.valor_transfermarkt}"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              data-jugador="${jugador.nombre}"
+              data-valor-original="${jugador.valor_transfermarkt}"
+            />
+          </div>
+          
+          <div class="flex gap-1 mb-2">
+            <button class="btn-cambio-rapido px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 transition-colors" 
+                    data-jugador="${jugador.nombre}" data-cambio="5000000">+5M</button>
+            <button class="btn-cambio-rapido px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600 transition-colors" 
+                    data-jugador="${jugador.nombre}" data-cambio="1000000">+1M</button>
+            <button class="btn-cambio-rapido px-2 py-1 bg-green-400 text-white rounded text-xs hover:bg-green-500 transition-colors" 
+                    data-jugador="${jugador.nombre}" data-cambio="500000">+500k</button>
+            <button class="btn-cambio-rapido px-2 py-1 bg-red-400 text-white rounded text-xs hover:bg-red-500 transition-colors" 
+                    data-jugador="${jugador.nombre}" data-cambio="-500000">-500k</button>
+            <button class="btn-cambio-rapido px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600 transition-colors" 
+                    data-jugador="${jugador.nombre}" data-cambio="-1000000">-1M</button>
+            <button class="btn-cambio-rapido px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors" 
+                    data-jugador="${jugador.nombre}" data-cambio="-5000000">-5M</button>
+          </div>
+        `;
+        listaEdicion.appendChild(jugadorDiv);
+      });
+      
+      // Event listeners para inputs y botones
+      setupEventListenersModal();
+    }
+
+    function setupEventListenersModal() {
+      // Inputs de valor
+      listaEdicion.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('input', function() {
+          const jugador = this.dataset.jugador;
+          const valorOriginal = parseInt(this.dataset.valorOriginal);
+          const valorNuevo = parseInt(this.value) || 0;
+          
+          if (valorNuevo !== valorOriginal) {
+            cambiosPendientes[jugador] = {
+              valorOriginal,
+              valorNuevo
+            };
+          } else {
+            delete cambiosPendientes[jugador];
+          }
+          
+          actualizarContadorCambios();
+        });
+      });
+      
+      // Botones de cambio rápido
+      listaEdicion.querySelectorAll('.btn-cambio-rapido').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const jugador = this.dataset.jugador;
+          const cambio = parseInt(this.dataset.cambio);
+          const input = document.getElementById(`valor-${jugador.replace(/\s+/g, '-')}`);
+          
+          if (input) {
+            const valorActual = parseInt(input.value) || 0;
+            const valorNuevo = Math.max(0, valorActual + cambio);
+            input.value = valorNuevo;
+            input.dispatchEvent(new Event('input'));
+          }
+        });
+      });
+    }
+
+    function actualizarContadorCambios() {
+      const numCambios = Object.keys(cambiosPendientes).length;
+      contadorCambios.textContent = `${numCambios} cambio${numCambios !== 1 ? 's' : ''} pendiente${numCambios !== 1 ? 's' : ''}`;
+    }
+
+    // Funciones globales para cambios masivos
+    window.aplicarCambioMasivo = function(cambio) {
+      if (confirm(`¿Aplicar ${cambio > 0 ? '+' : ''}€${(cambio / 1000000).toFixed(1)}M a todos los jugadores?`)) {
+        listaEdicion.querySelectorAll('input[type="number"]').forEach(input => {
+          const valorActual = parseInt(input.value) || 0;
+          const valorNuevo = Math.max(0, valorActual + cambio);
+          input.value = valorNuevo;
+          input.dispatchEvent(new Event('input'));
+        });
+      }
+    }
+
+    window.resetearTodos = function() {
+      if (confirm('¿Estás seguro de que quieres resetear todos los valores?')) {
+        listaEdicion.querySelectorAll('input[type="number"]').forEach(input => {
+          input.value = input.dataset.valorOriginal;
+          input.dispatchEvent(new Event('input'));
+        });
+      }
+    }
+
+    async function guardarCambiosTransfermarkt() {
+      const numCambios = Object.keys(cambiosPendientes).length;
+      
+      if (numCambios === 0) {
+        alert('No hay cambios pendientes para guardar.');
+        return;
+      }
+      
+      if (!confirm(`¿Guardar ${numCambios} cambio${numCambios > 1 ? 's' : ''} en Transfermarkt?`)) {
+        return;
+      }
+      
+      try {
+        // Preparar datos actualizados
+        const jugadoresActualizados = {};
+        
+        Object.entries(cambiosPendientes).forEach(([nombre, datos]) => {
+          const jugadorActual = jugadoresData.find(j => j.nombre === nombre);
+          if (jugadorActual) {
+            jugadoresActualizados[nombre] = {
+              ...jugadorActual,
+              valor_transfermarkt: datos.valorNuevo
+            };
+          }
+        });
+        
+        console.log('Guardando cambios de Transfermarkt:', jugadoresActualizados);
+        
+        const response = await fetch('/api/actualizar-transfermarkt', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            jugadoresActualizados: jugadoresActualizados,
+            accion: 'actualizar_transfermarkt'
+          })
+        });
+        
+        if (response.ok) {
+          const resultado = await response.json();
+          console.log('Cambios guardados exitosamente:', resultado);
+          
+          alert(`✅ ${numCambios} valor${numCambios > 1 ? 'es' : ''} de Transfermarkt actualizado${numCambios > 1 ? 's' : ''} correctamente`);
+          
+          // Actualizar datos locales
+          Object.entries(cambiosPendientes).forEach(([nombre, datos]) => {
+            const jugador = jugadoresData.find(j => j.nombre === nombre);
+            if (jugador) {
+              jugador.valor_transfermarkt = datos.valorNuevo;
+            }
+          });
+          
+          cerrarModal();
+          location.reload();
+        } else {
+          const errorData = await response.text();
+          console.error('Error del servidor:', response.status, errorData);
+          alert(`❌ Error al guardar: ${response.status} - ${errorData}`);
+        }
+      } catch (error) {
+        console.error('Error crítico:', error);
+        alert(`❌ Error crítico: ${error.message}`);
+      }
+    }
+  </script>
+
+  <style>
+    .filtro-equipo.active {
+      background-color: #4B5563 !important;
+      transform: scale(1.05);
+    }
+    
+    .jugador-row:hover {
+      transform: translateX(4px);
+      transition: transform 0.2s ease;
+    }
+
+    /* Animaciones para los gráficos */
+    canvas {
+      max-height: 400px;
+    }
+
+    /* Gradientes personalizados */
+    .bg-gradient-to-r {
+      background: linear-gradient(to right, var(--tw-gradient-stops));
+    }
+  </style>
+</BaseLayout>

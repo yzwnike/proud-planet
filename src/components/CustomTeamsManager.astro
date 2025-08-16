@@ -1,0 +1,329 @@
+---
+---
+
+<div id="custom-teams-manager" class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+  <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Gestión de Equipos Personalizados</h2>
+  
+  <!-- Formulario para añadir resultados -->
+  <div class="mb-8 p-6 bg-gray-50 rounded-lg">
+    <h3 class="text-2xl font-semibold mb-4 text-gray-700">Añadir Resultado de Partido</h3>
+    <form id="match-result-form" class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div>
+          <label for="jornada" class="block text-sm font-medium text-gray-700">Jornada</label>
+          <input type="number" id="jornada" min="1" max="38" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+        </div>
+        
+        <div>
+          <label for="home-team" class="block text-sm font-medium text-gray-700">Equipo Local</label>
+          <select id="home-team" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+            <option value="">Seleccionar...</option>
+            <option value="FC Barcelona B">FC Barcelona B</option>
+            <option value="Real Madrid Castilla">Real Madrid Castilla</option>
+            <option value="Atletico Madrid B">Atletico Madrid B</option>
+            <option value="Valencia Mestalla">Valencia Mestalla</option>
+          </select>
+        </div>
+        
+        <div>
+          <label for="home-goals" class="block text-sm font-medium text-gray-700">Goles Local</label>
+          <input type="number" id="home-goals" min="0" max="20" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+        </div>
+        
+        <div>
+          <label for="away-team" class="block text-sm font-medium text-gray-700">Equipo Visitante</label>
+          <select id="away-team" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+            <option value="">Seleccionar...</option>
+            <option value="FC Barcelona B">FC Barcelona B</option>
+            <option value="Real Madrid Castilla">Real Madrid Castilla</option>
+            <option value="Atletico Madrid B">Atletico Madrid B</option>
+            <option value="Valencia Mestalla">Valencia Mestalla</option>
+          </select>
+        </div>
+        
+        <div>
+          <label for="away-goals" class="block text-sm font-medium text-gray-700">Goles Visitante</label>
+          <input type="number" id="away-goals" min="0" max="20" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+        </div>
+      </div>
+      
+      <div class="flex space-x-4">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition duration-300">
+          Añadir Resultado
+        </button>
+        <button type="button" id="get-next-jornada" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+          Obtener Próxima Jornada
+        </button>
+        <button type="button" id="reset-season" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+          Reiniciar Temporada
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Clasificación actual -->
+  <div class="mb-8">
+    <h3 class="text-2xl font-semibold mb-4 text-gray-700">Clasificación Actual</h3>
+    <div class="overflow-x-auto">
+      <table id="standings-table" class="min-w-full bg-white border border-gray-200">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Pos</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Equipo</th>
+            <th class="px-4 py-2 text-center text-sm font-semibold text-gray-600">PJ</th>
+            <th class="px-4 py-2 text-center text-sm font-semibold text-gray-600">G</th>
+            <th class="px-4 py-2 text-center text-sm font-semibold text-gray-600">E</th>
+            <th class="px-4 py-2 text-center text-sm font-semibold text-gray-600">P</th>
+            <th class="px-4 py-2 text-center text-sm font-semibold text-gray-600">GF</th>
+            <th class="px-4 py-2 text-center text-sm font-semibold text-gray-600">GC</th>
+            <th class="px-4 py-2 text-center text-sm font-semibold text-gray-600">DG</th>
+            <th class="px-4 py-2 text-center text-sm font-semibold text-gray-600">Pts</th>
+          </tr>
+        </thead>
+        <tbody id="standings-body">
+          <!-- Se llenará dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Últimos resultados -->
+  <div class="mb-8">
+    <h3 class="text-2xl font-semibold mb-4 text-gray-700">Últimos Resultados</h3>
+    <div id="recent-results" class="space-y-2">
+      <!-- Se llenará dinámicamente -->
+    </div>
+  </div>
+
+  <!-- Estadísticas de la temporada -->
+  <div id="season-stats" class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+    <!-- Se llenará dinámicamente -->
+  </div>
+</div>
+
+<script>
+  class CustomTeamsManager {
+    constructor() {
+      this.form = document.getElementById('match-result-form');
+      this.bindEvents();
+      this.loadStandings();
+      this.loadRecentResults();
+      this.loadStats();
+    }
+
+    bindEvents() {
+      this.form.addEventListener('submit', (e) => this.handleAddResult(e));
+      document.getElementById('get-next-jornada').addEventListener('click', () => this.getNextJornada());
+      document.getElementById('reset-season').addEventListener('click', () => this.resetSeason());
+    }
+
+    async handleAddResult(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this.form);
+      const homeTeam = document.getElementById('home-team').value;
+      const awayTeam = document.getElementById('away-team').value;
+      const homeGoals = parseInt(document.getElementById('home-goals').value);
+      const awayGoals = parseInt(document.getElementById('away-goals').value);
+      const jornada = parseInt(document.getElementById('jornada').value);
+
+      if (homeTeam === awayTeam) {
+        alert('Un equipo no puede jugar contra sí mismo');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/custom-results', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'add-result',
+            homeTeam,
+            awayTeam,
+            homeGoals,
+            awayGoals,
+            jornada
+          })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+          this.form.reset();
+          this.loadStandings();
+          this.loadRecentResults();
+          this.loadStats();
+          alert('Resultado añadido correctamente');
+        } else {
+          alert(`Error: ${result.error}`);
+        }
+      } catch (error) {
+        console.error('Error al añadir resultado:', error);
+        alert('Error al añadir el resultado');
+      }
+    }
+
+    async getNextJornada() {
+      try {
+        const response = await fetch('/api/custom-results?action=next-jornada');
+        const result = await response.json();
+        
+        if (result.success) {
+          document.getElementById('jornada').value = result.data.proxima_jornada;
+        }
+      } catch (error) {
+        console.error('Error al obtener próxima jornada:', error);
+      }
+    }
+
+    async resetSeason() {
+      if (!confirm('¿Estás seguro de que quieres reiniciar toda la temporada? Esta acción no se puede deshacer.')) {
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/custom-results', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'reset-season'
+          })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+          this.loadStandings();
+          this.loadRecentResults();
+          this.loadStats();
+          alert('Temporada reiniciada correctamente');
+        } else {
+          alert(`Error: ${result.error}`);
+        }
+      } catch (error) {
+        console.error('Error al reiniciar temporada:', error);
+        alert('Error al reiniciar la temporada');
+      }
+    }
+
+    async loadStandings() {
+      try {
+        const response = await fetch('/api/custom-results?action=standings');
+        const result = await response.json();
+        
+        if (result.success) {
+          this.renderStandings(result.data);
+        }
+      } catch (error) {
+        console.error('Error al cargar clasificación:', error);
+      }
+    }
+
+    async loadRecentResults() {
+      try {
+        const response = await fetch('/api/custom-results?action=results');
+        const result = await response.json();
+        
+        if (result.success) {
+          this.renderRecentResults(result.data.slice(-10)); // Últimos 10 resultados
+        }
+      } catch (error) {
+        console.error('Error al cargar resultados:', error);
+      }
+    }
+
+    async loadStats() {
+      try {
+        const response = await fetch('/api/custom-results?action=stats');
+        const result = await response.json();
+        
+        if (result.success) {
+          this.renderStats(result.data);
+        }
+      } catch (error) {
+        console.error('Error al cargar estadísticas:', error);
+      }
+    }
+
+    renderStandings(standings) {
+      const tbody = document.getElementById('standings-body');
+      tbody.innerHTML = '';
+
+      standings.forEach((team, index) => {
+        const row = document.createElement('tr');
+        row.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+        
+        row.innerHTML = `
+          <td class="px-4 py-2 text-sm font-medium text-gray-900">${index + 1}</td>
+          <td class="px-4 py-2 text-sm text-gray-900">${team.team}</td>
+          <td class="px-4 py-2 text-sm text-gray-900 text-center">${team.played}</td>
+          <td class="px-4 py-2 text-sm text-gray-900 text-center">${team.won}</td>
+          <td class="px-4 py-2 text-sm text-gray-900 text-center">${team.drawn}</td>
+          <td class="px-4 py-2 text-sm text-gray-900 text-center">${team.lost}</td>
+          <td class="px-4 py-2 text-sm text-gray-900 text-center">${team.goalsFor}</td>
+          <td class="px-4 py-2 text-sm text-gray-900 text-center">${team.goalsAgainst}</td>
+          <td class="px-4 py-2 text-sm text-gray-900 text-center">${team.goalDifference}</td>
+          <td class="px-4 py-2 text-sm font-bold text-gray-900 text-center">${team.points}</td>
+        `;
+        
+        tbody.appendChild(row);
+      });
+    }
+
+    renderRecentResults(results) {
+      const container = document.getElementById('recent-results');
+      container.innerHTML = '';
+
+      if (results.length === 0) {
+        container.innerHTML = '<p class="text-gray-500 text-center">No hay resultados registrados</p>';
+        return;
+      }
+
+      results.reverse().forEach(result => {
+        const resultDiv = document.createElement('div');
+        resultDiv.className = 'bg-gray-50 p-3 rounded flex justify-between items-center';
+        
+        resultDiv.innerHTML = `
+          <div class="text-sm text-gray-600">Jornada ${result.jornada}</div>
+          <div class="font-semibold">
+            ${result.homeTeam} ${result.homeGoals} - ${result.awayGoals} ${result.awayTeam}
+          </div>
+          <div class="text-xs text-gray-500">${new Date(result.date).toLocaleDateString()}</div>
+        `;
+        
+        container.appendChild(resultDiv);
+      });
+    }
+
+    renderStats(stats) {
+      const container = document.getElementById('season-stats');
+      container.innerHTML = `
+        <div class="bg-blue-100 p-4 rounded">
+          <h4 class="font-bold text-blue-800">Partidos Jugados</h4>
+          <p class="text-2xl font-bold text-blue-600">${stats.totalMatches}</p>
+        </div>
+        <div class="bg-green-100 p-4 rounded">
+          <h4 class="font-bold text-green-800">Total Goles</h4>
+          <p class="text-2xl font-bold text-green-600">${stats.totalGoals}</p>
+        </div>
+        <div class="bg-yellow-100 p-4 rounded">
+          <h4 class="font-bold text-yellow-800">Promedio Goles/Partido</h4>
+          <p class="text-2xl font-bold text-yellow-600">${stats.averageGoalsPerMatch}</p>
+        </div>
+        <div class="bg-purple-100 p-4 rounded">
+          <h4 class="font-bold text-purple-800">Próxima Jornada</h4>
+          <p class="text-2xl font-bold text-purple-600">${stats.nextJornada}</p>
+        </div>
+      `;
+    }
+  }
+
+  // Inicializar cuando se carga la página
+  document.addEventListener('DOMContentLoaded', () => {
+    new CustomTeamsManager();
+  });
+</script>

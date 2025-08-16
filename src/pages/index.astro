@@ -3,63 +3,326 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PlayerCard from "../components/PlayerCard.astro";
 import jugadores from "../data/players.json";
 
-let equipoSeleccionado = "Todos";
-let ordenarPor = "puntos";
-
 const equipos = ["Todos", "Nike FC", "Adidas FC", "Puma FC", "Kappa FC"];
+const posiciones = ["Todas", "POR", "DFC", "DC", "MC"];
+
+// Estadísticas por equipo
+const statsEquipos = equipos.slice(1).map(equipo => {
+  const jugadoresEquipo = jugadores.filter(j => j.equipo === equipo);
+  const valorTotal = jugadoresEquipo.reduce((sum, j) => sum + j.valor_mercado, 0);
+  const puntosPromedio = jugadoresEquipo.reduce((sum, j) => sum + j.puntos, 0) / jugadoresEquipo.length;
+  return {
+    nombre: equipo,
+    jugadores: jugadoresEquipo.length,
+    valorTotal: valorTotal / 1000000,
+    puntosPromedio: puntosPromedio.toFixed(1)
+  };
+});
 ---
 
-<BaseLayout title="Fantasy League">
-  <div class="flex flex-col md:flex-row gap-4 mb-6">
-      <select id="filtroEquipo" class="border p-2 rounded">
-            {equipos.map(e => (
-                    <option value={e}>{e}</option>
-                          ))}
-                              </select>
+<BaseLayout title="Fantasy League - Base de Datos de Jugadores">
+  <!-- Estadísticas por equipos -->
+  <section class="mb-12">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Estadísticas por Equipo</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {statsEquipos.map((equipo, index) => {
+        const colors = [
+          "from-orange-500 to-orange-600", // Nike
+          "from-gray-700 to-gray-800", // Adidas
+          "from-blue-500 to-blue-600", // Puma
+          "from-purple-500 to-purple-600" // Kappa
+        ];
+        return (
+          <div class={`bg-gradient-to-br ${colors[index]} text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300`}>
+            <h3 class="text-lg font-bold mb-4">{equipo.nombre}</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="text-sm opacity-90">Jugadores:</span>
+                <span class="font-semibold">{equipo.jugadores}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm opacity-90">Valor total:</span>
+                <span class="font-semibold">€{equipo.valorTotal.toFixed(0)}M</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm opacity-90">Puntos prom:</span>
+                <span class="font-semibold">{equipo.puntosPromedio}</span>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
 
-                                  <select id="ordenarPor" class="border p-2 rounded">
-                                        <option value="puntos">Puntos</option>
-                                              <option value="valor_mercado">Valor de mercado</option>
-                                                  </select>
-                                                    </div>
+  <!-- Botón de actualización principal -->
+  <section class="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl shadow-xl p-6 mb-8 text-white">
+    <div class="flex justify-between items-center">
+      <div>
+        <h2 class="text-2xl font-bold mb-2">🔄 Sistema de Actualización</h2>
+        <p class="text-green-100">Actualiza automáticamente los valores de mercado basándose en el rendimiento</p>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <a href="/admin" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold transition-all hover:scale-105 shadow-lg">
+          ⚙️ Panel Admin
+        </a>
+        <a href="/transfermarkt" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-bold transition-all hover:scale-105 shadow-lg">
+          🏆 Transfermarkt
+        </a>
+        <a href="/mercado" class="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl font-bold transition-all hover:scale-105">
+          💰 Gestión Mercado
+        </a>
+        <a href="/laliga" class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white px-6 py-3 rounded-xl font-bold transition-all hover:scale-105 shadow-lg">
+          ⚽ La Liga 2025/26
+        </a>
+        <a href="/actualizacion" class="bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 rounded-xl font-black text-lg transition-all hover:scale-110 shadow-lg">
+          ⚡ ACTUALIZACIÓN
+        </a>
+      </div>
+    </div>
+  </section>
 
-                                                      <div id="listaJugadores" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                                          {jugadores
-                                                                .filter(j => equipoSeleccionado === "Todos" || j.equipo === equipoSeleccionado)
-                                                                      .sort((a, b) => b[ordenarPor] - a[ordenarPor])
-                                                                            .map(j => (
-                                                                                    <PlayerCard jugador={j} />
-                                                                                          ))
-                                                                                              }
-                                                                                                </div>
+  <!-- Filtros y Controles -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-200">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">Explorar Jugadores</h2>
+    
+    <!-- Controles superiores -->
+    <div class="flex flex-wrap gap-4 mb-6">
+      <!-- Filtro por equipo -->
+      <div class="flex-1 min-w-48">
+        <label for="filtroEquipo" class="block text-sm font-medium text-gray-700 mb-2">Equipo</label>
+        <select id="filtroEquipo" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+          {equipos.map(e => (
+            <option value={e}>{e}</option>
+          ))}
+        </select>
+      </div>
+      
+      <!-- Filtro por posición -->
+      <div class="flex-1 min-w-48">
+        <label for="filtroPosicion" class="block text-sm font-medium text-gray-700 mb-2">Posición</label>
+        <select id="filtroPosicion" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+          {posiciones.map(p => (
+            <option value={p}>{p}</option>
+          ))}
+        </select>
+      </div>
+      
+      <!-- Ordenar por -->
+      <div class="flex-1 min-w-48">
+        <label for="ordenarPor" class="block text-sm font-medium text-gray-700 mb-2">Ordenar por</label>
+        <select id="ordenarPor" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+          <option value="puntos">Puntos (mayor a menor)</option>
+          <option value="valor_mercado">Valor de mercado (mayor a menor)</option>
+          <option value="edad">Edad (menor a mayor)</option>
+          <option value="nombre">Nombre (A-Z)</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Búsqueda por nombre -->
+    <div class="mb-6">
+      <label for="buscarNombre" class="block text-sm font-medium text-gray-700 mb-2">Buscar jugador</label>
+      <input 
+        type="text" 
+        id="buscarNombre" 
+        placeholder="Escribe el nombre del jugador..." 
+        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+      />
+    </div>
+    
+    <!-- Información de resultados -->
+    <div class="flex justify-between items-center text-sm text-gray-600 mb-4">
+      <span id="resultadosInfo">Mostrando 80 de 80 jugadores</span>
+      <button id="limpiarFiltros" class="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all font-medium">
+        Limpiar filtros
+      </button>
+    </div>
+  </section>
 
-                                                                                                  <script>
-                                                                                                      const filtroEquipo = document.getElementById("filtroEquipo");
-                                                                                                          const ordenarSelect = document.getElementById("ordenarPor");
-                                                                                                              const lista = document.getElementById("listaJugadores");
+  <!-- Grid de jugadores -->
+  <div id="listaJugadores" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+    {jugadores
+      .sort((a, b) => {
+        // Primero ordenar por puntos
+        if (b.puntos !== a.puntos) {
+          return b.puntos - a.puntos;
+        }
+        // Si tienen los mismos puntos, ordenar por valor de mercado
+        return b.valor_mercado - a.valor_mercado;
+      })
+      .map(j => (
+        <PlayerCard jugador={j} />
+      ))
+    }
+  </div>
+  
+  <!-- Mensaje cuando no hay resultados -->
+  <div id="noResultados" class="hidden text-center py-16">
+    <div class="text-gray-400 text-6xl mb-4">🔍</div>
+    <h3 class="text-xl font-semibold text-gray-600 mb-2">No se encontraron jugadores</h3>
+    <p class="text-gray-500">Prueba a cambiar los filtros de búsqueda</p>
+  </div>
 
-                                                                                                                  let jugadores = JSON.parse(`\${JSON.stringify(jugadores)}`);
-
-                                                                                                                      function renderLista() {
-                                                                                                                            let filtrados = jugadores
-                                                                                                                                    .filter(j => filtroEquipo.value === "Todos" || j.equipo === filtroEquipo.value)
-                                                                                                                                            .sort((a, b) => b[ordenarSelect.value] - a[ordenarSelect.value]);
-
-                                                                                                                                                  lista.innerHTML = filtrados.map(j => `
-                                                                                                                                                          <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-                                                                                                                                                                    <img src="${j.foto}" alt="${j.nombre}" class="w-24 h-24 rounded-full object-cover mb-3" />
-                                                                                                                                                                              <h3 class="text-lg font-bold">${j.nombre}</h3>
-                                                                                                                                                                                        <p class="text-sm text-gray-500">${j.posicion} — ${j.edad} años</p>
-                                                                                                                                                                                                  <p class="mt-2 text-yellow-600 font-semibold">${j.puntos} pts</p>
-                                                                                                                                                                                                            <p class="mt-1">€${j.valor_mercado.toLocaleString()}</p>
-                                                                                                                                                                                                                      <p class="mt-1 ${j.variacion > 0 ? "text-green-600" : j.variacion < 0 ? "text-red-600" : "text-gray-500"}">
-                                                                                                                                                                                                                                  ${j.variacion >= 0 ? "+" : ""}${(j.variacion / 1000000).toFixed(1)}M
-                                                                                                                                                                                                                                            </p>
-                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                          `).join("");
-                                                                                                                                                                                                                                                              }
-
-                                                                                                                                                                                                                                                                  filtroEquipo.addEventListener("change", renderLista);
-                                                                                                                                                                                                                                                                      ordenarSelect.addEventListener("change", renderLista);
-                                                                                                                                                                                                                                                                        </script>
-                                                                                                                                                                                                                                                                        </BaseLayout>
+  <script define:vars={{ jugadores }}>
+    const filtroEquipo = document.getElementById('filtroEquipo');
+    const filtroPosicion = document.getElementById('filtroPosicion');
+    const ordenarSelect = document.getElementById('ordenarPor');
+    const buscarNombre = document.getElementById('buscarNombre');
+    const limpiarFiltros = document.getElementById('limpiarFiltros');
+    const lista = document.getElementById('listaJugadores');
+    const noResultados = document.getElementById('noResultados');
+    const resultadosInfo = document.getElementById('resultadosInfo');
+    
+    function renderLista() {
+      let filtrados = [...jugadores];
+      
+      // Filtrar por equipo
+      if (filtroEquipo.value !== 'Todos') {
+        filtrados = filtrados.filter(j => j.equipo === filtroEquipo.value);
+      }
+      
+      // Filtrar por posición
+      if (filtroPosicion.value !== 'Todas') {
+        filtrados = filtrados.filter(j => j.posicion === filtroPosicion.value);
+      }
+      
+      // Filtrar por nombre
+      if (buscarNombre.value.trim()) {
+        const searchTerm = buscarNombre.value.toLowerCase().trim();
+        filtrados = filtrados.filter(j => j.nombre.toLowerCase().includes(searchTerm));
+      }
+      
+      // Ordenar
+      filtrados.sort((a, b) => {
+        switch(ordenarSelect.value) {
+          case 'puntos':
+            // Si tienen los mismos puntos, desempatar por valor de mercado
+            if (b.puntos !== a.puntos) {
+              return b.puntos - a.puntos;
+            }
+            return b.valor_mercado - a.valor_mercado;
+          case 'valor_mercado':
+            return b.valor_mercado - a.valor_mercado;
+          case 'edad':
+            return a.edad - b.edad;
+          case 'nombre':
+            return a.nombre.localeCompare(b.nombre);
+          default:
+            return 0;
+        }
+      });
+      
+      // Actualizar información de resultados
+      resultadosInfo.textContent = `Mostrando ${filtrados.length} de ${jugadores.length} jugadores`;
+      
+      // Mostrar/ocultar mensaje de no resultados
+      if (filtrados.length === 0) {
+        lista.classList.add('hidden');
+        noResultados.classList.remove('hidden');
+      } else {
+        lista.classList.remove('hidden');
+        noResultados.classList.add('hidden');
+      }
+      
+      // Renderizar jugadores
+      lista.innerHTML = filtrados.map(j => createPlayerCardHTML(j)).join('');
+    }
+    
+    function createPlayerCardHTML(jugador) {
+      const variacionColor = jugador.variacion > 0 ? 'text-green-600' : 
+                           jugador.variacion < 0 ? 'text-red-600' : 'text-gray-500';
+      
+      // Función para formatear números con puntos como separadores de miles
+      function formatearNumero(numero) {
+        return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+      
+      const equipoColors = {
+        'Nike FC': 'border-orange-500 bg-gradient-to-br from-orange-50 to-orange-100',
+        'Adidas FC': 'border-gray-800 bg-gradient-to-br from-gray-50 to-gray-100',
+        'Puma FC': 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100',
+        'Kappa FC': 'border-purple-500 bg-gradient-to-br from-purple-50 to-purple-100'
+      };
+      
+      const posicionColors = {
+        'POR': 'bg-yellow-100 text-yellow-800',
+        'DFC': 'bg-blue-100 text-blue-800',
+        'DC': 'bg-green-100 text-green-800',
+        'MC': 'bg-purple-100 text-purple-800'
+      };
+      
+      const nombreUrl = jugador.nombre.replace(/\s+/g, '-').toLowerCase();
+      
+      return `
+        <a href="/jugador/${nombreUrl}" class="block">
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border-2 ${equipoColors[jugador.equipo]} hover:scale-[1.02] group relative cursor-pointer">
+          <!-- OVR Badge in corner -->
+          <div class="absolute top-2 right-2 bg-gray-800 text-white px-2 py-1 rounded-full text-xs font-bold shadow-md">
+            ${jugador.ovr}
+          </div>
+          
+          <!-- Header with team info -->
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">${jugador.equipo}</span>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold ${posicionColors[jugador.posicion]}">
+              ${jugador.posicion}
+            </span>
+          </div>
+          
+          <!-- Player Image and Name -->
+          <div class="flex flex-col items-center mb-4">
+            <img 
+              src="${jugador.foto}" 
+              alt="${jugador.nombre}" 
+              class="w-20 h-20 rounded-full object-cover mb-3 border-4 border-white shadow-md group-hover:scale-110 transition-transform duration-300" 
+              onerror="this.src='/jugadores/fan.svg'; this.onerror=null;"
+            />
+            <h3 class="text-lg font-bold text-gray-900 text-center">${jugador.nombre}</h3>
+            <p class="text-sm text-gray-600">${jugador.edad} años</p>
+          </div>
+          
+          <!-- Stats -->
+          <div class="space-y-3">
+            <!-- Points -->
+            <div class="flex items-center justify-between bg-amber-50 rounded-lg p-3 border border-amber-200">
+              <span class="text-sm font-medium text-amber-800">Puntos</span>
+              <span class="text-lg font-bold text-amber-900">${jugador.puntos}</span>
+            </div>
+            
+            <!-- Market Value -->
+            <div class="flex items-center justify-between bg-emerald-50 rounded-lg p-3 border border-emerald-200">
+              <span class="text-sm font-medium text-emerald-800">Valor</span>
+              <div class="text-right">
+                <div class="text-base font-bold text-emerald-900">€${formatearNumero(jugador.valor_mercado)}</div>
+                <div class="text-xs font-semibold ${variacionColor} flex items-center justify-end gap-1">
+                  ${jugador.variacion > 0 ? '📈' : jugador.variacion < 0 ? '📉' : ''}
+                  ${jugador.variacion >= 0 ? '+' : ''}${jugador.variacion === 0 ? '0' : formatearNumero(Math.abs(jugador.variacion))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </a>
+      `;
+    }
+    
+    function limpiarTodosFiltros() {
+      filtroEquipo.value = 'Todos';
+      filtroPosicion.value = 'Todas';
+      ordenarSelect.value = 'puntos';
+      buscarNombre.value = '';
+      renderLista();
+    }
+    
+    // Event listeners
+    filtroEquipo.addEventListener('change', renderLista);
+    filtroPosicion.addEventListener('change', renderLista);
+    ordenarSelect.addEventListener('change', renderLista);
+    buscarNombre.addEventListener('input', renderLista);
+    limpiarFiltros.addEventListener('click', limpiarTodosFiltros);
+    
+    // Renderizar inicial
+    renderLista();
+  </script>
+</BaseLayout>

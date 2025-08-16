@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generar Avatar</title>
+    <style>
+        canvas { border: 1px solid #ccc; margin: 10px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Generador de Avatares para Fantasy League</h2>
+    <canvas id="canvas" width="80" height="80"></canvas>
+    <br>
+    <button onclick="generateAvatar('Yazawa')">Generar Yazawa</button>
+    <button onclick="generateAvatar('Mario')">Generar Mario</button>
+    <button onclick="generateAvatar('Sabina')">Generar Sabina</button>
+    <br>
+    <button onclick="downloadImage()">Descargar Imagen</button>
+    
+    <script>
+        let currentName = 'Player';
+        
+        function generateAvatar(name) {
+            currentName = name;
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Colores basados en el nombre
+            const colors = [
+                '#FF6B35', '#4ECDC4', '#45B7D1', '#96CEB4', 
+                '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F'
+            ];
+            
+            const colorIndex = name.length % colors.length;
+            const bgColor = colors[colorIndex];
+            
+            // Limpiar canvas
+            ctx.clearRect(0, 0, 80, 80);
+            
+            // Fondo circular
+            ctx.beginPath();
+            ctx.arc(40, 40, 35, 0, 2 * Math.PI);
+            ctx.fillStyle = bgColor;
+            ctx.fill();
+            
+            // Iniciales
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const initials = name.substring(0, 2).toUpperCase();
+            ctx.fillText(initials, 40, 40);
+        }
+        
+        function downloadImage() {
+            const canvas = document.getElementById('canvas');
+            const link = document.createElement('a');
+            link.download = currentName.toLowerCase() + '.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Generar una imagen por defecto
+        generateAvatar('YZ');
+    </script>
+</body>
+</html>

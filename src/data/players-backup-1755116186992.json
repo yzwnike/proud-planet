@@ -2,27 +2,27 @@
   {
     "nombre": "Yazawa",
     "posicion": "DC",
-    "puntos": 0,
-    "valor_mercado": 23790000,
+    "puntos": 8,
+    "valor_mercado": 23880000,
     "variacion": 0,
     "edad": 29,
     "equipo": "Nike FC",
     "foto": "/jugadores/yazawa.png",
     "ovr": 92,
     "goles": 0,
-    "asistencias": 0,
+    "asistencias": 1,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 5,
+    "ultima_actualizacion": "2025-08-13T20:14:04.567Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Mario",
     "posicion": "MC",
-    "puntos": 0,
-    "valor_mercado": 19930000,
+    "puntos": 2,
+    "valor_mercado": 20000000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Nike FC",
@@ -30,18 +30,18 @@
     "ovr": 90,
     "goles": 0,
     "asistencias": 0,
-    "tarjetasAmarillas": 1,
+    "tarjetasAmarillas": 0,
     "tarjetasRojas": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "partidos_jugados": 8,
+    "ultima_actualizacion": "2025-08-13T20:14:04.567Z"
   },
   {
     "nombre": "Mister",
     "posicion": "DFC",
-    "puntos": 0,
-    "valor_mercado": 9050000,
+    "puntos": 2,
+    "valor_mercado": 9100000,
     "variacion": 0,
     "edad": 32,
     "equipo": "Nike FC",
@@ -51,16 +51,16 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 5,
+    "ultima_actualizacion": "2025-08-13T20:14:04.567Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Vehí",
     "posicion": "POR",
-    "puntos": 0,
-    "valor_mercado": 6410000,
+    "puntos": 6,
+    "valor_mercado": 6400000,
     "variacion": 0,
     "edad": 29,
     "equipo": "Nike FC",
@@ -72,14 +72,14 @@
     "tarjetasRojas": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "partidos_jugados": 7,
+    "ultima_actualizacion": "2025-08-13T20:14:04.567Z"
   },
   {
     "nombre": "Marcos",
     "posicion": "DC",
-    "puntos": 0,
-    "valor_mercado": 14030000,
+    "puntos": 2,
+    "valor_mercado": 14000000,
     "variacion": 0,
     "edad": 30,
     "equipo": "Nike FC",
@@ -89,35 +89,35 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 3,
+    "ultima_actualizacion": "2025-08-13T20:14:04.568Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Stark",
     "posicion": "MC",
-    "puntos": 0,
-    "valor_mercado": 15020000,
+    "puntos": 13,
+    "valor_mercado": 15000000,
     "variacion": 0,
     "edad": 25,
     "equipo": "Nike FC",
     "foto": "/jugadores/stark.png",
     "ovr": 87,
-    "goles": 0,
+    "goles": 1,
     "asistencias": 0,
-    "tarjetasAmarillas": 1,
+    "tarjetasAmarillas": 0,
     "tarjetasRojas": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "partidos_jugados": 5,
+    "ultima_actualizacion": "2025-08-13T20:14:04.568Z"
   },
   {
     "nombre": "Viko",
     "posicion": "MC",
-    "puntos": 0,
-    "valor_mercado": 10970000,
+    "puntos": 5,
+    "valor_mercado": 11000000,
     "variacion": 0,
     "edad": 30,
     "equipo": "Nike FC",
@@ -125,18 +125,18 @@
     "ovr": 87,
     "goles": 0,
     "asistencias": 0,
-    "tarjetas_amarillas": 0,
+    "tarjetas_amarillas": 1,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 4,
+    "ultima_actualizacion": "2025-08-13T20:14:04.568Z",
     "tarjetasAmarillas": 1,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Pablo",
     "posicion": "DFC",
-    "puntos": 0,
-    "valor_mercado": 6150000,
+    "puntos": 3,
+    "valor_mercado": 6100000,
     "variacion": 0,
     "edad": 31,
     "equipo": "Nike FC",
@@ -146,16 +146,16 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 5,
+    "ultima_actualizacion": "2025-08-13T20:14:04.568Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Martawis",
     "posicion": "DC",
-    "puntos": 0,
-    "valor_mercado": 13080000,
+    "puntos": 8,
+    "valor_mercado": 13000000,
     "variacion": 0,
     "edad": 24,
     "equipo": "Nike FC",
@@ -165,16 +165,16 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 5,
+    "ultima_actualizacion": "2025-08-13T20:14:04.569Z",
     "tarjetasAmarillas": 0,
-    "tarjetasRojas": 1
+    "tarjetasRojas": 0
   },
   {
     "nombre": "Aznar",
     "posicion": "MC",
-    "puntos": 0,
-    "valor_mercado": 9460000,
+    "puntos": 2,
+    "valor_mercado": 9500000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Nike FC",
@@ -183,17 +183,17 @@
     "goles": 0,
     "asistencias": 0,
     "tarjetas_amarillas": 0,
-    "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "tarjetas_rojas": 1,
+    "partidos_jugados": 3,
+    "ultima_actualizacion": "2025-08-13T20:14:04.569Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 1
   },
   {
     "nombre": "Fan",
     "posicion": "MC",
-    "puntos": 0,
-    "valor_mercado": 6830000,
+    "puntos": 10,
+    "valor_mercado": 6800000,
     "variacion": 0,
     "edad": 28,
     "equipo": "Nike FC",
@@ -203,16 +203,16 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 4,
+    "ultima_actualizacion": "2025-08-13T20:14:04.569Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Perma",
     "posicion": "DFC",
-    "puntos": 0,
-    "valor_mercado": 4690000,
+    "puntos": 3,
+    "valor_mercado": 4600000,
     "variacion": 0,
     "edad": 28,
     "equipo": "Nike FC",
@@ -222,54 +222,54 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
-    "tarjetasAmarillas": 1,
+    "partidos_jugados": 5,
+    "ultima_actualizacion": "2025-08-13T20:14:04.569Z",
+    "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Nike",
     "posicion": "MC",
-    "puntos": 0,
-    "valor_mercado": 5790000,
+    "puntos": 20,
+    "valor_mercado": 5800000,
     "variacion": 0,
     "edad": 19,
     "equipo": "Nike FC",
     "foto": "/jugadores/nike.png",
     "ovr": 82,
-    "goles": 0,
+    "goles": 2,
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 3,
+    "ultima_actualizacion": "2025-08-13T20:14:04.570Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Albesa",
     "posicion": "DFC",
-    "puntos": 0,
-    "valor_mercado": 3860000,
+    "puntos": 19,
+    "valor_mercado": 3800000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Nike FC",
     "foto": "/jugadores/albesa.png",
     "ovr": 82,
     "goles": 0,
-    "asistencias": 0,
+    "asistencias": 4,
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "partidos_jugados": 6,
+    "ultima_actualizacion": "2025-08-13T20:14:04.570Z"
   },
   {
     "nombre": "Ale",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 790000,
+    "valor_mercado": 800000,
     "variacion": 0,
     "edad": 23,
     "equipo": "Nike FC",
@@ -280,13 +280,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Berni",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 310000,
+    "valor_mercado": 300000,
     "variacion": 0,
     "edad": 38,
     "equipo": "Nike FC",
@@ -297,13 +297,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Armando",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 890000,
+    "valor_mercado": 900000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Nike FC",
@@ -314,15 +314,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
-    "tarjetasAmarillas": 0,
-    "tarjetasRojas": 0
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Etarky",
     "posicion": "DFC",
-    "puntos": 0,
-    "valor_mercado": 1090000,
+    "puntos": 10,
+    "valor_mercado": 1100000,
     "variacion": 0,
     "edad": 25,
     "equipo": "Nike FC",
@@ -332,8 +330,8 @@
     "asistencias": 0,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
+    "partidos_jugados": 3,
+    "ultima_actualizacion": "2025-08-13T20:14:04.570Z",
     "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
@@ -341,7 +339,7 @@
     "nombre": "Krazer",
     "posicion": "POR",
     "puntos": 0,
-    "valor_mercado": 220000,
+    "valor_mercado": 230000,
     "variacion": 0,
     "edad": 25,
     "equipo": "Nike FC",
@@ -352,32 +350,32 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Albert",
     "posicion": "DFC",
-    "puntos": 0,
-    "valor_mercado": 2260000,
+    "puntos": 12,
+    "valor_mercado": 2200000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Nike FC",
     "foto": "/jugadores/albert.png",
     "ovr": 77,
     "goles": 0,
-    "asistencias": 0,
+    "asistencias": 2,
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
-    "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z",
-    "tarjetasAmarillas": 1,
+    "partidos_jugados": 2,
+    "ultima_actualizacion": "2025-08-13T20:14:04.570Z",
+    "tarjetasAmarillas": 0,
     "tarjetasRojas": 0
   },
   {
     "nombre": "Jan",
     "posicion": "POR",
     "puntos": 0,
-    "valor_mercado": 5950000,
+    "valor_mercado": 5970000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Adidas FC",
@@ -390,13 +388,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "García",
     "posicion": "POR",
     "puntos": 0,
-    "valor_mercado": 210000,
+    "valor_mercado": 200000,
     "variacion": 0,
     "edad": 35,
     "equipo": "Adidas FC",
@@ -409,13 +407,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Hugo",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 7930000,
+    "valor_mercado": 7970000,
     "variacion": 0,
     "edad": 30,
     "equipo": "Adidas FC",
@@ -426,13 +424,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Ferrer",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 5930000,
+    "valor_mercado": 5900000,
     "variacion": 0,
     "edad": 25,
     "equipo": "Adidas FC",
@@ -443,13 +441,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Jorge",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 5840000,
+    "valor_mercado": 5800000,
     "variacion": 0,
     "edad": 24,
     "equipo": "Adidas FC",
@@ -462,13 +460,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Thomas",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 3890000,
+    "valor_mercado": 3950000,
     "variacion": 0,
     "edad": 24,
     "equipo": "Adidas FC",
@@ -479,13 +477,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Yuchang",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 1670000,
+    "valor_mercado": 1700000,
     "variacion": 0,
     "edad": 28,
     "equipo": "Adidas FC",
@@ -498,13 +496,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Vallejo",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 6590000,
+    "valor_mercado": 6600000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Adidas FC",
@@ -515,13 +513,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Arribas",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 990000,
+    "valor_mercado": 1000000,
     "variacion": 0,
     "edad": 28,
     "equipo": "Adidas FC",
@@ -532,13 +530,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Riviere",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 7430000,
+    "valor_mercado": 7400000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Adidas FC",
@@ -549,13 +547,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Joanet",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 10810000,
+    "valor_mercado": 10830000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Adidas FC",
@@ -568,13 +566,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Manu",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 7610000,
+    "valor_mercado": 7600000,
     "variacion": 0,
     "edad": 31,
     "equipo": "Adidas FC",
@@ -587,13 +585,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Chalex",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 1760000,
+    "valor_mercado": 1800000,
     "variacion": 0,
     "edad": 24,
     "equipo": "Adidas FC",
@@ -604,13 +602,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Bustos",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 11920000,
+    "valor_mercado": 12000000,
     "variacion": 0,
     "edad": 33,
     "equipo": "Adidas FC",
@@ -621,13 +619,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Jan DC",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 18080000,
+    "valor_mercado": 18000000,
     "variacion": 0,
     "edad": 29,
     "equipo": "Adidas FC",
@@ -638,13 +636,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Sabina",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 19090000,
+    "valor_mercado": 19000000,
     "variacion": 0,
     "edad": 30,
     "equipo": "Adidas FC",
@@ -655,13 +653,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Giye",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 1780000,
+    "valor_mercado": 1800000,
     "variacion": 0,
     "edad": 29,
     "equipo": "Adidas FC",
@@ -672,13 +670,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Porras",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 6760000,
+    "valor_mercado": 6800000,
     "variacion": 0,
     "edad": 29,
     "equipo": "Adidas FC",
@@ -689,13 +687,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Josep",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 5530000,
+    "valor_mercado": 5500000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Adidas FC",
@@ -706,13 +704,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Chuck",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 990000,
+    "valor_mercado": 1000000,
     "variacion": 0,
     "edad": 32,
     "equipo": "Adidas FC",
@@ -723,13 +721,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Kød",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 15810000,
+    "valor_mercado": 15800000,
     "variacion": 0,
     "edad": 22,
     "equipo": "Puma FC",
@@ -740,13 +738,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Guerra",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 3020000,
+    "valor_mercado": 3000000,
     "variacion": 0,
     "edad": 28,
     "equipo": "Puma FC",
@@ -757,13 +755,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Fernando",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 2810000,
+    "valor_mercado": 2800000,
     "variacion": 0,
     "edad": 28,
     "equipo": "Puma FC",
@@ -774,13 +772,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Yazy",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 8840000,
+    "valor_mercado": 8900000,
     "variacion": 0,
     "edad": 16,
     "equipo": "Puma FC",
@@ -791,13 +789,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Marin",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 11490000,
+    "valor_mercado": 11400000,
     "variacion": 0,
     "edad": 29,
     "equipo": "Puma FC",
@@ -808,13 +806,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Armando M.",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 4980000,
+    "valor_mercado": 5000000,
     "variacion": 0,
     "edad": 28,
     "equipo": "Puma FC",
@@ -825,13 +823,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Pino",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 4020000,
+    "valor_mercado": 4000000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Puma FC",
@@ -842,13 +840,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Fran",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 410000,
+    "valor_mercado": 400000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Puma FC",
@@ -859,13 +857,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Ramungut",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 4390000,
+    "valor_mercado": 4500000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Puma FC",
@@ -876,13 +874,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Camello",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 5670000,
+    "valor_mercado": 5700000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Puma FC",
@@ -893,13 +891,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Alain",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 5760000,
+    "valor_mercado": 5800000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Puma FC",
@@ -910,13 +908,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Adriow",
     "posicion": "POR",
     "puntos": 0,
-    "valor_mercado": 4690000,
+    "valor_mercado": 4700000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Puma FC",
@@ -927,13 +925,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Potpot",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 1010000,
+    "valor_mercado": 1000000,
     "variacion": 0,
     "edad": 33,
     "equipo": "Puma FC",
@@ -944,13 +942,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Márquez",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 3560000,
+    "valor_mercado": 3600000,
     "variacion": 0,
     "edad": 28,
     "equipo": "Puma FC",
@@ -961,13 +959,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Mateo",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 3470000,
+    "valor_mercado": 3500000,
     "variacion": 0,
     "edad": 29,
     "equipo": "Puma FC",
@@ -978,13 +976,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Walter",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 3440000,
+    "valor_mercado": 3500000,
     "variacion": 0,
     "edad": 30,
     "equipo": "Puma FC",
@@ -995,13 +993,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Juanito",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 7640000,
+    "valor_mercado": 7700000,
     "variacion": 0,
     "edad": 36,
     "equipo": "Puma FC",
@@ -1012,13 +1010,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Vega",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 2970000,
+    "valor_mercado": 3000000,
     "variacion": 0,
     "edad": 32,
     "equipo": "Puma FC",
@@ -1029,13 +1027,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Yago",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 1020000,
+    "valor_mercado": 1000000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Puma FC",
@@ -1046,13 +1044,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Venezuela",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 160000,
+    "valor_mercado": 150000,
     "variacion": 0,
     "edad": 25,
     "equipo": "Puma FC",
@@ -1063,13 +1061,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Nicki",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 210000,
+    "valor_mercado": 200000,
     "variacion": 0,
     "edad": 15,
     "equipo": "Puma FC",
@@ -1080,13 +1078,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Denis",
     "posicion": "POR",
     "puntos": 0,
-    "valor_mercado": 5290000,
+    "valor_mercado": 5300000,
     "variacion": 0,
     "edad": 30,
     "equipo": "Kappa FC",
@@ -1097,13 +1095,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Frasqui",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 180000,
+    "valor_mercado": 170000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Kappa FC",
@@ -1114,13 +1112,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Peidró",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 4350000,
+    "valor_mercado": 4400000,
     "variacion": 0,
     "edad": 31,
     "equipo": "Kappa FC",
@@ -1131,13 +1129,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Plasencia",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 3630000,
+    "valor_mercado": 3600000,
     "variacion": 0,
     "edad": 29,
     "equipo": "Kappa FC",
@@ -1148,13 +1146,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Palusa",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 3720000,
+    "valor_mercado": 3700000,
     "variacion": 0,
     "edad": 22,
     "equipo": "Kappa FC",
@@ -1165,13 +1163,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Cruañas",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 3340000,
+    "valor_mercado": 3300000,
     "variacion": 0,
     "edad": 30,
     "equipo": "Kappa FC",
@@ -1182,13 +1180,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Santi",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 3810000,
+    "valor_mercado": 3800000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Kappa FC",
@@ -1199,13 +1197,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Manel",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 520000,
+    "valor_mercado": 530000,
     "variacion": 0,
     "edad": 31,
     "equipo": "Kappa FC",
@@ -1216,13 +1214,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Yusi",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 1810000,
+    "valor_mercado": 1800000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Kappa FC",
@@ -1233,13 +1231,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Follama",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 640000,
+    "valor_mercado": 650000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Kappa FC",
@@ -1250,13 +1248,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Erik",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 3570000,
+    "valor_mercado": 3600000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Kappa FC",
@@ -1267,13 +1265,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Fontcuberta",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 2370000,
+    "valor_mercado": 2400000,
     "variacion": 0,
     "edad": 29,
     "equipo": "Kappa FC",
@@ -1284,13 +1282,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Galisteo",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 4180000,
+    "valor_mercado": 4200000,
     "variacion": 0,
     "edad": 31,
     "equipo": "Kappa FC",
@@ -1301,13 +1299,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Pedrito",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 690000,
+    "valor_mercado": 700000,
     "variacion": 0,
     "edad": 17,
     "equipo": "Kappa FC",
@@ -1318,13 +1316,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Pol Cubo",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 6220000,
+    "valor_mercado": 6200000,
     "variacion": 0,
     "edad": 26,
     "equipo": "Kappa FC",
@@ -1335,13 +1333,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Martuki",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 6940000,
+    "valor_mercado": 7000000,
     "variacion": 0,
     "edad": 24,
     "equipo": "Kappa FC",
@@ -1352,13 +1350,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Raigo",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 7230000,
+    "valor_mercado": 7300000,
     "variacion": 0,
     "edad": 28,
     "equipo": "Kappa FC",
@@ -1369,13 +1367,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Ukelele",
     "posicion": "MC",
     "puntos": 0,
-    "valor_mercado": 8040000,
+    "valor_mercado": 8000000,
     "variacion": 0,
     "edad": 27,
     "equipo": "Kappa FC",
@@ -1386,13 +1384,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Pot",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 370000,
+    "valor_mercado": 380000,
     "variacion": 0,
     "edad": 30,
     "equipo": "Kappa FC",
@@ -1403,13 +1401,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Colgan",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 720000,
+    "valor_mercado": 730000,
     "variacion": 0,
     "edad": 18,
     "equipo": "Kappa FC",
@@ -1420,13 +1418,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Swit Eme",
     "posicion": "DC",
     "puntos": 0,
-    "valor_mercado": 10080000,
+    "valor_mercado": 10000000,
     "variacion": 0,
     "edad": 25,
     "equipo": "Kappa FC",
@@ -1437,13 +1435,13 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   },
   {
     "nombre": "Llonch",
     "posicion": "DFC",
     "puntos": 0,
-    "valor_mercado": 1480000,
+    "valor_mercado": 1500000,
     "variacion": 0,
     "edad": 33,
     "equipo": "Kappa FC",
@@ -1454,6 +1452,6 @@
     "tarjetas_amarillas": 0,
     "tarjetas_rojas": 0,
     "partidos_jugados": 0,
-    "ultima_actualizacion": "2025-08-14T23:43:06.918Z"
+    "ultima_actualizacion": "2025-08-13T20:11:26.393Z"
   }
 ]

@@ -1,0 +1,638 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import jugadores from "../data/players.json";
+
+// Obtener estadísticas de localStorage para mostrar datos actualizados
+const equipos = ["Nike FC", "Adidas FC", "Puma FC", "Kappa FC"];
+const posiciones = ["POR", "DFC", "MC", "DC"];
+---
+
+<BaseLayout title="Base de Datos de Jugadores">
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-2xl p-8 text-white mb-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-4xl font-bold mb-2">📊 Base de Datos de Jugadores</h1>
+          <p class="text-blue-100 text-lg">
+            Explora las estadísticas detalladas de todos los jugadores
+          </p>
+        </div>
+        <div class="text-right">
+          <div class="text-3xl font-bold">{jugadores.length}</div>
+          <div class="text-blue-100">Jugadores</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+      <div class="flex flex-wrap gap-4 items-center">
+        <div class="flex items-center space-x-2">
+          <label class="text-sm font-semibold text-gray-700">🔍 Buscar:</label>
+          <input 
+            type="text" 
+            id="buscar-jugador"
+            placeholder="Nombre del jugador..."
+            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+        </div>
+        
+        <div class="flex items-center space-x-2">
+          <label class="text-sm font-semibold text-gray-700">⚽ Equipo:</label>
+          <select id="filtro-equipo" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <option value="">Todos</option>
+            {equipos.map(equipo => (
+              <option value={equipo}>{equipo}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div class="flex items-center space-x-2">
+          <label class="text-sm font-semibold text-gray-700">🎯 Posición:</label>
+          <select id="filtro-posicion" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <option value="">Todas</option>
+            <option value="POR">🥅 Portero</option>
+            <option value="DFC">🛡️ Defensa</option>
+            <option value="MC">⚽ Centrocampista</option>
+            <option value="DC">🚀 Delantero</option>
+          </select>
+        </div>
+        
+        <div class="flex items-center space-x-2">
+          <label class="text-sm font-semibold text-gray-700">📊 Ordenar:</label>
+          <select id="ordenar" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <option value="ovr-desc">OVR (Mayor a Menor)</option>
+            <option value="ovr-asc">OVR (Menor a Mayor)</option>
+            <option value="valor-desc">Valor (Mayor a Menor)</option>
+            <option value="valor-asc">Valor (Menor a Mayor)</option>
+            <option value="nombre-asc">Nombre (A-Z)</option>
+            <option value="edad-asc">Edad (Menor a Mayor)</option>
+            <option value="edad-desc">Edad (Mayor a Menor)</option>
+            <option value="puntos-desc">Puntos (Mayor a Menor)</option>
+          </select>
+        </div>
+        
+        <button 
+          id="limpiar-filtros"
+          class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors"
+        >
+          🔄 Limpiar
+        </button>
+      </div>
+    </div>
+
+    <!-- Estadísticas Rápidas -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-blue-50 rounded-xl p-6 text-center">
+        <div class="text-3xl font-bold text-blue-600" id="total-jugadores">{jugadores.length}</div>
+        <div class="text-sm text-gray-600 mt-1">Total Jugadores</div>
+      </div>
+      <div class="bg-green-50 rounded-xl p-6 text-center">
+        <div class="text-3xl font-bold text-green-600" id="ovr-promedio">
+          {Math.round(jugadores.reduce((sum, j) => sum + j.ovr, 0) / jugadores.length)}
+        </div>
+        <div class="text-sm text-gray-600 mt-1">OVR Promedio</div>
+      </div>
+      <div class="bg-purple-50 rounded-xl p-6 text-center">
+        <div class="text-3xl font-bold text-purple-600" id="valor-total">
+          €{Math.round(jugadores.reduce((sum, j) => sum + j.valor_mercado, 0) / 1000000)}M
+        </div>
+        <div class="text-sm text-gray-600 mt-1">Valor Total</div>
+      </div>
+      <div class="bg-yellow-50 rounded-xl p-6 text-center">
+        <div class="text-3xl font-bold text-yellow-600" id="partidos-total">0</div>
+        <div class="text-sm text-gray-600 mt-1">Partidos Jugados</div>
+      </div>
+    </div>
+
+    <!-- Lista de Jugadores -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900">👥 Jugadores</h2>
+        <div class="text-sm text-gray-500">
+          Mostrando <span id="jugadores-mostrados">{jugadores.length}</span> de {jugadores.length} jugadores
+        </div>
+      </div>
+      
+      <div id="lista-jugadores" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {jugadores.map(jugador => (
+          <div class="jugador-card bg-white hover:bg-blue-50 border border-gray-200 rounded-xl p-4 transition-all transform hover:-translate-y-1 hover:shadow-lg cursor-pointer" 
+               data-nombre={jugador.nombre.toLowerCase()}
+               data-equipo={jugador.equipo}
+               data-posicion={jugador.posicion}
+               data-ovr={jugador.ovr}
+               data-valor={jugador.valor_mercado}
+               data-edad={jugador.edad}
+               data-puntos={jugador.puntos || 0}
+               data-jugador={JSON.stringify(jugador)}
+               onclick="abrirModalJugador(this)">
+            <div class="flex items-center space-x-4">
+              <img src={jugador.foto} alt={jugador.nombre} 
+                   class="w-16 h-16 rounded-full object-cover border-2 border-gray-300 shadow-md"
+                   onerror="this.src='https://via.placeholder.com/64/cccccc/666666?text=?'">
+              <div class="flex-1 min-w-0">
+                <div class="text-lg font-bold text-gray-900 truncate hover:text-blue-600 transition-colors">{jugador.nombre}</div>
+                <div class="text-sm text-gray-600">{jugador.posicion} • {jugador.equipo}</div>
+                <div class="text-sm text-green-600 font-semibold">€{jugador.valor_mercado.toLocaleString('es-ES')}</div>
+                <div class="text-xs text-blue-600 font-medium mt-1">
+                  <span class="jugador-puntos">{jugador.puntos || 0} pts</span> • 
+                  <span class="jugador-partidos">0 partidos</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-2xl font-bold text-blue-600">{jugador.ovr}</div>
+                <div class="text-xs text-gray-500">OVR</div>
+                <div class="text-xs text-gray-400 mt-1">{jugador.edad} años</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <!-- Mensaje cuando no hay resultados -->
+      <div id="sin-resultados" class="text-center py-12 hidden">
+        <div class="text-6xl mb-4">🔍</div>
+        <h3 class="text-xl font-bold text-gray-700 mb-2">No se encontraron jugadores</h3>
+        <p class="text-gray-500">Intenta ajustar los filtros de búsqueda</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal del Jugador -->
+  <div id="modal-jugador" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-75 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-auto relative">
+      <!-- Botón cerrar -->
+      <button id="cerrar-modal" class="absolute top-4 right-4 bg-gray-200 hover:bg-gray-300 rounded-full p-2 text-gray-600 hover:text-gray-800 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      
+      <!-- Contenido del Modal -->
+      <div id="modal-contenido" class="p-6">
+        <!-- Será rellenado dinámicamente por JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    console.log('=== BASE DE DATOS DE JUGADORES ===');
+
+    // Cargar estadísticas de localStorage
+    const estadisticasJugadores = JSON.parse(localStorage.getItem('estadisticasJugadores') || '{}');
+    console.log('Estadísticas cargadas:', Object.keys(estadisticasJugadores).length, 'jugadores');
+
+    // Actualizar estadísticas en las tarjetas
+    document.querySelectorAll('.jugador-card').forEach(card => {
+      const nombre = card.dataset.nombre;
+      const jugadorStats = estadisticasJugadores[nombre] || { partidosJugados: 0, puntosTotal: 0 };
+      
+      // Buscar elementos específicos dentro de esta tarjeta
+      const puntosElement = card.querySelector('.jugador-puntos');
+      const partidosElement = card.querySelector('.jugador-partidos');
+      
+      if (puntosElement) {
+        puntosElement.textContent = `${jugadorStats.puntosTotal || 0} pts`;
+      }
+      if (partidosElement) {
+        partidosElement.textContent = `${jugadorStats.partidosJugados || 0} partidos`;
+      }
+      
+      // Actualizar atributos para filtrado
+      card.dataset.puntos = jugadorStats.puntosTotal || 0;
+    });
+
+    // Actualizar estadísticas totales
+    const totalPartidos = Object.values(estadisticasJugadores).reduce((sum, stats) => sum + (stats.partidosJugados || 0), 0);
+    document.getElementById('partidos-total').textContent = totalPartidos;
+
+    // Variables para filtrado
+    let jugadoresOriginales = Array.from(document.querySelectorAll('.jugador-card'));
+    
+    // Función para abrir el modal del jugador
+    function abrirModalJugador(cardElement) {
+      // Obtener datos del jugador
+      const jugadorData = JSON.parse(cardElement.dataset.jugador);
+      const nombre = jugadorData.nombre;
+      
+      // Obtener estadísticas del jugador
+      const estadisticasJugador = estadisticasJugadores[nombre.toLowerCase()] || {
+        partidosJugados: 0,
+        puntosTotal: 0,
+        golesTotal: 0,
+        asistenciasTotal: 0,
+        tarjetasAmarillasTotal: 0,
+        tarjetasRojasTotal: 0,
+        lesionesTotal: 0,
+        historial: []
+      };
+      
+      // Crear el contenido del modal
+      const modalContenido = document.getElementById('modal-contenido');
+      
+      // Estructura principal del modal
+      modalContenido.innerHTML = `
+        <!-- Header del Jugador -->
+        <div class="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 rounded-xl p-6 text-white mb-6">
+          <div class="flex flex-col sm:flex-row items-center gap-6">
+            <!-- Foto del Jugador -->
+            <div class="flex-shrink-0">
+              <img 
+                src="${jugadorData.foto}" 
+                alt="${jugadorData.nombre}"
+                class="w-32 h-32 rounded-full object-cover border-4 border-white/30 shadow-lg"
+                onerror="this.src='https://via.placeholder.com/128/ffffff/333333?text=${jugadorData.nombre.charAt(0)}'"
+              >
+            </div>
+            
+            <!-- Info Principal -->
+            <div class="flex-1 text-center sm:text-left">
+              <h1 class="text-3xl sm:text-4xl font-bold mb-2">${jugadorData.nombre}</h1>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+                <div class="bg-white/20 rounded-lg p-3 backdrop-blur-sm">
+                  <div class="text-xl font-bold">${jugadorData.posicion}</div>
+                  <div class="text-xs opacity-80">Posición</div>
+                </div>
+                <div class="bg-white/20 rounded-lg p-3 backdrop-blur-sm">
+                  <div class="text-xl font-bold">${jugadorData.ovr}</div>
+                  <div class="text-xs opacity-80">OVR</div>
+                </div>
+                <div class="bg-white/20 rounded-lg p-3 backdrop-blur-sm">
+                  <div class="text-xl font-bold">${jugadorData.edad}</div>
+                  <div class="text-xs opacity-80">Años</div>
+                </div>
+                <div class="bg-white/20 rounded-lg p-3 backdrop-blur-sm">
+                  <div class="text-xl font-bold">€${(jugadorData.valor_mercado / 1000000).toFixed(1)}M</div>
+                  <div class="text-xs opacity-80">Valor</div>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">
+                  🏆 ${jugadorData.equipo}
+                </span>
+                <span class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">
+                  ⚽ ${estadisticasJugador.puntosTotal || 0} pts
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid Principal -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Columna Izquierda: Stats y Gráfico -->
+          <div class="lg:col-span-2 space-y-6">
+            
+            <!-- Estadísticas Generales -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <h2 class="text-xl font-bold text-gray-900 mb-4">📊 Estadísticas Generales</h2>
+              
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-blue-50 rounded-lg p-3 text-center">
+                  <div class="text-2xl font-bold text-blue-600">${estadisticasJugador.partidosJugados || 0}</div>
+                  <div class="text-sm text-gray-600">Partidos Jugados</div>
+                </div>
+                <div class="bg-green-50 rounded-lg p-3 text-center">
+                  <div class="text-2xl font-bold text-green-600">${estadisticasJugador.golesTotal || 0}</div>
+                  <div class="text-sm text-gray-600">Goles Totales</div>
+                </div>
+                <div class="bg-purple-50 rounded-lg p-3 text-center">
+                  <div class="text-2xl font-bold text-purple-600">${estadisticasJugador.asistenciasTotal || 0}</div>
+                  <div class="text-sm text-gray-600">Asistencias</div>
+                </div>
+                <div class="bg-yellow-50 rounded-lg p-3 text-center">
+                  <div class="text-2xl font-bold text-yellow-600">
+                    ${estadisticasJugador.partidosJugados > 0 ? (estadisticasJugador.puntosTotal / estadisticasJugador.partidosJugados).toFixed(1) : '0.0'}
+                  </div>
+                  <div class="text-sm text-gray-600">Pts/Partido</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gráfico de Rendimiento -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <h2 class="text-xl font-bold text-gray-900 mb-4">📈 Evolución de Puntos</h2>
+              <canvas id="rendimientoChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- Historial de Partidos -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <h2 class="text-xl font-bold text-gray-900 mb-4">🗓️ Historial de Partidos</h2>
+              <div id="historial-partidos" class="space-y-3">
+                ${estadisticasJugador.historial && estadisticasJugador.historial.length > 0 ? 
+                  estadisticasJugador.historial
+                    .slice()
+                    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+                    .slice(0, 5)
+                    .map(partido => {
+                      const fecha = new Date(partido.fecha).toLocaleDateString('es-ES');
+                      const lesionIcon = partido.lesion ? '🩹' : '';
+                      const tarjetaIcon = partido.tarjetasRojas > 0 ? '🟥' : 
+                                        partido.tarjetasAmarillas > 0 ? '🟨' : '';
+                      
+                      return `
+                        <div class="bg-gray-50 rounded-lg p-3 flex justify-between items-center">
+                          <div class="flex-1">
+                            <div class="font-semibold">${fecha}</div>
+                            <div class="text-sm text-gray-600">
+                              ⚽ ${partido.goles || 0} goles • 🎯 ${partido.asistencias || 0} asistencias
+                              ${lesionIcon} ${tarjetaIcon}
+                            </div>
+                          </div>
+                          <div class="text-right">
+                            <div class="text-lg font-bold text-blue-600">${partido.puntos || 0}</div>
+                            <div class="text-xs text-gray-500">pts</div>
+                          </div>
+                        </div>
+                      `;
+                    }).join('') : 
+                  `<div class="text-center text-gray-500 py-6">
+                    <div class="text-4xl mb-3">📊</div>
+                    <p>No hay partidos registrados aún.</p>
+                  </div>`
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Stats Detalladas -->
+          <div class="space-y-6">
+            
+            <!-- Rendimiento Detallado -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <h2 class="text-lg font-bold text-gray-900 mb-3">🎯 Rendimiento</h2>
+              
+              <div class="space-y-3">
+                <!-- Puntos Totales -->
+                <div class="flex justify-between items-center p-2 bg-blue-50 rounded-lg">
+                  <span class="font-semibold text-gray-700">🏆 Puntos Totales</span>
+                  <span class="font-bold text-blue-600">${estadisticasJugador.puntosTotal || 0}</span>
+                </div>
+                
+                <!-- Mejor Partido -->
+                <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg">
+                  <span class="font-semibold text-gray-700">⭐ Mejor Partido</span>
+                  <span class="font-bold text-green-600">
+                    ${estadisticasJugador.historial && estadisticasJugador.historial.length > 0 ? 
+                      Math.max(...estadisticasJugador.historial.map(p => p.puntos || 0)) : 0} pts
+                  </span>
+                </div>
+                
+                <!-- Goles por Partido -->
+                <div class="flex justify-between items-center p-2 bg-purple-50 rounded-lg">
+                  <span class="font-semibold text-gray-700">⚽ Goles/Partido</span>
+                  <span class="font-bold text-purple-600">
+                    ${estadisticasJugador.partidosJugados > 0 ? 
+                      (estadisticasJugador.golesTotal / estadisticasJugador.partidosJugados).toFixed(1) : '0.0'}
+                  </span>
+                </div>
+                
+                <!-- Asistencias por Partido -->
+                <div class="flex justify-between items-center p-2 bg-yellow-50 rounded-lg">
+                  <span class="font-semibold text-gray-700">🎯 Asist./Partido</span>
+                  <span class="font-bold text-yellow-600">
+                    ${estadisticasJugador.partidosJugados > 0 ? 
+                      (estadisticasJugador.asistenciasTotal / estadisticasJugador.partidosJugados).toFixed(1) : '0.0'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Disciplina -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <h2 class="text-lg font-bold text-gray-900 mb-3">⚖️ Disciplina</h2>
+              
+              <div class="space-y-3">
+                <div class="flex justify-between items-center p-2 bg-yellow-50 rounded-lg">
+                  <span class="font-semibold text-gray-700">🟨 Tarjetas Amarillas</span>
+                  <span class="font-bold text-yellow-600">${estadisticasJugador.tarjetasAmarillasTotal || 0}</span>
+                </div>
+                
+                <div class="flex justify-between items-center p-2 bg-red-50 rounded-lg">
+                  <span class="font-semibold text-gray-700">🟥 Tarjetas Rojas</span>
+                  <span class="font-bold text-red-600">${estadisticasJugador.tarjetasRojasTotal || 0}</span>
+                </div>
+                
+                <div class="flex justify-between items-center p-2 bg-orange-50 rounded-lg">
+                  <span class="font-semibold text-gray-700">🩹 Lesiones</span>
+                  <span class="font-bold text-orange-600">${estadisticasJugador.lesionesTotal || 0}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Evolución de Valor -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <h2 class="text-lg font-bold text-gray-900 mb-3">💰 Valor de Mercado</h2>
+              
+              <div class="text-center">
+                <div class="text-2xl font-bold text-green-600 mb-2">
+                  €${jugadorData.valor_mercado.toLocaleString('es-ES')}
+                </div>
+                <div class="text-sm text-gray-600 mb-3">Valor Actual</div>
+                
+                <div class="bg-gray-50 rounded-lg p-2">
+                  <div class="text-sm text-gray-600 mb-1">Variación</div>
+                  <div class="font-bold">
+                    <span class="text-gray-500">Sin cambios</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Estado Físico -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <h2 class="text-lg font-bold text-gray-900 mb-3">💪 Estado</h2>
+              
+              <div class="text-center">
+                <div class="w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center text-3xl ${estadisticasJugador.lesionesTotal > 0 ? 'bg-red-100' : 'bg-green-100'}">
+                  ${estadisticasJugador.lesionesTotal > 0 ? '🩹' : '✅'}
+                </div>
+                <div class="font-semibold text-gray-700">
+                  ${estadisticasJugador.lesionesTotal > 0 ? 'Lesionado' : 'Disponible'}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enlace a página completa -->
+        <div class="mt-6 text-center">
+          <a href="/jugador/${jugadorData.nombre.replace(/\s+/g, '-').toLowerCase()}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+            Ver perfil completo
+          </a>
+        </div>
+      `;
+      
+      // Mostrar el modal
+      const modal = document.getElementById('modal-jugador');
+      modal.classList.remove('hidden');
+      
+      // Crear el gráfico de rendimiento
+      const historialOrdenado = estadisticasJugador.historial || [];
+      if (historialOrdenado.length > 0) {
+        // Ordenar por fecha y tomar los últimos 10 partidos
+        const datosHistorial = historialOrdenado
+          .slice()
+          .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
+          .slice(-10);
+        
+        const labels = datosHistorial.map((_, index) => `Partido ${index + 1}`);
+        const puntosData = datosHistorial.map(p => p.puntos || 0);
+        const golesData = datosHistorial.map(p => p.goles || 0);
+        
+        const ctx = document.getElementById('rendimientoChart').getContext('2d');
+        const chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Puntos',
+              data: puntosData,
+              borderColor: 'rgb(59, 130, 246)',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              tension: 0.3,
+              yAxisID: 'y'
+            }, {
+              label: 'Goles',
+              data: golesData,
+              borderColor: 'rgb(16, 185, 129)',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              tension: 0.3,
+              yAxisID: 'y1'
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Rendimiento en los Últimos Partidos'
+              }
+            },
+            scales: {
+              y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                title: {
+                  display: true,
+                  text: 'Puntos'
+                }
+              },
+              y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                title: {
+                  display: true,
+                  text: 'Goles'
+                },
+                grid: {
+                  drawOnChartArea: false,
+                },
+              }
+            }
+          }
+        });
+      }
+    }
+    
+    // Cerrar el modal
+    document.getElementById('cerrar-modal').addEventListener('click', function() {
+      document.getElementById('modal-jugador').classList.add('hidden');
+      // Destruir el gráfico si existe para evitar problemas al recrearlo
+      const chartInstance = Chart.getChart('rendimientoChart');
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+    });
+    
+    // Función para filtrar jugadores
+    function filtrarJugadores() {
+      const busqueda = document.getElementById('buscar-jugador').value.toLowerCase();
+      const equipoFiltro = document.getElementById('filtro-equipo').value;
+      const posicionFiltro = document.getElementById('filtro-posicion').value;
+      const ordenFiltro = document.getElementById('ordenar').value;
+      
+      let jugadoresFiltrados = jugadoresOriginales.filter(card => {
+        const cumpleBusqueda = !busqueda || card.dataset.nombre.includes(busqueda);
+        const cumpleEquipo = !equipoFiltro || card.dataset.equipo === equipoFiltro;
+        const cumplePosicion = !posicionFiltro || card.dataset.posicion === posicionFiltro;
+        
+        return cumpleBusqueda && cumpleEquipo && cumplePosicion;
+      });
+      
+      // Ordenar jugadores
+      jugadoresFiltrados.sort((a, b) => {
+        const [campo, direccion] = ordenFiltro.split('-');
+        const valorA = campo === 'nombre' ? a.dataset.nombre : 
+                      campo === 'ovr' ? parseInt(a.dataset.ovr) :
+                      campo === 'valor' ? parseInt(a.dataset.valor) :
+                      campo === 'edad' ? parseInt(a.dataset.edad) :
+                      campo === 'puntos' ? parseInt(a.dataset.puntos) : 0;
+        
+        const valorB = campo === 'nombre' ? b.dataset.nombre : 
+                      campo === 'ovr' ? parseInt(b.dataset.ovr) :
+                      campo === 'valor' ? parseInt(b.dataset.valor) :
+                      campo === 'edad' ? parseInt(b.dataset.edad) :
+                      campo === 'puntos' ? parseInt(b.dataset.puntos) : 0;
+        
+        if (direccion === 'asc') {
+          return valorA > valorB ? 1 : -1;
+        } else {
+          return valorA < valorB ? 1 : -1;
+        }
+      });
+      
+      // Ocultar todos los jugadores
+      jugadoresOriginales.forEach(card => {
+        card.style.display = 'none';
+      });
+      
+      // Mostrar jugadores filtrados
+      const container = document.getElementById('lista-jugadores');
+      jugadoresFiltrados.forEach(card => {
+        card.style.display = 'block';
+        container.appendChild(card);
+      });
+      
+      // Actualizar contador
+      document.getElementById('jugadores-mostrados').textContent = jugadoresFiltrados.length;
+      
+      // Mostrar/ocultar mensaje de sin resultados
+      const sinResultados = document.getElementById('sin-resultados');
+      if (jugadoresFiltrados.length === 0) {
+        sinResultados.classList.remove('hidden');
+      } else {
+        sinResultados.classList.add('hidden');
+      }
+      
+      console.log(`Mostrando ${jugadoresFiltrados.length} jugadores`);
+    }
+    
+    // Event listeners para filtros
+    document.getElementById('buscar-jugador').addEventListener('input', filtrarJugadores);
+    document.getElementById('filtro-equipo').addEventListener('change', filtrarJugadores);
+    document.getElementById('filtro-posicion').addEventListener('change', filtrarJugadores);
+    document.getElementById('ordenar').addEventListener('change', filtrarJugadores);
+    
+    // Botón limpiar filtros
+    document.getElementById('limpiar-filtros').addEventListener('click', () => {
+      document.getElementById('buscar-jugador').value = '';
+      document.getElementById('filtro-equipo').value = '';
+      document.getElementById('filtro-posicion').value = '';
+      document.getElementById('ordenar').value = 'ovr-desc';
+      filtrarJugadores();
+    });
+    
+    // Aplicar ordenamiento inicial
+    filtrarJugadores();
+  </script>
+</BaseLayout>

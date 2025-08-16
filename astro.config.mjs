@@ -1,10 +1,15 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-
-import tailwindcss from '@tailwindcss/vite';
-
-import tailwind from "@astrojs/tailwind";
+import tailwind from '@astrojs/tailwind';
+import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  integrations: [tailwind()]
-  });
+  output: 'server',
+  adapter: vercel(),
+  integrations: [tailwind()],
+  vite: {
+    server: {
+      cors: true
+    }
+  }
+});

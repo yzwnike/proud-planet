@@ -6,11 +6,34 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "scraper": "node scripts/run-scraper.js",
+    "scraper:demo": "node scripts/run-scraper.js demo",
+    "scraper:test": "node scripts/run-scraper.js test",
+    "scraper:real": "node scripts/auto-biwenger.js",
+    "scraper:biwenger": "node scripts/biwenger-completo.js",
+    "scraper:debug": "node scripts/debug-biwenger.js",
+    "scraper:final": "node scripts/biwenger-final.js",
+    "scraper:scheduler": "node scripts/biwenger-scheduler.js",
+    "scraper:auto": "node scripts/auto-updater.js",
+    "scraper:config": "node scripts/auto-updater.js --config",
+    "scraper:status": "node scripts/auto-updater.js --status",
+    "scraper:once": "node scripts/auto-updater.js --run-once",
+    "demo:images": "node scripts/demo-images.js",
+    "demo:images:teams": "node scripts/demo-images.js teams",
+    "demo:images:players": "node scripts/demo-images.js players",
+    "demo:images:stats": "node scripts/demo-images.js stats",
+    "demo:images:preload": "node scripts/demo-images.js preload",
+    "test:frontend:images": "node scripts/test-frontend-images.js"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.11",
+    "@astrojs/tailwind": "^6.0.2",
+    "@astrojs/vercel": "^8.2.5",
     "astro": "^5.12.1",
-    "tailwindcss": "^4.1.11"
+    "axios": "^1.11.0",
+    "cheerio": "^1.1.2",
+    "node-cron": "^4.2.1",
+    "puppeteer": "^24.16.1",
+    "tailwindcss": "^3.4.17"
   }
 }

@@ -1,0 +1,24 @@
+<!-- Puma FC SVG Logo -->
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pumaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#005cbf;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#003080;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Círculo de fondo -->
+  <circle cx="50" cy="50" r="48" fill="url(#pumaGradient)" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Puma logo simplificado -->
+  <path d="M30 35 Q45 25 60 40 Q55 50 45 45 Q40 48 35 45 Q30 40 30 35 Z" fill="#fff" opacity="0.9"/>
+  <circle cx="48" cy="38" r="2" fill="url(#pumaGradient)"/>
+  
+  <!-- Texto FC -->
+  <text x="50" y="70" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#fff">FC</text>
+  
+  <!-- Estrellas decorativas -->
+  <circle cx="25" cy="25" r="2" fill="#fff" opacity="0.7"/>
+  <circle cx="75" cy="25" r="2" fill="#fff" opacity="0.7"/>
+  <circle cx="50" cy="18" r="1.5" fill="#fff" opacity="0.8"/>
+</svg>
